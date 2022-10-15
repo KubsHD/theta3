@@ -22,20 +22,6 @@ int main(int argc, char* argv[])
 	net_init();
 #endif
 
-#if DEBUG && 0
-
-	asset_init(NULL);
-
-	if (argc > 0)
-	{
-		pack_assets(argv);
-	}
-
-	return 0;
-#endif
-
-
-
 	srand(time(NULL));
 
 	// Variables for keeping game running at 60 fps
