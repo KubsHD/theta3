@@ -1,5 +1,8 @@
+#pragma once
 #include <SDL.h>
 #include <iostream>
+#include <lib/stb_image.h>
+
 
 class Window {
 public:
@@ -12,4 +15,6 @@ public:
 	void setDefault();
 	void create();
 	void close();
+	void update();
+	bool loadTextureIMG();
 };

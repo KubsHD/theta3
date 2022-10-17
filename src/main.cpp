@@ -10,7 +10,7 @@ bool bRunning = true;
 SDL_Event evt;
 SDL_Window* win;
 
-Window window{};
+Window window;
 
 
 void init()
@@ -47,7 +47,6 @@ int main(int argc, char* argv[])
 					bRunning = false;
 					window.close();
 				}
-
 				break;
 			case SDL_QUIT:
 				bRunning = false;

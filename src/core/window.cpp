@@ -2,6 +2,7 @@
 
 void Window::setDefault()
 {
+	// Initialize and set window variables to default values
 	quit = false;
 	x = 0;
 	y = 0;
@@ -11,7 +12,7 @@ void Window::setDefault()
 
 void Window::create()
 {
-	// Create Window and get its Surface
+	// Create window and get its surface
 	pWindow = SDL_CreateWindow("Ozon", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		w, h, SDL_WINDOW_SHOWN);
 
@@ -24,6 +25,7 @@ void Window::create()
 
 void Window::close()
 {
+	// Clear surface and window pointers, close SLD.
 	SDL_FreeSurface(pSurface);
 	pSurface = NULL;
 	SDL_DestroyWindow(pWindow);
@@ -31,4 +33,8 @@ void Window::close()
 	SDL_Quit();
 }
 
+void Window::update()
+{
+
+}
 
