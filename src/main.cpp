@@ -10,7 +10,7 @@ bool bRunning = true;
 SDL_Event evt;
 SDL_Window* win;
 
-Window window{};
+Window window;
 
 
 void init()
