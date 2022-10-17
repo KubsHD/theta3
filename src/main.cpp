@@ -33,16 +33,15 @@ void init()
 	// Initializing window
 	window.create();
 
+	maincontext = SDL_GL_CreateContext(window.pWindow);
+	if (maincontext == NULL)
+		log_error("Failed to create OpenGL context");
+
 	// Initializing OpenGL
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
 	{
 		std::cout << "Failed to initialize GLAD. " << std::endl;
 	}
-
-
-	maincontext = SDL_GL_CreateContext(window.pWindow);
-	if (maincontext == NULL)
-		log_error("Failed to create OpenGL context");
 }
 
 
