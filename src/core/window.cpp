@@ -20,7 +20,6 @@ void Window::create()
 	{
 		std::cout << "pWindow is NULL!" << std::endl;
 	}
-	pSurface = SDL_GetWindowSurface(pWindow);
 }
 
 void Window::close()

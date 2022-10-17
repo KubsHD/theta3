@@ -25,12 +25,13 @@ void init()
 	// Request an OpenGL 4.5 context (should be core)
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
-	// Also request a depth buffer
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG );
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
 	// Initializing window
+	window.setDefault();
 	window.create();
 
 	maincontext = SDL_GL_CreateContext(window.pWindow);
@@ -38,7 +39,7 @@ void init()
 		log_error("Failed to create OpenGL context");
 
 	// Initializing OpenGL
-	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+	if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
 	{
 		std::cout << "Failed to initialize GLAD. " << std::endl;
 	}
