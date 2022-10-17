@@ -33,6 +33,8 @@ void init()
 	// Initializing window
 	window.create();
 
+	//SDL_GL_MakeCurrent(window.pWindow, maincontext);
+
 	maincontext = SDL_GL_CreateContext(window.pWindow);
 	if (maincontext == NULL)
 		log_error("Failed to create OpenGL context");
@@ -57,7 +59,6 @@ int main(int argc, char* argv[])
 	double lag = 0.0;
 	double current = 0;
 
-	window.setDefault();
 	
 
 	
