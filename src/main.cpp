@@ -1,28 +1,55 @@
 #include <iostream>
 #include <SDL.h>
+#include <lib/glad/glad.h>
 
 //#include <core/network.h>
 #include "core/log.h"
 #include "core/window.h"
 
 bool bRunning = true;
+static SDL_GLContext maincontext;
 
 SDL_Event evt;
 SDL_Window* win;
 
 Window window;
 
-
 void init()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) > 0)
+	// Initializing SDL2
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	{
 		log_error("Error: %s", SDL_GetError());
+	}
+
+	// Request an OpenGL 4.5 context (should be core)
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
+	// Also request a depth buffer
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+	// Initializing window
+	window.create();
+
+	// Initializing OpenGL
+	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD. " << std::endl;
+	}
+
+
+	maincontext = SDL_GL_CreateContext(window.pWindow);
+	if (maincontext == NULL)
+		log_error("Failed to create OpenGL context");
 }
 
 
 int main(int argc, char* argv[])
 {
 	srand(time(NULL));
+
 	init();
 
 	// Keeping game running at 60 fps
@@ -32,7 +59,7 @@ int main(int argc, char* argv[])
 	double current = 0;
 
 	window.setDefault();
-	window.create();
+	
 
 	
 	while (bRunning)
@@ -86,6 +113,7 @@ int main(int argc, char* argv[])
 			lag -= MS;
 		}
 
+		SDL_GL_SwapWindow(window.pWindow);
 		//input_update();
 		//audio_update();
 		//render();
