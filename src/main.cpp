@@ -1,49 +1,57 @@
 #include <iostream>
 #include <SDL.h>
 
-#include <core/network.h>
+//#include <core/network.h>
+#include "core/log.h"
+#include "core/window.h"
 
 bool bRunning = true;
 
 SDL_Event evt;
 SDL_Window* win;
 
+Window window{};
+
+
 void init()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-
-	win = SDL_CreateWindow("theta2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN);
+	if (SDL_Init(SDL_INIT_EVERYTHING) > 0)
+		log_error("Error: %s", SDL_GetError());
 }
 
-/// Makes game run in 60 fps, calls update functions on different scenes
+
 int main(int argc, char* argv[])
 {
-#if !OFFLINE
-	net_init();
-#endif
-
 	srand(time(NULL));
+	init();
 
-	// Variables for keeping game running at 60 fps
+	// Keeping game running at 60 fps
 	const float MS = 16.6666666666667f;
 	double last = SDL_GetTicks64();
 	double lag = 0.0;
 	double current = 0;
 
-	// enemies
-	//bool test_enemy = enemy_wave_parser();
+	window.setDefault();
+	window.create();
 
-	init();
-
+	
 	while (bRunning)
 	{
-
 		while (SDL_PollEvent(&evt) != 0)
 		{
 			switch (evt.type)
 			{
+			case SDL_KEYDOWN:
+				if (evt.key.keysym.sym == SDLK_ESCAPE)
+				{
+					bRunning = false;
+					window.close();
+				}
+
+				break;
 			case SDL_QUIT:
 				bRunning = false;
+				window.close();
 				break;
 			case SDL_CONTROLLERDEVICEADDED:
 				//input_notify_pad_added();
@@ -61,8 +69,7 @@ int main(int argc, char* argv[])
 		last = current;
 		lag += dt;
 
-		// spowalniamy giere jak za szybko dziala
-		// tldr: ma byc 60 fps(16.6ms) i koniec kropka
+
 		while (lag < MS)
 		{
 			int milliseconds = (int)(MS - lag);
@@ -83,11 +90,7 @@ int main(int argc, char* argv[])
 		//input_update();
 		//audio_update();
 		//render();
-#if !OFFLINE
-		net_update();
-#endif
 	}
 
-	net_shutdown();
 	return 0;
 }
