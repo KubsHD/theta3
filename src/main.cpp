@@ -31,7 +31,6 @@ void init()
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	// Initializing window
-	window.setDefault();
 	window.create();
 
 	//SDL_GL_MakeCurrent(window.pWindow, maincontext);
@@ -113,6 +112,11 @@ int main(int argc, char* argv[])
 			//update(dt);
 			lag -= MS;
 		}
+
+		glClearColor(.2f, .5f, .0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+
 
 		SDL_GL_SwapWindow(window.pWindow);
 		//input_update();
