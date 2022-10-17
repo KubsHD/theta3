@@ -12,7 +12,7 @@ public:
 	SDL_Window* pWindow;
 	SDL_Surface* pSurface;
 
-	void setDefault();
+	Window();
 	void create();
 	void close();
 	void update();

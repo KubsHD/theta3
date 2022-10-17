@@ -1,6 +1,6 @@
 #include "window.h"
 
-void Window::setDefault()
+Window::Window()
 {
 	// Initialize and set window variables to default values
 	quit = false;
@@ -24,7 +24,7 @@ void Window::create()
 
 void Window::close()
 {
-	// Clear surface and window pointers, close SLD.
+	// Clear surface and window pointers, close SDL.
 	SDL_FreeSurface(pSurface);
 	pSurface = NULL;
 	SDL_DestroyWindow(pWindow);
