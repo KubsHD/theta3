@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <SDL.h>
 #include <lib/glad/glad.h>
 
@@ -15,6 +15,14 @@ SDL_Window* win;
 
 Window window;
 Keyboard keyboard;
+
+#if WIN32
+#include <Windows.h>
+
+extern "C" {
+	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
+#endif
 
 void init()
 {
