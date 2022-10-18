@@ -16,7 +16,7 @@ SDL_Window* win;
 Window window;
 Keyboard keyboard;
 
-#if WIN32
+#if WIN
 #include <Windows.h>
 
 extern "C" {
