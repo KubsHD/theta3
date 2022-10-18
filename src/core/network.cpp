@@ -1,5 +1,7 @@
 #include "network.h"
 
+#if ONLINE
+
 #include "log.h"
 
 #include <eos_init.h>
@@ -245,3 +247,13 @@ void net_shutdown()
 	EOS_Platform_Release(platform);
 	EOS_Shutdown();
 }
+
+#else
+
+void net_init() {}
+void net_update() {}
+void net_stat_send_endscore(int val) {}
+void net_login() {}
+void net_shutdown() {}
+
+#endif

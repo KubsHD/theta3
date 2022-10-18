@@ -8,9 +8,14 @@ set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE STRING "don't update every time")
 set(CPPWINRT_REQUIRED_COMPILER_FLAGS "/std:c++latest /await")
 
 option(BUILD_DOCS "Build doxygen documentation" OFF)
+option(ONLINE "Enable online features" OFF)
+
 
 add_subdirectory(deps/fmod)
+if (ONLINE)
+add_compile_definitions(ONLINE)
 add_subdirectory(deps/eos)
+endif()
 
 include("cmake/common_deps.cmake")
 
@@ -24,6 +29,10 @@ elseif (DEFINED ENV{VITASDK})
     include("cmake/platform_vita.cmake")
 else()
     include("cmake/platform_windows.cmake")
+endif()
+
+if (ONLINE)
+list(${game_libs} APPEND "eos")
 endif()
 
 target_link_libraries(theta2 PRIVATE ${game_libs})
