@@ -4,7 +4,8 @@
 #include <lib/stb_image.h>
 
 
-class Window {
+class Window
+{
 public:
 	int x, y, w, h;
 	bool fullscreen;
@@ -15,6 +16,6 @@ public:
 	Window();
 	void create();
 	void close();
-	void update();
+	void getCurrentSize();
 	bool loadTextureIMG();
 };

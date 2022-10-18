@@ -14,7 +14,7 @@ void Window::create()
 {
 	// Create window and get its surface
 	pWindow = SDL_CreateWindow("Ozon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		w, h, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+		w, h, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	if (pWindow == NULL)
 	{
@@ -32,8 +32,11 @@ void Window::close()
 	SDL_Quit();
 }
 
-void Window::update()
+void Window::getCurrentSize()
 {
+	// updating window dimensions
+	SDL_GetWindowSize(pWindow, &w, &h);
+	//std::cout << "w: " << w << "  |  h: " << h << std::endl;
 
 }
 
