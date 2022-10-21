@@ -36,4 +36,4 @@ target_include_directories(theta2 PUBLIC "${PROJECT_SOURCE_DIR}/src")
 #     COMMAND_EXPAND_LISTS
 # )
 
-set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" "eos")
+set(game_libs "glm" "fmod" "SDL2main" "SDL2-static")
