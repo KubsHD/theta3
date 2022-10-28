@@ -1,21 +1,20 @@
 #pragma once
 #include <SDL.h>
 
-class Mouse
+struct Mouse
 {
-public:
 	bool LMB, RMB;
 	float scroll;
 	int x, y;
 };
 
-class Keyboard
+class Input
 {
 public:
-	bool KEY[322];
+	bool GetKeyDown(SDL_Scancode scanCode);
 
-
-	bool update(SDL_Event evt);
+	void Init();
+	bool Update(SDL_Event& evt);
 };
 
 

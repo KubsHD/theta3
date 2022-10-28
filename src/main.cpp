@@ -14,7 +14,7 @@ SDL_Event evt;
 SDL_Window* win;
 
 Window window;
-Keyboard keyboard;
+Input input;
 
 #if WIN
 #include <Windows.h>
@@ -42,6 +42,8 @@ void init()
 
 	// Initializing window
 	window.create();
+
+	input.Init();
 
 	//SDL_GL_MakeCurrent(window.pWindow, maincontext);
 
@@ -186,9 +188,7 @@ int main(int argc, char* argv[])
 
 		while (SDL_PollEvent(&evt) != 0)
 		{
-			// updateKeyboard returns 1 if supposed to terminate
-			bRunning = !keyboard.update(evt);
-			//updateMouse(evt);
+
 		}
 
 		//ImGui_ImplSDL2_ProcessEvent(&event);
@@ -226,7 +226,12 @@ int main(int argc, char* argv[])
 
 
 		SDL_GL_SwapWindow(window.pWindow);
-		//input_update();
+		
+		if (input.GetKeyDown(SDL_SCANCODE_ESCAPE))
+			bRunning = false;
+
+
+		input.Update(evt);
 		//audio_update();
 		//render();
 	}

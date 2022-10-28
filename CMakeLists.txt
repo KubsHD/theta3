@@ -32,7 +32,7 @@ else()
 endif()
 
 if (ONLINE)
-list(${game_libs} APPEND "eos")
+list(APPEND game_libs "eos")
 endif()
 
 target_link_libraries(theta2 PRIVATE ${game_libs})

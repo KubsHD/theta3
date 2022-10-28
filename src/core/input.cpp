@@ -5,45 +5,35 @@
 
 bool quit;
 
+static Uint8* key_state;
+static Uint8* last_key_state;
+
+static SDL_GameController* pad;
+
+static bool input_locked = false;
 
 
-
-bool Keyboard::update(SDL_Event evt)
+bool Input::Update(SDL_Event& evt)
 {
-	quit = false;
-	switch (evt.type)
-	{
-	case SDL_KEYDOWN:
-		switch (evt.key.keysym.sym)
-		{
-		case SDLK_ESCAPE:
-			quit = true;
-			break;
-		case SDLK_w:
-			std::cout << "pressed w\n";
-			break;
-		case SDLK_a:
-			std::cout << "pressed a\n";
-			break;
-		case SDLK_s:
-			std::cout << "pressed s\n";
-			break;
-		case SDLK_d:
-			std::cout << "pressed d\n";	
-			break;
-		}
-		
-		
-	case SDL_QUIT:
-		quit = true;
-		break;
-	case SDL_CONTROLLERDEVICEADDED:
-		//input_notify_pad_added();
-		break;
-	case SDL_CONTROLLERDEVICEREMOVED:
-		//input_notify_pad_removed();
-		break;
-	}
+	std::memcpy(last_key_state, key_state, sizeof(Uint32) * SDL_NUM_SCANCODES);
+	std::memcpy(key_state, SDL_GetKeyboardState(NULL), sizeof(Uint32) * SDL_NUM_SCANCODES);
 
-	return quit;
+	return true;
+}
+
+bool Input::GetKeyDown(SDL_Scancode scanCode)
+{
+	return (key_state[scanCode] == 1 && last_key_state[scanCode] == 0);
+}
+
+void Input::Init()
+{
+	
+	pad == NULL;
+
+	key_state = (Uint8*)new Uint32[SDL_NUM_SCANCODES]();
+	last_key_state = (Uint8*)new Uint32[SDL_NUM_SCANCODES]();
+	std::memcpy(key_state, SDL_GetKeyboardState(NULL), sizeof(Uint32) * SDL_NUM_SCANCODES);
+	std::memset(last_key_state, 0, sizeof(Uint32) * SDL_NUM_SCANCODES);
+
 }
