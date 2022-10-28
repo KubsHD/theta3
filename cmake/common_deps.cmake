@@ -1,11 +1,9 @@
 #imgui
-FetchContent_Declare(
-    imgui
-    GIT_REPOSITORY https://github.com/Pesc0/imgui-cmake
-    GIT_TAG master
-)
+
 
 #FetchContent_MakeAvailable(imgui)
+
+#add_subdirectory(deps/imgui)
 
 #glm
 FetchContent_Declare(

@@ -1,15 +1,13 @@
 cmake_minimum_required(VERSION 3.22)
-project(theta2)
+project(theta2 C CXX)
 
 include(FetchContent)
 
 set(BUILD_SHARED_LIBS FALSE)
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE STRING "don't update every time")
-set(CPPWINRT_REQUIRED_COMPILER_FLAGS "/std:c++latest /await")
 
 option(BUILD_DOCS "Build doxygen documentation" OFF)
 option(ONLINE "Enable online features" OFF)
-
 
 add_subdirectory(deps/fmod)
 if (ONLINE)

@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include <lib/glad/glad.h>
 
-//#include <core/network.h>
+#include <core/network.h>
 #include "core/log.h"
 #include "core/window.h"
 #include "core/input.h"
@@ -58,6 +58,15 @@ void init()
 	}
 }
 
+void update(float dt)
+{
+
+}
+
+void render()
+{
+
+}
 
 int main(int argc, char* argv[])
 {
@@ -70,9 +79,7 @@ int main(int argc, char* argv[])
 	double lag = 0.0;
 	double current = 0;
 
-	
-	// -------------- opengl ------------- start
-
+#pragma region OpenGL
 	// Vertex Shader - vertex positions
 	const char* vertexShaderSource = "#version 400 core\n"
 		"layout(location = 0) in vec3 aPos;\n"
@@ -171,12 +178,7 @@ int main(int argc, char* argv[])
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-
-
-
-	// -------------- opengl -------------- end
-
-
+#pragma endregion
 
 	while (bRunning)
 	{
@@ -212,7 +214,7 @@ int main(int argc, char* argv[])
 
 		while (lag >= MS)
 		{
-			//update(dt);
+			update(dt);
 			lag -= MS;
 		}
 
@@ -224,16 +226,16 @@ int main(int argc, char* argv[])
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		render();
 
-		SDL_GL_SwapWindow(window.pWindow);
-		
 		if (input.GetKeyDown(SDL_SCANCODE_ESCAPE))
 			bRunning = false;
+		SDL_GL_SwapWindow(window.pWindow);
+		
 
 
 		input.Update(evt);
 		//audio_update();
-		//render();
 	}
 
 	window.close();
