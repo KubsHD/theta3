@@ -8,10 +8,7 @@ unsigned int shaderProgram;
 unsigned int VAO;
 
 
-void Renderer::init()
-{
-	// Vertex Shader - vertex positions
-	const char* vertexShaderSource = R"(
+const char* vertexShaderSource = R"(
 		#version 400 core
 		layout(location = 0) in vec3 aPos;
 		void main()
@@ -20,7 +17,7 @@ void Renderer::init()
 		}
 	)";
 
-	const char* fragmentShaderSource = R"(
+const char* fragmentShaderSource = R"(
 		#version 400 core
 		out vec4 FragColor;
 		void main()
@@ -29,12 +26,17 @@ void Renderer::init()
 		}
 	)";
 
-
+void Renderer::init()
+{
 	// OpenGL - start
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.3f, 0.0f
+		-1.0f, -1.0f, 0.0f,
+		 -1.0f,  1.0f, 0.0f,
+		 1.0f, -1.0f, 0.0f,
+
+		 1.0f, -1.0f, 0.0f,
+		 1.0f,  1.0f, 0.0f,
+		 -1.0f, 1.0f, 0.0f,
 	};
 
 	glGenBuffers(1, &VBO);
@@ -113,9 +115,8 @@ void Renderer::init()
 
 void Renderer::draw_triangle()
 {
-
-	// DRAWING TRIANGLE GOD THANK YOU
+	// DRAWING TRIANGLE GOD THANK YOU	
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

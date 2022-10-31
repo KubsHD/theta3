@@ -2,7 +2,12 @@
 
 #include <core/types.h>
 
-class Texture;
+class Texture
+{
+	Texture(String path);
+
+	int id;
+};
 
 class Renderer {
 public:
@@ -10,6 +15,4 @@ public:
 
 	void draw_tex(Texture& tex, Vec2 pos);
 	void draw_triangle();
-
-
 };
