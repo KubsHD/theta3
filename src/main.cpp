@@ -7,6 +7,8 @@
 #include "core/window.h"
 #include "core/input.h"
 
+#include "render/Renderer.h"
+
 bool bRunning = true;
 static SDL_GLContext maincontext;
 
@@ -14,6 +16,7 @@ SDL_Event evt;
 SDL_Window* win;
 
 Window window;
+Renderer ren;
 Input input;
 
 #if WIN
@@ -43,7 +46,7 @@ void init()
 	// Initializing window
 	window.create();
 
-	input.Init();
+	input.init();
 
 	//SDL_GL_MakeCurrent(window.pWindow, maincontext);
 
@@ -61,11 +64,13 @@ void init()
 void update(float dt)
 {
 
+	if (input.key_down(SDL_SCANCODE_ESCAPE))
+		bRunning = false;
 }
 
 void render()
 {
-
+	ren.draw_triangle();
 }
 
 int main(int argc, char* argv[])
@@ -79,106 +84,7 @@ int main(int argc, char* argv[])
 	double lag = 0.0;
 	double current = 0;
 
-#pragma region OpenGL
-	// Vertex Shader - vertex positions
-	const char* vertexShaderSource = "#version 400 core\n"
-		"layout(location = 0) in vec3 aPos;\n"
-		"void main()\n"
-		"{\n"
-		"	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-		"}\0";
-
-
-	// OpenGL - start
-	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
-	};
-
-	unsigned int VBO;
-	glGenBuffers(1, &VBO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-
-	// compiling vertex shader
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	// compile vertex shader - info
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::Vertex Shader Compilation Failed!!!\n" << infoLog << std::endl;
-	}
-
-
-	// Fragment shader source - color
-	const char* fragmentShaderSource = "#version 400 core\n"
-	"out vec4 FragColor;\n"
-	"void main()\n"
-	"{\n"
-	"	FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-	"}\0";
-
-	// compiling fragment shader 
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	// compiling fragment shader - info
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::Fragment Shader Compilation Failed!!!\n" << infoLog << std::endl;
-	}
-
-
-	// creating program object
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	// creating program object - info
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success)
-	{
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::Program Object Linking Failed!!!\n" << infoLog << std::endl;
-	}
-
-	
-	glUseProgram(shaderProgram);
-
-	// Deleting shaders from memory after we compiled them
-	//glDeleteShader(vertexShader);
-	//glDeleteShader(fragmentShader);
-
-
-
-	// using VAOs
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-
-	glBindVertexArray(VAO);
-	// telling opengl how to connext vertex data and their atributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-#pragma endregion
+	ren.init();
 
 	while (bRunning)
 	{
@@ -221,20 +127,13 @@ int main(int argc, char* argv[])
 		glClearColor(.1f, .2f, .3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// DRAWING TRIANGLE GOD THANK YOU
-		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
 		render();
 
-		if (input.GetKeyDown(SDL_SCANCODE_ESCAPE))
-			bRunning = false;
 		SDL_GL_SwapWindow(window.pWindow);
 		
 
 
-		input.Update(evt);
+		input.update(evt);
 		//audio_update();
 	}
 

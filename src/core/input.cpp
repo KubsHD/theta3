@@ -13,20 +13,18 @@ static SDL_GameController* pad;
 static bool input_locked = false;
 
 
-bool Input::Update(SDL_Event& evt)
+void Input::update(SDL_Event& evt)
 {
 	std::memcpy(last_key_state, key_state, sizeof(Uint32) * SDL_NUM_SCANCODES);
 	std::memcpy(key_state, SDL_GetKeyboardState(NULL), sizeof(Uint32) * SDL_NUM_SCANCODES);
-
-	return true;
 }
 
-bool Input::GetKeyDown(SDL_Scancode scanCode)
+bool Input::key_down(SDL_Scancode scanCode)
 {
 	return (key_state[scanCode] == 1 && last_key_state[scanCode] == 0);
 }
 
-void Input::Init()
+void Input::init()
 {
 	
 	pad == NULL;
