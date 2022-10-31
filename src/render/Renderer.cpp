@@ -63,7 +63,6 @@ void Renderer::init()
 
 	// Fragment shader source - color
 
-
 	// compiling fragment shader 
 	unsigned int fragmentShader;
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);

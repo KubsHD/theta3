@@ -6,6 +6,7 @@
 #include "core/log.h"
 #include "core/window.h"
 #include "core/input.h"
+#include "core/types.h"
 
 #include "render/Renderer.h"
 
@@ -18,6 +19,8 @@ SDL_Window* win;
 Window window;
 Renderer ren;
 Input input;
+
+Vec3 pos;
 
 #if WIN
 #include <Windows.h>
