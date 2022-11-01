@@ -23,7 +23,7 @@ Renderer ren;
 Input input;
 
 Texture* tex_player;
-Vec3 pos;
+Vec2 pos;
 
 
 

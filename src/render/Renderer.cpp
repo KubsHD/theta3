@@ -184,13 +184,12 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos)
 
 	glBindTexture(GL_TEXTURE_2D, tex->id);
 	set_mvp(mvp);
-	draw_triangle();
+	draw_quad();
 }
 
-void Renderer::draw_triangle()
+void Renderer::draw_quad()
 {
 	glActiveTexture(0);
-	// DRAWING TRIANGLE GOD THANK YOU	
 	glUseProgram(shaderProgram);
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
