@@ -8,6 +8,8 @@
 #include "core/input.h"
 #include "core/types.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "render/Renderer.h"
 
 bool bRunning = true;
@@ -20,7 +22,11 @@ Window window;
 Renderer ren;
 Input input;
 
+Texture* tex_player;
 Vec3 pos;
+
+
+
 
 #if WIN
 #include <Windows.h>
@@ -38,10 +44,11 @@ void init()
 		log_error("Error: %s", SDL_GetError());
 	}
 
+
 	// Request an OpenGL 4.5 context (should be core)
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG );
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -62,10 +69,17 @@ void init()
 	{
 		std::cout << "Failed to initialize GLAD. " << std::endl;
 	}
+	
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	tex_player = new Texture("data/spr_player.png");
 }
 
 void update(float dt)
 {
+
 
 	if (input.key_down(SDL_SCANCODE_ESCAPE))
 		bRunning = false;
@@ -73,7 +87,7 @@ void update(float dt)
 
 void render()
 {
-	ren.draw_triangle();
+	ren.draw_tex(tex_player, pos);
 }
 
 int main(int argc, char* argv[])
@@ -95,7 +109,6 @@ int main(int argc, char* argv[])
 		// Telling OpenGL window size
 		window.getCurrentSize();
 		glViewport(0, 0, window.w, window.h);
-
 
 		while (SDL_PollEvent(&evt) != 0)
 		{
@@ -139,6 +152,7 @@ int main(int argc, char* argv[])
 		input.update(evt);
 		//audio_update();
 	}
+
 
 	window.close();
 
