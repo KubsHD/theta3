@@ -25,6 +25,7 @@ Input input;
 Texture* tex_player;
 Vec2 pos;
 
+Target* game_view;
 
 
 
@@ -38,7 +39,7 @@ extern "C" {
 
 void init()
 {
-	// Initializing SDL2
+	// Initializing SDL2O
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		log_error("Error: %s", SDL_GetError());
@@ -47,8 +48,8 @@ void init()
 
 	// Request an OpenGL 4.5 context (should be core)
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG );
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -75,11 +76,15 @@ void init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	tex_player = new Texture("data/spr_player.png");
+	game_view = new Target();
 }
 
 void update(float dt)
 {
+	float speed = 0.01f;
 
+	if (input.key_held(SDL_SCANCODE_RIGHT))
+		pos.x += speed;
 
 	if (input.key_down(SDL_SCANCODE_ESCAPE))
 		bRunning = false;
@@ -87,7 +92,25 @@ void update(float dt)
 
 void render()
 {
+	game_view->bind();
+
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	ren.draw_tex(tex_player, pos);
+
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	window.getCurrentSize();
+	glViewport(0, 0, window.w, window.h);
+
+
+	glBindTexture(GL_TEXTURE_2D, game_view->texId);
+	ren.set_mvp(glm::mat4(1.0f));
+	ren.draw_quad();
 }
 
 int main(int argc, char* argv[])
@@ -105,10 +128,6 @@ int main(int argc, char* argv[])
 
 	while (bRunning)
 	{
-
-		// Telling OpenGL window size
-		window.getCurrentSize();
-		glViewport(0, 0, window.w, window.h);
 
 		while (SDL_PollEvent(&evt) != 0)
 		{

@@ -24,6 +24,11 @@ bool Input::key_down(SDL_Scancode scanCode)
 	return (key_state[scanCode] == 1 && last_key_state[scanCode] == 0);
 }
 
+bool Input::key_held(SDL_Scancode scanCode)
+{
+	return (key_state[scanCode] == 1 && last_key_state[scanCode] == 1);
+}
+
 void Input::init()
 {
 	

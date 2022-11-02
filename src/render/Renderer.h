@@ -9,6 +9,24 @@ public:
 	int id;
 };
 
+class Target
+{
+public:
+	Target();
+
+	void bind();
+
+	unsigned int id;
+	unsigned int texId;
+};
+
+class Shader
+{
+public:
+	Shader(const char* vtx, const char* fsx);
+	int id;
+};
+
 class Renderer {
 public:
 	void init();
