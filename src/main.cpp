@@ -76,7 +76,7 @@ void init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	tex_player = new Texture("data/spr_player.png");
-	game_view = new Target();
+	game_view = new Target(640, 360);
 }
 
 void update(float dt)
@@ -104,18 +104,17 @@ void render()
 	game_view->bind();
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(0, 0, 320, 180);
 
 
 	ren.draw_tex(tex_player, pos);
 
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, 1280, 720);
+	
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	window.getCurrentSize();
-	glViewport(0, 0, 1280, 720);
 
 
 	glBindTexture(GL_TEXTURE_2D, game_view->texId);

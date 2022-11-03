@@ -13,12 +13,14 @@ public:
 class Target
 {
 public:
-	Target();
+	Target(int w, int h);
 
 	void bind();
 
 	unsigned int id;
 	unsigned int texId;
+
+	Vec2 target_size;
 };
 
 class Shader

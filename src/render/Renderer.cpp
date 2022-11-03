@@ -80,7 +80,7 @@ const char* fragmentShaderSource = R"(
 
 void Renderer::init()
 {
-	projection = glm::ortho(0.0f, 320.0f, 180.0f, 0.0f, -1.0f, 1.0f);
+	projection = glm::ortho(0.0f, 640.0f, 360.0f, 0.0f, -1.0f, 1.0f);
 
 	// OpenGL - start
 	float vertices[] = {
@@ -201,7 +201,7 @@ void Renderer::draw_quad()
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-Target::Target()
+Target::Target(int w, int h)
 {
 	glGenFramebuffers(1, &id);
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
@@ -209,7 +209,7 @@ Target::Target()
 	glGenTextures(1, &texId);
 	glBindTexture(GL_TEXTURE_2D, texId);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 320, 180, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -220,12 +220,15 @@ Target::Target()
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
 
+	target_size = Vec2(w,h);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Target::bind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
+	glViewport(0, 0, target_size.x, target_size.y);
 }
 
 Shader::Shader(const char* vtx, const char* fsx)
