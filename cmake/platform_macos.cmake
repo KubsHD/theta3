@@ -4,12 +4,15 @@ FetchContent_Declare(
     GIT_TAG release-2.24.1
 )
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 FetchContent_MakeAvailable(SDL)
 
 set(game_src_paths "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/src/*.c" "${PROJECT_SOURCE_DIR}/src/*.h" "${PROJECT_SOURCE_DIR}/src/*.rc" "${PROJECT_SOURCE_DIR}/src/*.cur")
 file(GLOB_RECURSE game_SRC ${game_src_paths})
 
-set_source_files_properties(game_SRC PROPERTIES LANGUAGE CXX)
+#set_source_files_properties(game_SRC PROPERTIES LANGUAGE CXX)
 
 #set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/src/platform/windows/theta.rc")
 

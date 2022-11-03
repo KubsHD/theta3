@@ -166,7 +166,7 @@ void Renderer::init()
 	glEnableVertexAttribArray(1);
 }
 
-void Renderer::set_mvp(glm::mat4& mvp)
+void Renderer::set_mvp(const glm::mat4& mvp)
 {
 	glUseProgram(shaderProgram);
 	int modelLoc = glGetUniformLocation(shaderProgram, "u_mvp");
