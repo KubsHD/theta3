@@ -23,10 +23,14 @@ Texture::Texture(String path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	// load and generate the texture
 	int width, height, nrChannels;
+
+
 	//stbi_set_flip_vertically_on_load(true);
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
+		size.x = width;
+		size.y = height;
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
@@ -81,13 +85,13 @@ void Renderer::init()
 	// OpenGL - start
 	float vertices[] = {
 		// pos      // tex
-		0.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, -1.0f, 1.0f, 0.0f,
+		-1.0f, -1.0f, 0.0f, 0.0f,
 
-		0.0f, 1.0f, 0.0f, 1.0f,
+		-1.0f, 1.0f, 0.0f, 1.0f,
 		1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 0.0f
+		1.0f, -1.0f, 1.0f, 0.0f
 	};
 
 	glGenBuffers(1, &VBO);
@@ -149,8 +153,8 @@ void Renderer::init()
 	glUseProgram(shaderProgram);
 
 	// Deleting shaders from memory after we compiled them
-	//glDeleteShader(vertexShader);
-	//glDeleteShader(fragmentShader);
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 
 
 
@@ -176,15 +180,15 @@ void Renderer::set_mvp(const glm::mat4& mvp)
 void Renderer::draw_tex(Texture* tex, Vec2 pos)
 {
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::scale(model, Vec3(10.0f));
+	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
 	model = glm::translate(model, Vec3(pos, 0.0f));
 
 	auto mvp = projection * model;
-	set_mvp(mvp);
 
 	glBindTexture(GL_TEXTURE_2D, tex->id);
 	set_mvp(mvp);
 	draw_quad();
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer::draw_quad()
@@ -202,15 +206,18 @@ Target::Target()
 	glGenTextures(1, &texId);
 	glBindTexture(GL_TEXTURE_2D, texId);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 320, 180, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 320, 180, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+	glBindFramebuffer(GL_FRAMEBUFFER, id);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Target::bind()

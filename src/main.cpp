@@ -81,10 +81,13 @@ void init()
 
 void update(float dt)
 {
-	float speed = 0.01f;
+	float speed = 0.1f;
 
 	if (input.key_held(SDL_SCANCODE_RIGHT))
 		pos.x += speed;
+
+	if (input.key_held(SDL_SCANCODE_DOWN))
+		pos.y += speed;
 
 	if (input.key_down(SDL_SCANCODE_ESCAPE))
 		bRunning = false;
@@ -93,19 +96,20 @@ void update(float dt)
 void render()
 {
 	game_view->bind();
-
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, 320, 180);
+
 
 	ren.draw_tex(tex_player, pos);
 
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	window.getCurrentSize();
-	glViewport(0, 0, window.w, window.h);
+	glViewport(0, 0, 1280, 720);
 
 
 	glBindTexture(GL_TEXTURE_2D, game_view->texId);
@@ -158,9 +162,6 @@ int main(int argc, char* argv[])
 			update(dt);
 			lag -= MS;
 		}
-
-		glClearColor(.1f, .2f, .3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
 
 		render();
 

@@ -7,6 +7,7 @@ class Texture
 public:
 	Texture(String path);
 	int id;
+	Vec2 size;
 };
 
 class Target
