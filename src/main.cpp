@@ -81,13 +81,19 @@ void init()
 
 void update(float dt)
 {
-	float speed = 0.1f;
+	float speed = 1.0f;
 
 	if (input.key_held(SDL_SCANCODE_RIGHT))
 		pos.x += speed;
 
 	if (input.key_held(SDL_SCANCODE_DOWN))
 		pos.y += speed;
+
+		if (input.key_held(SDL_SCANCODE_LEFT))
+		pos.x -= speed;
+
+	if (input.key_held(SDL_SCANCODE_UP))
+		pos.y -= speed;
 
 	if (input.key_down(SDL_SCANCODE_ESCAPE))
 		bRunning = false;

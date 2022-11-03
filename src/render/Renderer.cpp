@@ -180,8 +180,11 @@ void Renderer::set_mvp(const glm::mat4& mvp)
 void Renderer::draw_tex(Texture* tex, Vec2 pos)
 {
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
+
 	model = glm::translate(model, Vec3(pos, 0.0f));
+	model = glm::translate(model, glm::vec3(0.5f * tex->size.x, 0.5f * tex->size.y, 0.0f)); 
+	model = glm::translate(model, glm::vec3(-0.5f * tex->size.x, -0.5f * tex->size.y, 0.0f));
+	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
 
 	auto mvp = projection * model;
 
