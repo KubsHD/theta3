@@ -7,10 +7,15 @@
 #include "core/window.h"
 #include "core/input.h"
 #include "core/types.h"
+#include "core/ecs.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "render/Renderer.h"
+#include "render/renderer.h"
+
+#include <components/sprite.h>
+#include <components/movement.h>
+
 
 bool bRunning = true;
 static SDL_GLContext maincontext;
@@ -27,6 +32,7 @@ Vec2 pos;
 
 Target* game_view;
 
+World world;
 
 
 #if WIN
@@ -75,25 +81,19 @@ void init()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	tex_player = new Texture("data/spr_player.png");
 	game_view = new Target(640, 360);
+
+
+	auto player = world.create();
+	player->add(Sprite("data/spr_player.png"));
+	player->add(Movement());
 }
 
 void update(float dt)
 {
-	float speed = 1.0f;
+	world.update();
 
-	if (input.key_held(SDL_SCANCODE_RIGHT))
-		pos.x += speed;
 
-	if (input.key_held(SDL_SCANCODE_DOWN))
-		pos.y += speed;
-
-		if (input.key_held(SDL_SCANCODE_LEFT))
-		pos.x -= speed;
-
-	if (input.key_held(SDL_SCANCODE_UP))
-		pos.y -= speed;
 
 	if (input.key_down(SDL_SCANCODE_ESCAPE))
 		bRunning = false;
@@ -105,8 +105,7 @@ void render()
 	ren.clear();
 
 	
-	ren.draw_tex(tex_player, pos);
-
+	world.render(&ren);
 
 
 	ren.set_target(Renderer::Backbuffer);
@@ -133,7 +132,8 @@ int main(int argc, char* argv[])
 
 		while (SDL_PollEvent(&evt) != 0)
 		{
-
+			if (evt.type == SDL_QUIT)
+				bRunning = false;
 		}
 
 		//ImGui_ImplSDL2_ProcessEvent(&event);

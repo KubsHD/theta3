@@ -11,8 +11,8 @@ struct Mouse
 class Input
 {
 public:
-	bool key_down(SDL_Scancode scanCode);
-	bool key_held(SDL_Scancode scanCode);
+	static bool key_down(SDL_Scancode scanCode);
+	static bool key_held(SDL_Scancode scanCode);
 
 	void init();
 	void update(SDL_Event& evt);
