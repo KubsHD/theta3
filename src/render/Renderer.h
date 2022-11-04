@@ -2,6 +2,8 @@
 
 #include <core/types.h>
 
+class Window;
+
 class Texture
 {
 public:
@@ -31,9 +33,16 @@ public:
 };
 
 class Renderer {
+private:
+	Target* m_currentTarget;
 public:
-	void init();
+	static Target* Backbuffer;
 
+	void init(Window* win);
+
+	void set_target(Target* tg);
+	void clear();
+	void draw_target(Target* tg);
 	void set_mvp(const glm::mat4& mvp);
 	void draw_tex(Texture* tex, Vec2 pos);
 	void draw_quad();

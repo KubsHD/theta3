@@ -5,6 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include <core/window.h>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <lib/stb_image.h>
 
@@ -64,6 +66,7 @@ const char* vertexShaderSource = R"(
 		}
 	)";
 
+
 const char* fragmentShaderSource = R"(
 		#version 330 core
 		in vec2 vTexCoord;
@@ -78,9 +81,11 @@ const char* fragmentShaderSource = R"(
 		}
 	)";
 
-void Renderer::init()
+void Renderer::init(Window* win)
 {
-	projection = glm::ortho(0.0f, 640.0f, 360.0f, 0.0f, -1.0f, 1.0f);
+	Backbuffer = new Target(0,0);
+	Backbuffer->id = 0;
+	Backbuffer->target_size = Vec2(win->w, win->h);
 
 	// OpenGL - start
 	float vertices[] = {
@@ -170,6 +175,26 @@ void Renderer::init()
 	glEnableVertexAttribArray(1);
 }
 
+void Renderer::set_target(Target* tg)
+{
+	tg->bind();
+	projection = glm::ortho(0.0f, tg->target_size.x, tg->target_size.y, 0.0f, -1.0f, 1.0f);
+	glViewport(0, 0, tg->target_size.x, tg->target_size.y);
+}
+
+void Renderer::clear()
+{
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::draw_target(Target* tg)
+{
+	glBindTexture(GL_TEXTURE_2D, tg->texId);
+	set_mvp(glm::mat4(1.0f));
+	draw_quad();
+}
+
 void Renderer::set_mvp(const glm::mat4& mvp)
 {
 	glUseProgram(shaderProgram);
@@ -182,8 +207,7 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
-	model = glm::translate(model, glm::vec3(0.5f * tex->size.x, 0.5f * tex->size.y, 0.0f)); 
-	model = glm::translate(model, glm::vec3(-0.5f * tex->size.x, -0.5f * tex->size.y, 0.0f));
+	model = glm::translate(model, glm::vec3(tex->size.x,tex->size.y, 0.0f)); 
 	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
 
 	auto mvp = projection * model;
@@ -201,8 +225,16 @@ void Renderer::draw_quad()
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+Target* Renderer::Backbuffer;
+
 Target::Target(int w, int h)
 {
+	if (w == 0 && h == 0)
+	{
+		id = 0;
+		return;
+	}
+
 	glGenFramebuffers(1, &id);
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
 
