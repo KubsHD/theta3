@@ -9,7 +9,9 @@ class Component {
 	friend class Entity;
 public:
 	Component() {};
+
 	Entity* entity;
+	bool enabled = true;
 
 	virtual void update() = 0;
 	virtual void render(Renderer* ren) = 0;
@@ -24,42 +26,41 @@ public:
 	void update();
 	void render(Renderer* ren);
 
-	Vector<Entity*> entities;
+private:
+	Vector<Entity*> m_entities;
 };
 
 
 
 class Entity final {
+
+	friend class World;
+
 public:
 	Entity() : position(0,0) {};
 
 	Vec2 position;
+	World* world;
 
 	template<typename T>
 	T* add(T&& comp = T());
 
 	template<typename T>
-	void add();
-
-	template<typename T>
 	T* get();
 
-	void update();
-	void render(Renderer* ren);
-
-	Vector<Component*> components;
+private:
+	Vector<Component*> m_components;
 };
 
 template<typename T>
 T* Entity::add(T&& comp /*= T()*/)
 {
-
 	T* instance = new T();
 
 	*instance = std::forward<T>(comp);
 
 	instance->entity = this;
 
-	components.push_back(instance);
+	m_components.push_back(instance);
 	return instance;
 }

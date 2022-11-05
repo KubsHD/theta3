@@ -15,7 +15,7 @@
 
 #include <components/sprite.h>
 #include <components/movement.h>
-
+#include <components/animator.h>
 
 bool bRunning = true;
 static SDL_GLContext maincontext;
@@ -45,7 +45,8 @@ extern "C" {
 
 void init()
 {
-#pragma region EngineInit
+
+	#pragma region EngineInit
 
 	// Initializing SDL2O
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -83,7 +84,7 @@ void init()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-#pragma endregion
+	#pragma endregion
 
 	game_view = new Target(640, 360);
 
@@ -91,6 +92,8 @@ void init()
 	auto player = world.create();
 	player->add(Sprite("data/spr_player.png"));
 	player->add(Movement(2.0f));
+
+
 }
 
 void update(float dt)
