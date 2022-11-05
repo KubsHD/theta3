@@ -7,6 +7,7 @@
 class Movement : public Component {
 public:
 	Movement() = default;
+	Movement(float speed) : speed(speed) {};
 
 
 	float speed = 1.0f;

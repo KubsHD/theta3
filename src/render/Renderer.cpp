@@ -5,6 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include <filesystem>
+
 #include <core/window.h>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -15,6 +17,8 @@ glm::mat4 projection;
 
 Texture::Texture(String path)
 {
+	assert(std::filesystem::exists(path), "Texture does not exist on disk!");
+
 	unsigned int texture;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);

@@ -9,9 +9,9 @@ Entity* World::create()
 
 void World::update()
 {
-	for each (auto ent in entities)
+	for (auto ent : entities)
 	{
-		for each (auto comp in ent->components)
+		for (auto comp : ent->components)
 		{
 			comp->update();
 		}
@@ -20,9 +20,9 @@ void World::update()
 
 void World::render(Renderer* ren)
 {
-	for each (auto ent in entities)
+	for (auto ent : entities)
 	{
-		for each (auto comp in ent->components)
+		for (auto comp : ent->components)
 		{
 			comp->render(ren);
 		}

@@ -3,6 +3,9 @@ project(theta2 C CXX)
 
 include(FetchContent)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(BUILD_SHARED_LIBS FALSE)
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE STRING "don't update every time")
 
