@@ -37,7 +37,7 @@ class Entity final {
 	friend class World;
 
 public:
-	Entity() : position(0,0) {};
+	Entity() : position(100,100) {};
 
 	Vec2 position;
 	World* world;

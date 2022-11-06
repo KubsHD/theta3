@@ -188,7 +188,7 @@ void Renderer::set_target(Target* tg)
 
 void Renderer::clear()
 {
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClearColor(0.03f, 0.25f, 0.03f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

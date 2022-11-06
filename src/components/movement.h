@@ -14,16 +14,16 @@ public:
 	
 	void update() override {
 
-		if (Input::key_held(SDL_SCANCODE_RIGHT))
+		if (Input::key_held(SDL_SCANCODE_D))
 			entity->position.x += speed;
 
-		if (Input::key_held(SDL_SCANCODE_DOWN))
+		if (Input::key_held(SDL_SCANCODE_S))
 			entity->position.y += speed;
 
-		if (Input::key_held(SDL_SCANCODE_LEFT))
+		if (Input::key_held(SDL_SCANCODE_A))
 			entity->position.x -= speed;
 
-		if (Input::key_held(SDL_SCANCODE_UP))
+		if (Input::key_held(SDL_SCANCODE_W))
 			entity->position.y -= speed;
 	};
 

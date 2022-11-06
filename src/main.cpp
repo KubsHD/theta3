@@ -16,6 +16,8 @@
 #include <components/sprite.h>
 #include <components/movement.h>
 #include <components/animator.h>
+#include <components/enemy_adult.h>
+
 
 bool bRunning = true;
 static SDL_GLContext maincontext;
@@ -93,6 +95,11 @@ void init()
 	player->add(Sprite("data/spr_player.png"));
 	player->add(Movement(2.0f));
 
+
+	Entity* adult = world.create();
+	adult->add(Adult(player));
+	adult->add(Sprite("data/spr_enemy_police.png"));
+	
 
 }
 
