@@ -49,10 +49,13 @@ Texture::Texture(String path)
 	id = texture;
 }
 
-unsigned int VBO;
 unsigned int shaderProgram;
+
+unsigned int VBO;
 unsigned int VAO;
 
+unsigned int boxVBO;
+unsigned int boxVAO;
 
 const char* vertexShaderSource = R"(
 		#version 330 core
@@ -181,6 +184,37 @@ void Renderer::init(Window* win)
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+
+	// BOX VAO + VBO
+
+
+	// OpenGL - start
+	float vertices_box[] = {
+		// pos			// tex
+		-1.0f, -1.0f,	0.0f, 0.0f,
+		-1.0f, 1.0f,	0.0f, 1.0f,
+		1.0f, 1.0f,		1.0f, 1.0f,
+		1.0f, -1.0f,	1.0f, 0.0f,
+	};
+
+	glGenBuffers(1, &boxVBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, boxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_box), vertices_box, GL_STATIC_DRAW);
+
+
+
+	glGenVertexArrays(1, &boxVAO);
+
+	glBindVertexArray(boxVAO);
+	// telling opengl how to connext vertex data and their atributes
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Renderer::set_target(Target* tg)
@@ -229,8 +263,6 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos)
 
 	glBindTexture(GL_TEXTURE_2D, tex->id);
 	set_mvp(mvp);
-	set_uniform_vec2("u_spriteSize", { 0,0 });
-	set_uniform_vec2("u_spritePos", { 0,0 });
 	draw_quad();
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -258,9 +290,23 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Renderer::draw_tex_scissor(Texture* tex, Vec2 pos, Vec2 texPos, Vec2 texSize)
+void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)
 {
+	glm::mat4 model = glm::mat4(1.0f);
 
+	model = glm::translate(model, Vec3(pos, 0.0f));
+	model = glm::translate(model, glm::vec3(size.x, size.y, 0.0f));
+	model = glm::scale(model, Vec3(size.x, size.y, 1.0f));
+
+	auto mvp = projection * model;
+
+	set_mvp(mvp);
+	
+	glUseProgram(shaderProgram);
+	glBindVertexArray(boxVAO);
+	glDrawArrays(GL_LINE_LOOP, 0, 4);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer::draw_quad()
