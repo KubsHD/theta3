@@ -239,8 +239,10 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 
+
 	model = glm::translate(model, Vec3(pos, 0.0f));
 	model = glm::translate(model, glm::vec3(subTex->texSize.x, subTex->texSize.y, 0.0f));
+	model = glm::scale(model, Vec3(1.0f, -1.0f, 1.0f));
 	model = glm::scale(model, Vec3(subTex->texSize.x, subTex->texSize.y, 1.0f));
 
 	auto mvp = projection * model;
@@ -258,18 +260,7 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos)
 
 void Renderer::draw_tex_scissor(Texture* tex, Vec2 pos, Vec2 texPos, Vec2 texSize)
 {
-	glm::mat4 model = glm::mat4(1.0f);
 
-	model = glm::translate(model, Vec3(pos, 0.0f));
-	model = glm::translate(model, glm::vec3(texSize.x, texSize.y, 0.0f));
-	model = glm::scale(model, Vec3(texSize.x, texSize.y, 1.0f));
-
-	auto mvp = projection * model;
-
-	glBindTexture(GL_TEXTURE_2D, tex->id);
-	set_mvp(mvp);
-	draw_quad();
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer::draw_quad()
@@ -345,13 +336,13 @@ Subtexture::Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size)
 
 	float vertices[] = {
 		// pos			// tex
-		-1.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y, sheetTex->size.y),
-		1.0f, -1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
+		-1.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x),  px_to_ogl(pos.y, sheetTex->size.y),
+		1.0f, -1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),  px_to_ogl(pos.y + size.y, sheetTex->size.y),
 		-1.0f, -1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
 
 		-1.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y, sheetTex->size.y),
 		1.0f, 1.0f,		px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y, sheetTex->size.y),
-		1.0f, -1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
+		1.0f, -1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),px_to_ogl(pos.y + size.y, sheetTex->size.y),
 	};
 
 	glGenBuffers(1, &vboId);
