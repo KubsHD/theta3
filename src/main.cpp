@@ -92,9 +92,9 @@ void init()
 
 
 	auto player = world.create();
-	player->add(Sprite("data/spr_player.png"));
+	//player->add(Sprite("data/spr_player.png"));
 	player->add(Movement(2.0f));
-
+	player->add(Animator("data/anim/anm_witch_atk_R"));
 
 	Entity* adult = world.create();
 	adult->add(Adult(player));

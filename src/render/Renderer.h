@@ -12,6 +12,17 @@ public:
 	Vec2 size;
 };
 
+
+class Subtexture
+{
+public:
+	Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size);
+	Texture* tex;
+	Vec2 texSize;
+	unsigned int vboId;
+	unsigned int vaoId;
+};
+
 class Target
 {
 public:
@@ -44,6 +55,9 @@ public:
 	void clear();
 	void draw_target(Target* tg);
 	void set_mvp(const glm::mat4& mvp);
+	void set_uniform_vec2(String uniformName, Vec2 v);
 	void draw_tex(Texture* tex, Vec2 pos);
+	void draw_subtex(Subtexture* subTex, Vec2 pos);
+	void draw_tex_scissor(Texture* tex, Vec2 pos, Vec2 texPos, Vec2 texSize);
 	void draw_quad();
 };

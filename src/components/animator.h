@@ -2,16 +2,40 @@
 
 #include <core/types.h>
 #include <core/ecs.h>
+#include <render/renderer.h>
+#include <fstream>
 
 #include <lib/json.hpp>
 
-class Animator : public Component {
+struct AnimFrame {
+	int idx;
+	
+};
 
+struct AnimData {
+	String name;
+	Vector<Subtexture*> Frames;
+};
+
+class Animator : public Component {
+private:
+	AnimData m_ad;
 public:
 	Animator() = default;
 	Animator(String path) {
-		auto data = nlohmann::json::parse(path + ".json");
+		std::ifstream ifs(path + ".json");
+		auto data = nlohmann::json::parse(ifs);
 		animTex = new Texture(path + ".png");
+
+		for (auto frame : data["frames"])
+		{
+			m_ad.Frames.push_back( new Subtexture
+				{	animTex,
+					{ frame["frame"]["x"], frame["frame"]["y"] },
+					{ frame["frame"]["w"], frame["frame"]["h"] },
+				}
+			);
+		}
 	
 	}
 
@@ -19,13 +43,13 @@ public:
 
 	void update() override
 	{
-		throw std::logic_error("The method or operation is not implemented.");
+		
 	}
 
 
 	void render(Renderer* ren) override
 	{
-		throw std::logic_error("The method or operation is not implemented.");
+		ren->draw_subtex(m_ad.Frames[0], entity->position);
 	}
 
 };

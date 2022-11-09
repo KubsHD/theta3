@@ -77,6 +77,10 @@ const char* fragmentShaderSource = R"(
 		
 		uniform sampler2D u_tex;
 
+		uniform vec2 u_spritePos;
+		uniform vec2 u_spriteSize;
+
+
 		out vec4 FragColor;
 
 		void main()
@@ -93,14 +97,14 @@ void Renderer::init(Window* win)
 
 	// OpenGL - start
 	float vertices[] = {
-		// pos      // tex
-		-1.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, -1.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f, 0.0f, 0.0f,
+		// pos			// tex
+		-1.0f, 1.0f,	0.0f, 1.0f,
+		1.0f, -1.0f,	1.0f, 0.0f,
+		-1.0f, -1.0f,	0.0f, 0.0f,
 
-		-1.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f, 0.0f
+		-1.0f, 1.0f,	0.0f, 1.0f,
+		1.0f, 1.0f,		1.0f, 1.0f,
+		1.0f, -1.0f,	1.0f, 0.0f
 	};
 
 	glGenBuffers(1, &VBO);
@@ -206,6 +210,13 @@ void Renderer::set_mvp(const glm::mat4& mvp)
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 }
 
+void Renderer::set_uniform_vec2(String uniformName, Vec2 v)
+{
+	glUseProgram(shaderProgram);
+	int modelLoc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+	glUniform2fv(modelLoc, 1, glm::value_ptr(v));
+}
+
 void Renderer::draw_tex(Texture* tex, Vec2 pos)
 {
 	glm::mat4 model = glm::mat4(1.0f);
@@ -213,6 +224,45 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos)
 	model = glm::translate(model, Vec3(pos, 0.0f));
 	model = glm::translate(model, glm::vec3(tex->size.x,tex->size.y, 0.0f)); 
 	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
+
+	auto mvp = projection * model;
+
+	glBindTexture(GL_TEXTURE_2D, tex->id);
+	set_mvp(mvp);
+	set_uniform_vec2("u_spriteSize", { 0,0 });
+	set_uniform_vec2("u_spritePos", { 0,0 });
+	draw_quad();
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, Vec3(pos, 0.0f));
+	model = glm::translate(model, glm::vec3(subTex->texSize.x, subTex->texSize.y, 0.0f));
+	model = glm::scale(model, Vec3(subTex->texSize.x, subTex->texSize.y, 1.0f));
+
+	auto mvp = projection * model;
+
+	set_mvp(mvp);
+	
+	glUseProgram(shaderProgram);
+	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
+	
+	glBindVertexArray(subTex->vaoId);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Renderer::draw_tex_scissor(Texture* tex, Vec2 pos, Vec2 texPos, Vec2 texSize)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, Vec3(pos, 0.0f));
+	model = glm::translate(model, glm::vec3(texSize.x, texSize.y, 0.0f));
+	model = glm::scale(model, Vec3(texSize.x, texSize.y, 1.0f));
 
 	auto mvp = projection * model;
 
@@ -269,4 +319,56 @@ void Target::bind()
 
 Shader::Shader(const char* vtx, const char* fsx)
 {
+}
+
+float px_to_ogl(float px, float size)
+{
+	return px / size;
+}
+
+Subtexture::Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size)
+{
+	tex = sheetTex;
+	texSize = size;
+
+	float vertices1[] = {
+		// pos			// tex
+		-1.0f, 1.0f,	0.0f, 1.0f,
+		1.0f, -1.0f,	1.0f, 0.0f,
+		-1.0f, -1.0f,	0.0f, 0.0f,
+
+		-1.0f, 1.0f,	0.0f, 1.0f,
+		1.0f, 1.0f,		1.0f, 1.0f,
+		1.0f, -1.0f,	1.0f, 0.0f
+	};
+
+
+	float vertices[] = {
+		// pos			// tex
+		-1.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y, sheetTex->size.y),
+		1.0f, -1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
+		-1.0f, -1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
+
+		-1.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y, sheetTex->size.y),
+		1.0f, 1.0f,		px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y, sheetTex->size.y),
+		1.0f, -1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
+	};
+
+	glGenBuffers(1, &vboId);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vboId);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// using VAOs
+	glGenVertexArrays(1, &vaoId);
+	glBindVertexArray(vaoId);
+	// telling opengl how to connext vertex data and their atributes
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
