@@ -1,9 +1,10 @@
 #include "ecs.h"
 
-Entity* World::create()
+Entity* World::create(String name)
 {
 	auto ent = new Entity();
 	ent->world = this;
+	ent->name = name;
 
 	m_entities.push_back(ent);
 	
@@ -16,10 +17,8 @@ void World::update()
 	{
 		for (auto comp : ent->m_components)
 		{
-			if (!comp->enabled)
-				return;
-
-			comp->update();
+			if (comp->enabled)
+				comp->update();
 		}
 	}
 }
@@ -30,17 +29,9 @@ void World::render(Renderer* ren)
 	{
 		for (auto comp : ent->m_components)
 		{
-			if (!comp->enabled)
-				return;
-
-			comp->render(ren);
+			if (comp->enabled)
+				comp->render(ren);
 		}
 	}
-}
-
-template<typename T>
-T* Entity::get()
-{
-
 }
 

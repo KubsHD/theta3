@@ -88,15 +88,17 @@ void init()
 	
 	#pragma endregion
 
-	game_view = new Target(640, 360);
+	game_view = new Target(1280, 720);
 
 
-	auto player = world.create();
-	//player->add(Sprite("data/spr_player.png"));
-	player->add(Movement(2.0f));
-	player->add(Animator("data/anim/anm_witch_atk_R"));
+	auto player = world.create("Player");
+	player->add(Sprite("data/spr_player.png"));
+	player->add(PlayerMovement(2.0f));
+	
+	auto animator = player->add(Animator());
+	animator->add_animation("data/anim/anm_witch_atk_R");
 
-	Entity* adult = world.create();
+	Entity* adult = world.create("AdultEnemy1");
 	adult->add(Adult(player));
 	adult->add(Sprite("data/spr_enemy_police.png"));
 	

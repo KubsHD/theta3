@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <filesystem>
 #include <string>
 
 #include <glm/glm.hpp>
@@ -10,6 +11,8 @@ using Vec2 = glm::vec2;
 using Vec3 = glm::vec3;
 
 using String = std::string;
+
+using Path = std::filesystem::path;
 
 template<typename T>
 using Vector = std::vector<T>;

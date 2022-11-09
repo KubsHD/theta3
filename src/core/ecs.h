@@ -21,7 +21,7 @@ class World final {
 public:
 	World() {};
 
-	Entity* create();
+	Entity* create(String name);
 
 	void update();
 	void render(Renderer* ren);
@@ -39,6 +39,8 @@ class Entity final {
 public:
 	Entity() : position(100,100) {};
 
+	String name;
+
 	Vec2 position;
 	World* world;
 
@@ -46,7 +48,16 @@ public:
 	T* add(T&& comp = T());
 
 	template<typename T>
-	T* get();
+	T* get()
+	{
+		T* m = nullptr;
+
+		for (auto& comp : m_components)
+		{
+			if (m = dynamic_cast<T*>(comp))
+				return m;
+		}
+	};
 
 private:
 	Vector<Component*> m_components;
