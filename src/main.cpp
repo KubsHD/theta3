@@ -20,6 +20,7 @@
 // enemies
 #include <components/enemy_adult.h>
 #include <components/enemy_child.h>
+#include <components/enemy_policeman.h>
 
 
 bool bRunning = true;
@@ -109,13 +110,18 @@ void init()
 	// Enemy Adult
 	Entity* adult = world.create("AdultEnemy1");
 	adult->add(Adult(player));
-	adult->add(Sprite("data/spr_enemy_police.png"));
+	adult->add(Sprite("data/spr_enemy_adult.png"));
 
 
 	// Enemy Child
 	Entity* child = world.create("ChildEnemy1");
 	child->add(Child(player));
 	child->add(Sprite("data/spr_enemy_child.png"));	
+
+	// Enemy Policeman
+	Entity* policeman = world.create("PolicemanEnemy1");
+	policeman->add(Policeman(player));
+	policeman->add(Sprite("data/spr_enemy_police.png"));
 
 }
 

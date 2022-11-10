@@ -19,7 +19,7 @@ public:
 		health = 10;
 		damage = 15;
 		souls = 7;
-		speed = 3.4f;
+		speed = 3.6f;
 
 		temp = 90;
 
@@ -31,7 +31,7 @@ public:
 	{
 		if (temp < 0) {
 			temp_pos = player->position;
-			temp = 90;
+			temp = 60;
 		}
 		temp--;
 
