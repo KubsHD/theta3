@@ -16,7 +16,10 @@
 #include <components/sprite.h>
 #include <components/movement.h>
 #include <components/animator.h>
+
+// enemies
 #include <components/enemy_adult.h>
+#include <components/enemy_child.h>
 
 
 bool bRunning = true;
@@ -102,10 +105,17 @@ void init()
 	auto animator = player->add(Animator());
 	animator->add_animation("data/anim/anm_witch_atk_R");
 
+
+	// Enemy Adult
 	Entity* adult = world.create("AdultEnemy1");
 	adult->add(Adult(player));
 	adult->add(Sprite("data/spr_enemy_police.png"));
-	
+
+
+	// Enemy Child
+	Entity* child = world.create("ChildEnemy1");
+	child->add(Child(player));
+	child->add(Sprite("data/spr_enemy_child.png"));	
 
 }
 

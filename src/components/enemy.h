@@ -9,8 +9,11 @@
 class Enemy : public Component
 {
 public:
-	float health, damage, souls, speed;
+	// backend
+	float facing_angle, temp;
 
+	// gameplay
+	float health, damage, souls, speed;
 	Enemy() = default;
 
 	void update() override 
