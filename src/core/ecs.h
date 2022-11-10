@@ -57,6 +57,9 @@ public:
 			if (m = dynamic_cast<T*>(comp))
 				return m;
 		}
+
+		throw std::runtime_error("Component not found!");
+		return nullptr;
 	};
 
 private:

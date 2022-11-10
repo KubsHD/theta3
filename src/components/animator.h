@@ -50,8 +50,6 @@ public:
 		}
 	}
 
-
-
 	void play_anim(String name, std::function<void()> on_finish_anim)
 	{
 		if (m_animInProgress)
@@ -88,15 +86,15 @@ public:
 				m_finish_anim_cb();
 			}
 		}
-
-
 	}
 
 
 	void render(Renderer* ren) override
 	{
 		if (m_animInProgress)
+		{
 			ren->draw_subtex(m_currentAnim->Frames[m_currentAnim->currentFrame], entity->position);
+			ren->draw_box(entity->position, m_currentAnim->Frames[m_currentAnim->currentFrame]->texSize, Vec3(1,1,1));
+		}
 	}
-
 };

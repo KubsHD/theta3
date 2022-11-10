@@ -37,6 +37,8 @@ Target* game_view;
 World world;
 
 
+Ref<Camera> game_camera;
+
 #if WIN
 #include <Windows.h>
 
@@ -89,7 +91,9 @@ void init()
 	#pragma endregion
 
 	game_view = new Target(1280, 720);
+	game_camera = CreateRef<Camera>();
 
+	ren.set_camera(game_camera.get());
 
 	auto player = world.create("Player");
 	player->add(Sprite("data/spr_player.png"));
@@ -108,6 +112,20 @@ void init()
 void update(float dt)
 {
 	world.update();
+
+	float speed = 1.0f;
+
+	if (Input::key_held(SDL_SCANCODE_RIGHT))
+		game_camera->position.x += speed;
+
+	if (Input::key_held(SDL_SCANCODE_DOWN))
+		game_camera->position.y += speed;
+
+	if (Input::key_held(SDL_SCANCODE_LEFT))
+		game_camera->position.x -= speed;
+
+	if (Input::key_held(SDL_SCANCODE_UP))
+		game_camera->position.y -= speed;
 
 	if (input.key_down(SDL_SCANCODE_ESCAPE))
 		bRunning = false;
