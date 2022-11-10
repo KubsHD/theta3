@@ -37,7 +37,7 @@ class Entity final {
 	friend class World;
 
 public:
-	Entity() : position(100,100) {};
+	Entity() : position(640,320) {};
 
 	String name;
 

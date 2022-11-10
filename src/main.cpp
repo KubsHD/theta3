@@ -21,6 +21,8 @@
 #include <components/enemy_adult.h>
 #include <components/enemy_child.h>
 #include <components/enemy_policeman.h>
+#include <components/enemy_soldier.h>
+
 
 
 bool bRunning = true;
@@ -122,6 +124,12 @@ void init()
 	Entity* policeman = world.create("PolicemanEnemy1");
 	policeman->add(Policeman(player));
 	policeman->add(Sprite("data/spr_enemy_police.png"));
+
+
+	// Enemy Soldier
+	Entity* soldier = world.create("SoldierEnemy1");
+	soldier->add(Soldier(player));
+	soldier->add(Sprite("data/spr_enemy_soldier.png"));
 
 }
 
