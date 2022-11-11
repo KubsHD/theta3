@@ -1,6 +1,11 @@
 ﻿#include <iostream>
 #include <SDL.h>
 #include <lib/glad/glad.h>
+#include <lib/imgui/imgui.h>
+#include <lib/imgui/imgui_impl_sdl.h>
+#include <lib/imgui/imgui_impl_opengl3.h>
+#include <glm/gtc/matrix_transform.hpp>
+
 
 #include <core/network.h>
 #include "core/log.h"
@@ -8,8 +13,6 @@
 #include "core/input.h"
 #include "core/types.h"
 #include "core/ecs.h"
-
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "render/renderer.h"
 
@@ -22,8 +25,6 @@
 #include <components/enemy_child.h>
 #include <components/enemy_policeman.h>
 #include <components/enemy_soldier.h>
-
-
 
 bool bRunning = true;
 static SDL_GLContext maincontext;
@@ -41,7 +42,6 @@ Vec2 pos;
 Target* game_view;
 
 World world;
-
 
 Ref<Camera> game_camera;
 
@@ -90,6 +90,31 @@ void init()
 		std::cout << "Failed to initialize GLAD. " << std::endl;
 	}
 	
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+	//io.ConfigViewportsNoAutoMerge = true;
+	//io.ConfigViewportsNoTaskBarIcon = true;
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsLight();
+
+	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
+
+	ImGui_ImplSDL2_InitForOpenGL(window.pWindow, maincontext);
+	ImGui_ImplOpenGL3_Init();
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -157,11 +182,38 @@ void update(float dt)
 
 void render()
 {
+
 	ren.set_target(game_view);
 	ren.clear();
 
 	
 	world.render(&ren);
+
+	{
+		ImGui::BeginMainMenuBar();
+
+		if (ImGui::BeginMenu("Scenes"))
+		{
+			
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Tools"))
+		{
+
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::Button("Quit"))
+		{
+			bRunning = false;
+		}
+
+
+		ImGui::EndMainMenuBar();
+	}
 
 
 	ren.set_target(Renderer::Backbuffer);
@@ -188,11 +240,12 @@ int main(int argc, char* argv[])
 
 		while (SDL_PollEvent(&evt) != 0)
 		{
+			ImGui_ImplSDL2_ProcessEvent(&evt);
+			
 			if (evt.type == SDL_QUIT)
 				bRunning = false;
 		}
 
-		//ImGui_ImplSDL2_ProcessEvent(&event);
 
 		current = SDL_GetTicks64();
 		double dt = current - last;
@@ -217,7 +270,23 @@ int main(int argc, char* argv[])
 			lag -= MS;
 		}
 
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplSDL2_NewFrame();
+		ImGui::NewFrame();
+
 		render();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+			SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+			SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+		}
 
 		SDL_GL_SwapWindow(window.pWindow);
 		
@@ -228,7 +297,12 @@ int main(int argc, char* argv[])
 	}
 
 
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	window.close();
+	SDL_Quit();
 
 	return 0;
 }
