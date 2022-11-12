@@ -13,31 +13,7 @@ public:
 
 	float speed = 1.0f;
 	
-	void update() override {
+	void update() override;
 
-		if (Input::key_down(SDL_SCANCODE_SPACE))
-		{
-			this->entity->get<Sprite>()->enabled = false;
-			this->entity->get<Animator>()->play_anim("anm_witch_atk_R", [this]() {
-				this->entity->get<Sprite>()->enabled = true;
-			});
-		}
-
-
-		if (Input::key_held(SDL_SCANCODE_D))
-			entity->position.x += speed;
-
-		if (Input::key_held(SDL_SCANCODE_S))
-			entity->position.y += speed;
-
-		if (Input::key_held(SDL_SCANCODE_A))
-			entity->position.x -= speed;
-
-		if (Input::key_held(SDL_SCANCODE_W))
-			entity->position.y -= speed;
-	};
-
-	void render(Renderer* ren) override {
-
-	};
+	void render(Renderer* ren) override;
 };

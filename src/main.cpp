@@ -16,17 +16,15 @@
 
 #include "render/renderer.h"
 
-#include <components/sprite.h>
-#include <components/movement.h>
-#include <components/animator.h>
 
-// enemies
-#include <components/enemy_adult.h>
-#include <components/enemy_child.h>
-#include <components/enemy_policeman.h>
-#include <components/enemy_soldier.h>
+
+
+#include <scenes/game_scene.h>
 
 bool bRunning = true;
+bool b_show_inspector;
+bool b_demo_open;
+
 static SDL_GLContext maincontext;
 
 SDL_Event evt;
@@ -36,14 +34,7 @@ Window window;
 Renderer ren;
 Input input;
 
-Texture* tex_player;
-Vec2 pos;
-
-Target* game_view;
-
-World world;
-
-Ref<Camera> game_camera;
+Ref<Scene> current_scene;
 
 #if WIN
 #include <Windows.h>
@@ -121,87 +112,53 @@ void init()
 	
 	#pragma endregion
 
-	game_view = new Target(1280, 720);
-	game_camera = CreateRef<Camera>();
-
-	ren.set_camera(game_camera.get());
-
-	auto player = world.create("Player");
-	player->add(Sprite("data/spr_player.png"));
-	player->add(PlayerMovement(2.0f));
-	
-	auto animator = player->add(Animator());
-	animator->add_animation("data/anim/anm_witch_atk_R");
-
-
-	// Enemy Adult
-	Entity* adult = world.create("AdultEnemy1");
-	adult->add(Adult(player));
-	adult->add(Sprite("data/spr_enemy_adult.png"));
-
-
-	// Enemy Child
-	Entity* child = world.create("ChildEnemy1");
-	child->add(Child(player));
-	child->add(Sprite("data/spr_enemy_child.png"));	
-
-	// Enemy Policeman
-	Entity* policeman = world.create("PolicemanEnemy1");
-	policeman->add(Policeman(player));
-	policeman->add(Sprite("data/spr_enemy_police.png"));
-
-
-	// Enemy Soldier
-	Entity* soldier = world.create("SoldierEnemy1");
-	soldier->add(Soldier(player));
-	soldier->add(Sprite("data/spr_enemy_soldier.png"));
 
 }
 
 void update(float dt)
 {
-	world.update();
-
-	float speed = 1.0f;
-
-	if (Input::key_held(SDL_SCANCODE_RIGHT))
-		game_camera->position.x += speed;
-
-	if (Input::key_held(SDL_SCANCODE_DOWN))
-		game_camera->position.y += speed;
-
-	if (Input::key_held(SDL_SCANCODE_LEFT))
-		game_camera->position.x -= speed;
-
-	if (Input::key_held(SDL_SCANCODE_UP))
-		game_camera->position.y -= speed;
-
-	if (input.key_down(SDL_SCANCODE_ESCAPE))
-		bRunning = false;
+	if (current_scene != nullptr)
+		current_scene->update();
 }
 
 void render()
 {
-
-	ren.set_target(game_view);
-	ren.clear();
-
-	
-	world.render(&ren);
+	if (current_scene != nullptr)
+		current_scene->render();
 
 	{
 		ImGui::BeginMainMenuBar();
 
 		if (ImGui::BeginMenu("Scenes"))
 		{
-			
+			if (ImGui::Button("Game"))
+			{
+				// todo: turn this into a change_scene() function
+
+				current_scene = CreateRef<GameScene>();
+				current_scene->ren = &ren;
+				current_scene->init();
+			}
+
+
+			if (ImGui::Button("UI"))
+				current_scene = CreateRef<GameScene>();
 
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("Tools"))
 		{
+			if (ImGui::Button("Inspector"))
+			{
+				if (current_scene != nullptr)
+					b_show_inspector = true;
+			}
 
+			if (ImGui::Button("ImGui Demo"))
+			{
+				b_demo_open = !b_demo_open;
+			}
 
 			ImGui::EndMenu();
 		}
@@ -215,11 +172,23 @@ void render()
 		ImGui::EndMainMenuBar();
 	}
 
+	if (b_demo_open)
+		ImGui::ShowDemoWindow();
 
-	ren.set_target(Renderer::Backbuffer);
-	ren.clear();
 
-	ren.draw_target(game_view);
+	if (b_show_inspector)
+	{
+		if (ImGui::Begin("Inspector"))
+		{
+			for (auto ent : current_scene->get_entities())
+			{
+				ImGui::Text("Entity: %s", ent->name.c_str());
+			}
+
+			ImGui::End();
+		}
+	}
+
 }
 
 int main(int argc, char* argv[])

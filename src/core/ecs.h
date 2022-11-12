@@ -5,7 +5,7 @@
 class Renderer;
 
 class Component {
-	friend class World;
+	friend class Scene;
 	friend class Entity;
 public:
 	Component() {};
@@ -17,14 +17,20 @@ public:
 	virtual void render(Renderer* ren) = 0;
 };
 
-class World final {
+class Scene {
 public:
-	World() {};
+	Scene() {};
+
+	Renderer* ren;
 
 	Entity* create(String name);
 
-	void update();
-	void render(Renderer* ren);
+	Vector<Entity*> get_entities() { return m_entities; };
+
+	virtual void init() = 0;
+	virtual void update();
+	virtual void render();
+	virtual void destroy() = 0;
 
 private:
 	Vector<Entity*> m_entities;
@@ -34,7 +40,7 @@ private:
 
 class Entity final {
 
-	friend class World;
+	friend class Scene;
 
 public:
 	Entity() : position(640,320) {};
@@ -42,7 +48,7 @@ public:
 	String name;
 
 	Vec2 position;
-	World* world;
+	Scene* world;
 
 	template<typename T>
 	T* add(T&& comp = T());

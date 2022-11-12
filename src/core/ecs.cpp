@@ -1,6 +1,6 @@
 #include "ecs.h"
 
-Entity* World::create(String name)
+Entity* Scene::create(String name)
 {
 	auto ent = new Entity();
 	ent->world = this;
@@ -11,7 +11,7 @@ Entity* World::create(String name)
 	return ent;
 }
 
-void World::update()
+void Scene::update()
 {
 	for (auto ent : m_entities)
 	{
@@ -23,7 +23,7 @@ void World::update()
 	}
 }
 
-void World::render(Renderer* ren)
+void Scene::render()
 {
 	for (auto ent : m_entities)
 	{
