@@ -6,7 +6,6 @@
 #include <lib/imgui/imgui_impl_opengl3.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-
 #include <core/network.h>
 #include "core/log.h"
 #include "core/window.h"
@@ -41,8 +40,6 @@ Renderer ren;
 Input input;
 
 Ref<Scene> current_scene;
-
-
 
 template<typename T>
 void change_scene()
@@ -143,7 +140,7 @@ void render()
 				change_scene<GameScene>();
 
 
-			if (ImGui::MenuItem("UI"))
+			if (ImGui::MenuItem("Menu"))
 				change_scene<MenuScene>();
 
 			ImGui::EndMenu();
@@ -213,9 +210,18 @@ int main(int argc, char* argv[])
 		while (SDL_PollEvent(&evt) != 0)
 		{
 			ImGui_ImplSDL2_ProcessEvent(&evt);
-			
-			if (evt.type == SDL_QUIT)
+
+			switch (evt.type)
+			{
+			case SDL_WINDOWEVENT:
+				if (evt.window.event == SDL_WINDOWEVENT_CLOSE)
+					bRunning = false;
+				break;
+
+			case SDL_QUIT:
 				bRunning = false;
+				break;
+			}
 		}
 
 
