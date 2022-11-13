@@ -1,4 +1,4 @@
-#include "game_scene.h"
+#include "scene_game.h"
 
 #include <components/sprite.h>
 #include <components/movement.h>

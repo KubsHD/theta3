@@ -16,10 +16,16 @@
 
 #include "render/renderer.h"
 
+#include <scenes/scene_game.h>
+#include "scenes/scene_menu.h"
 
+#if WIN
+#include <Windows.h>
 
-
-#include <scenes/game_scene.h>
+extern "C" {
+	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
+#endif
 
 bool bRunning = true;
 bool b_show_inspector;
@@ -36,13 +42,15 @@ Input input;
 
 Ref<Scene> current_scene;
 
-#if WIN
-#include <Windows.h>
 
-extern "C" {
-	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+
+template<typename T>
+void change_scene()
+{
+	current_scene = CreateRef<T>();
+	current_scene->ren = &ren;
+	current_scene->init();
 }
-#endif
 
 void init()
 {
@@ -131,31 +139,26 @@ void render()
 
 		if (ImGui::BeginMenu("Scenes"))
 		{
-			if (ImGui::Button("Game"))
-			{
-				// todo: turn this into a change_scene() function
-
-				current_scene = CreateRef<GameScene>();
-				current_scene->ren = &ren;
-				current_scene->init();
-			}
+			if (ImGui::MenuItem("Game"))
+				change_scene<GameScene>();
 
 
-			if (ImGui::Button("UI"))
-				current_scene = CreateRef<GameScene>();
+			if (ImGui::MenuItem("UI"))
+				change_scene<MenuScene>();
 
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("Tools"))
 		{
-			if (ImGui::Button("Inspector"))
+			if (ImGui::MenuItem("Inspector"))
 			{
 				if (current_scene != nullptr)
 					b_show_inspector = true;
+
 			}
 
-			if (ImGui::Button("ImGui Demo"))
+			if (ImGui::MenuItem("ImGui Demo"))
 			{
 				b_demo_open = !b_demo_open;
 			}
