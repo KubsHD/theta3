@@ -19,9 +19,8 @@ Texture::Texture(String path)
 {
 	assert(std::filesystem::exists(path), "Texture does not exist on disk!");
 
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
 	// set the texture wrapping/filtering options (on the currently bound texture object)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -45,8 +44,11 @@ Texture::Texture(String path)
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
+}
 
-	id = texture;
+Texture::~Texture()
+{
+	glDeleteTextures(1, &id);
 }
 
 unsigned int shaderProgram;
@@ -350,6 +352,12 @@ Target::Target(int w, int h)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+Target::~Target()
+{
+	glDeleteTextures(1, &texId);
+	glDeleteFramebuffers(1, &id);
+}
+
 void Target::bind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
@@ -411,3 +419,11 @@ Subtexture::Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size)
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+Subtexture::~Subtexture()
+{
+	delete tex;
+	glDeleteBuffers(1, &this->vaoId);
+	glDeleteBuffers(1, &this->vboId);
+}
+

@@ -7,7 +7,7 @@ class Target;
 class Camera;
 
 class GameScene : public Scene {
-	Target* game_view;
+	Ref<Target> game_view;
 	Ref<Camera> game_camera;
 
 

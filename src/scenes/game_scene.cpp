@@ -21,7 +21,7 @@
 void GameScene::init()
 {
 
-	game_view = new Target(1280, 720);
+	game_view = CreateRef<Target>(1280, 720);
 	game_camera = CreateRef<Camera>();
 
 	ren->set_camera(game_camera.get());
@@ -81,16 +81,15 @@ void GameScene::update()
 
 void GameScene::render()
 {
-	ren->set_target(game_view);
+	ren->set_target(game_view.get());
 	ren->clear();
-
 
 	Scene::render();
 
 	ren->set_target(Renderer::Backbuffer);
 	ren->clear();
 
-	ren->draw_target(game_view);
+	ren->draw_target(game_view.get());
 }
 
 void GameScene::destroy()

@@ -1,12 +1,10 @@
 #pragma once
 
 #include <core/types.h>
-
 #include <glm/ext/matrix_transform.hpp>
 
 class Camera {
 	glm::mat4 m_viewMatrix;
-
 public:
 	Camera() : position(0,0) {
 		m_viewMatrix = glm::mat4(1.0f);
@@ -26,7 +24,9 @@ class Texture
 {
 public:
 	Texture(String path);
-	int id;
+	~Texture();
+
+	unsigned int id;
 	Vec2 size;
 };
 
@@ -35,6 +35,7 @@ class Subtexture
 {
 public:
 	Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size);
+	~Subtexture();
 	Texture* tex;
 	Vec2 texSize;
 	unsigned int vboId;
@@ -45,6 +46,7 @@ class Target
 {
 public:
 	Target(int w, int h);
+	~Target();
 
 	void bind();
 
