@@ -12,4 +12,10 @@ public:
 
 	void destroy() override;
 
+
+	void update() override;
+
+
+	void render() override;
+
 };

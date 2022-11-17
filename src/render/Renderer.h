@@ -3,6 +3,8 @@
 #include <core/types.h>
 #include <glm/ext/matrix_transform.hpp>
 
+
+
 class Camera {
 	glm::mat4 m_viewMatrix;
 public:
@@ -63,6 +65,35 @@ public:
 	int id;
 };
 
+struct Glyph
+{
+	int id;
+	int x;
+	int y;
+	int w;
+	int h;
+	int xoff;
+	int yoff;
+	int xadv;
+	// not used
+
+	int page;
+	int chnl;
+
+	Subtexture* subTex;
+
+	/* data */
+};
+
+class Font {
+public:
+	Font(String path);
+
+	String name;
+	Texture* atlas;
+	Glyph glyphs[200];
+};
+
 class Renderer {
 	Camera* m_currentCamera;
 	Target* m_currentTarget;
@@ -85,4 +116,5 @@ public:
 	void draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f);
 	void draw_box(Vec2 pos, Vec2 size, Vec3 color);
 	void draw_quad();
+	void draw_text(String text, Font* font, Vec2 pos);
 };

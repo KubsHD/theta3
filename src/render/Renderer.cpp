@@ -5,6 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include <core/log.h>
+
 #include <filesystem>
 
 #include <core/window.h>
@@ -329,6 +331,28 @@ void Renderer::draw_quad()
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void Renderer::draw_text(String text, Font* font, Vec2 pos)
+{
+	int adv = 0;
+
+	for (int i = 0; text[i]; i++) {
+		if (text[i] >= 32 && text[i] < 128) {
+
+			Glyph g = font->glyphs[text[i]];
+
+			SDL_Rect src = { g.x,  g.y,  g.w,  g.h };
+
+			SDL_FRect dest = { pos.x + (g.xoff + adv), pos.y + g.yoff , g.w , g.h };
+
+			adv += g.xadv * 2;
+
+			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
+
+			draw_subtex(g.subTex, Vec2(dest.x, dest.y));
+		}
+	}
+}
+
 Target* Renderer::Backbuffer;
 
 Target::Target(int w, int h)
@@ -436,3 +460,69 @@ Subtexture::~Subtexture()
 	glDeleteBuffers(1, &this->vboId);
 }
 
+Font::Font(String path)
+{
+	FILE* file = fopen(/*get_asset_path*/(path).c_str(), "r");
+	if (file == NULL) {
+		log_error("Font not found");
+		assert(file == NULL);
+	}
+	char line[256];
+	char buffer[1024] = { 0 };
+
+
+	int curr_line = 0;
+
+
+
+	while (fgets(line, sizeof(line), file))
+	{
+		curr_line++;
+
+		if (curr_line == 3) {
+			int w;
+			int h;
+			char img[129] = { 0 };
+
+			sscanf(line, "page id=0 file=\"%128[^\"]\"", img);
+			//log_info("%s", img);
+
+			char path[200] = { 0 };
+
+			sprintf(path, "data/font/%s", img);
+
+			//log_info(path);
+
+			atlas = /*asset_load_texture*/new Texture(path + String(".png"));
+			name = path;
+			curr_line++;
+			continue;
+		}
+
+		if (curr_line > 3)
+		{
+			// parse glyph
+			int charId, charX, charY, charWidth, charHeight, charOffsetX, charOffsetY, charAdvanceX;
+
+
+			int isScanned = sscanf(line, "char id=%i x=%i y=%i width=%i height=%i xoffset=%i yoffset=%i xadvance=%i",
+				&charId, &charX, &charY, &charWidth, &charHeight, &charOffsetX, &charOffsetY, &charAdvanceX);
+
+			if (isScanned) {
+				if (charId < 200)
+				{
+					this->glyphs[charId];
+					this->glyphs[charId].x = charX;
+					this->glyphs[charId].y = charY;
+					this->glyphs[charId].w = charWidth;
+					this->glyphs[charId].h = charHeight;
+					this->glyphs[charId].xoff = charOffsetX;
+					this->glyphs[charId].yoff = charOffsetY;
+					this->glyphs[charId].xadv = charAdvanceX;
+					this->glyphs[charId].subTex = new Subtexture(this->atlas, Vec2(charX,charY),Vec2(charWidth, charHeight));
+				}
+			}
+			curr_line++;
+		}
+	}
+}
