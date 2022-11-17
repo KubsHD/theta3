@@ -71,17 +71,18 @@ public:
 	static Target* Backbuffer;
 
 	void init(Window* win);
-	void clear();
+	void clear(Vec3 color = Vec3(0.03f, 0.25f, 0.03f));
 
 	void set_target(Target* tg);
 	void set_mvp(const glm::mat4& mvp);
 	void set_uniform_vec2(String uniformName, Vec2 v);
+	void set_uniform_float(String uniformName, float v);
 
 	inline void set_camera(Camera* cam) { m_currentCamera = cam; };
 
 	void draw_target(Target* tg);
-	void draw_tex(Texture* tex, Vec2 pos);
-	void draw_subtex(Subtexture* subTex, Vec2 pos);
+	void draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f);
+	void draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f);
 	void draw_box(Vec2 pos, Vec2 size, Vec3 color);
 	void draw_quad();
 };

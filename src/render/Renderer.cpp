@@ -85,12 +85,13 @@ const char* fragmentShaderSource = R"(
 		uniform vec2 u_spritePos;
 		uniform vec2 u_spriteSize;
 
+		uniform float u_opacity;
 
 		out vec4 FragColor;
 
 		void main()
 		{
-			FragColor = texture(u_tex, vTexCoord);
+			FragColor = texture(u_tex, vTexCoord) * vec4(1.0f, 1.0f, 1.0f, u_opacity);
 		}
 	)";
 
@@ -226,9 +227,9 @@ void Renderer::set_target(Target* tg)
 	glViewport(0, 0, tg->target_size.x, tg->target_size.y);
 }
 
-void Renderer::clear()
+void Renderer::clear(Vec3 color)
 {
-	glClearColor(0.03f, 0.25f, 0.03f, 1.0f);
+	glClearColor(color.x, color.y, color.z, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -253,7 +254,14 @@ void Renderer::set_uniform_vec2(String uniformName, Vec2 v)
 	glUniform2fv(modelLoc, 1, glm::value_ptr(v));
 }
 
-void Renderer::draw_tex(Texture* tex, Vec2 pos)
+void Renderer::set_uniform_float(String uniformName, float v)
+{
+	glUseProgram(shaderProgram);
+	int modelLoc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+	glUniform1fv(modelLoc, 1, &v);
+}
+
+void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 
@@ -264,12 +272,13 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos)
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 	glBindTexture(GL_TEXTURE_2D, tex->id);
+	set_uniform_float("u_opacity", opacity);
 	set_mvp(mvp);
 	draw_quad();
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos)
+void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 
@@ -281,7 +290,7 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos)
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
-
+	set_uniform_float("u_opacity", opacity);
 	set_mvp(mvp);
 	
 	glUseProgram(shaderProgram);
