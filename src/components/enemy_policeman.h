@@ -11,7 +11,7 @@ public:
 	Vec2 temp_pos;
 	Entity* player;
 	bool running;
-	float damage_gun;
+	float damage_gun, temp_val;
 
 	Policeman() = default;
 
@@ -19,10 +19,13 @@ public:
 	{
 		health = 100;
 		damage = 25;
-		damage_gun = 10;
 		souls = 7;
 		speed = .7f;
 
+		damage_gun = 10;
+
+
+		temp_val = 0;
 		temp = 90;
 
 		player = player_ref;
@@ -36,34 +39,29 @@ public:
 		//	// bool running tells if he is shooting fast in safe position
 		//} // or he is running away from player 
 		//	// and shooting slower and with lower accuracy
-		//temp--;
-
-	
+		//temp--;	
 
 		// Standard
 		float delta_x = player->position.x - entity->position.x;
 		float delta_y = player->position.y - entity->position.y;
 
 		facing_angle = atan2(delta_y, delta_x);
-
 		
 		// Movement 
 		running = false;
-		if (abs(delta_x) > 100 || abs(delta_y) > 100) {
+		if (abs(delta_x) + abs(delta_y) > 400) {
 			speed = 0.8f;
 			entity->position.x += cos(facing_angle) * speed;
 			entity->position.y += sin(facing_angle) * speed;
 			running = true;
 		}
-		// dont get too close
-		else if (abs(delta_x) < 30|| abs(delta_y) < 30) {
+		// dont get too closel	
+		else if (abs(delta_x) + abs(delta_y) < 360) {
 			speed = 2.5f; // uciekaja szybciej niz gonia jak irl lmao
 			entity->position.x -= cos(facing_angle) * speed;
 			entity->position.y -= sin(facing_angle) * speed;
 			running = true;
 		}
-		// get info when in safe disctance
-
 
 	}
 

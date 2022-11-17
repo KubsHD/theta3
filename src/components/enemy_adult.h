@@ -3,6 +3,7 @@
 #include <core/types.h>
 #include <core/ecs.h>
 #include "enemy.h"
+#include <SDL_stdinc.h>
 
 
 class Adult : public Enemy
@@ -10,6 +11,7 @@ class Adult : public Enemy
 public:
 	Vec2 temp_pos;
 	Entity* player;
+	int temp_val;
 
 
 	Adult() = default;
@@ -21,6 +23,8 @@ public:
 		souls = 5;
 		speed = 1.3f;
 
+
+		temp_val = 0;
 		temp = 30;
 
 		player = player_ref;
@@ -36,21 +40,25 @@ public:
 		}
 		temp--;*/
 
-		// Delayed
-		//float delta_x = temp_pos.x - entity->position.x;
-		//float delta_y = temp_pos.y - entity->position.y;
-
 		// Standard
-		float delta_x = player->position.x - entity->position.x;
+	/*	float delta_x = player->position.x - entity->position.x;
 		float delta_y = player->position.y - entity->position.y;
 
-		facing_angle = atan2(delta_y, delta_x);
+		facing_angle = atan2(delta_y, delta_x);*/
 
-		// Movement 
-		if (abs(delta_x) > 20 || abs(delta_y) > 20) {
-			entity->position.x += cos(facing_angle) * speed;
-			entity->position.y += sin(facing_angle) * speed;
-		}
+		//// Movement 
+		//if (abs(delta_x) + abs(delta_y) > 30) {
+		//	entity->position.x += cos(facing_angle) * speed;
+		//	entity->position.y += sin(facing_angle) * speed;
+		//}
+
+		// Run circles / WIP
+		entity->position.x += cos(temp_val * M_PI / 180) * speed;
+		entity->position.y += sin(temp_val * M_PI / 180) * speed;
+
+		temp_val++;
+		if (temp_val == 360)
+			temp_val == 0;
 
 	}
 

@@ -9,6 +9,8 @@
 #include <components/enemy_child.h>
 #include <components/enemy_policeman.h>
 #include <components/enemy_soldier.h>
+#include <components/enemy_fatass.h>
+
 
 #include <core/log.h>
 #include <core/window.h>
@@ -55,6 +57,12 @@ void GameScene::init()
 	Entity* soldier = create("SoldierEnemy1");
 	soldier->add(Soldier(player));
 	soldier->add(Sprite("data/spr_enemy_soldier.png"));
+
+
+	// Enemy Fatass
+	Entity* fatass = create("FatassEnemy1");
+	fatass->add(Fatass(player));
+	fatass->add(Sprite("data/spr_enemy_fatass.png"));
 }
 
 void GameScene::update()

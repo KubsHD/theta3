@@ -3,14 +3,16 @@
 #include <core/types.h>
 #include <core/ecs.h>
 #include "enemy.h"
+#include <SDL_stdinc.h>
 
 
 class Child : public Enemy
 {
 public:
-	Vec2 temp_pos;
 	Entity* player;
-
+	Vec2 temp_pos;
+	float temp_val;
+	float delta_x, delta_y;
 
 	Child() = default;
 
@@ -19,9 +21,11 @@ public:
 		health = 10;
 		damage = 15;
 		souls = 7;
-		speed = 3.6f;
+		speed = 3.4f;
 
-		temp = 90;
+
+		temp_val = 0;
+		temp = 180;
 
 		player = player_ref;
 	}
@@ -29,27 +33,37 @@ public:
 
 	void update() override
 	{
-		if (temp < 0) {
-			temp_pos = player->position;
-			temp = 60;
-		}
-		temp--;
-
-		// Delayed
-		float delta_x = temp_pos.x - entity->position.x;
-		float delta_y = temp_pos.y - entity->position.y;
-
 		// Standard
-		//float delta_x = player->position.x - entity->position.x;
-		//float delta_y = player->position.y - entity->position.y;
+		delta_x = player->position.x - entity->position.x;
+		delta_y = player->position.y - entity->position.y;
 
 		facing_angle = atan2(delta_y, delta_x);
 
 		// Movement 
-		if (abs(delta_x) > 10 || abs(delta_y) > 10) {
+		if (temp < 0)
+		{
+			if (abs(delta_x) + abs(delta_y) > 20)
+			{
+				entity->position.x += cos(facing_angle) * speed;
+				entity->position.y += sin(facing_angle) * speed;
+				// melee attack with lolipop or spitting on player
+			}
+			else
+			{
+				temp = 180;
+			}
+		}
+		else if (abs(delta_x) + abs(delta_y) > 400) {
 			entity->position.x += cos(facing_angle) * speed;
 			entity->position.y += sin(facing_angle) * speed;
+			
 		}
+		// dont get too closel	
+		else if (abs(delta_x) + abs(delta_y) < 395) {
+			entity->position.x -= cos(facing_angle) * speed;
+			entity->position.y -= sin(facing_angle) * speed;
+		}
+		temp--;
 
 	}
 

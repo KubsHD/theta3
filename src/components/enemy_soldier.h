@@ -3,15 +3,16 @@
 #include <core/types.h>
 #include <core/ecs.h>
 #include "enemy.h"
+#include <iostream>
 
 
 class Soldier : public Enemy
 {
 public:
-	Vec2 temp_pos;
+	Vec2 pos;
 	Entity* player;
 	bool running;
-	float damage_gun;
+	float damage_gun, damage_grenade;
 
 	Soldier() = default;
 
@@ -24,8 +25,9 @@ public:
 		speed = .7f;
 
 		temp = 90;
-
 		player = player_ref;
+		std::cout << "NApsiz cos -----";
+		
 	}
 
 
@@ -39,7 +41,6 @@ public:
 		temp--;
 		
 
-
 		// Standard
 		float delta_x = player->position.x - entity->position.x;
 		float delta_y = player->position.y - entity->position.y;
@@ -47,14 +48,14 @@ public:
 		facing_angle = atan2(delta_y, delta_x);
 
 		// Movement 
-		if (abs(delta_x) > 220 || abs(delta_y) > 220) {
+		if (abs(delta_x) + abs(delta_y) > 330) {
 			speed = 2.1f;
 			entity->position.x += cos(facing_angle) * speed;
 			entity->position.y += sin(facing_angle) * speed;
 			running = true;
 		}
 		// dont get too close
-		else if (abs(delta_x) < 30 || abs(delta_y) < 30) {
+		else if (abs(delta_x) + abs(delta_y) < 270) {
 			speed = 2.1f;
 			entity->position.x -= cos(facing_angle) * speed;
 			entity->position.y -= sin(facing_angle) * speed;
