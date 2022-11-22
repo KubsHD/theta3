@@ -14,8 +14,12 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <lib/stb_image.h>
 
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
 glm::mat4 view(1.0f);
-glm::mat4 projection;
+glm::mat4 projection(1.0f);
 
 Texture::Texture(String path)
 {
@@ -32,7 +36,7 @@ Texture::Texture(String path)
 	int width, height, nrChannels;
 
 
-	//stbi_set_flip_vertically_on_load(true);
+	stbi_set_flip_vertically_on_load(true);
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 	if (data)
 	{
@@ -93,7 +97,9 @@ const char* fragmentShaderSource = R"(
 
 		void main()
 		{
-			FragColor = texture(u_tex, vTexCoord) * vec4(1.0f, 1.0f, 1.0f, u_opacity);
+			vec2 tex = vTexCoord;
+			tex.y = -tex.y;
+			FragColor = texture(u_tex, tex) * vec4(1.0f, 1.0f, 1.0f, u_opacity);
 		}
 	)";
 
@@ -104,7 +110,7 @@ void Renderer::init(Window* win)
 	Backbuffer->target_size = Vec2(win->w, win->h);
 
 	// OpenGL - start
-	float vertices[] = {
+	float vertices_old[] = {
 		// pos			// tex
 		-1.0f, 1.0f,	0.0f, 1.0f,
 		1.0f, -1.0f,	1.0f, 0.0f,
@@ -115,10 +121,21 @@ void Renderer::init(Window* win)
 		1.0f, -1.0f,	1.0f, 0.0f
 	};
 
+	float vertices2[] = {
+		// pos      // tex
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 0.0f,
+
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 1.0f, 1.0f,
+		1.0f, 0.0f, 1.0f, 0.0f
+	};
+
 	glGenBuffers(1, &VBO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
 
 
 	// compiling vertex shader
@@ -196,10 +213,10 @@ void Renderer::init(Window* win)
 	// OpenGL - start
 	float vertices_box[] = {
 		// pos			// tex
-		-1.0f, -1.0f,	0.0f, 0.0f,
-		-1.0f, 1.0f,	0.0f, 1.0f,
+		0.0f, 0.0f,	0.0f, 0.0f,
+		0.0f, 1.0f,	0.0f, 1.0f,
 		1.0f, 1.0f,		1.0f, 1.0f,
-		1.0f, -1.0f,	1.0f, 0.0f,
+		1.0f, 0.0f,	1.0f, 0.0f,
 	};
 
 	glGenBuffers(1, &boxVBO);
@@ -222,10 +239,13 @@ void Renderer::init(Window* win)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+Vec2 current_size;
+
 void Renderer::set_target(Target* tg)
 {
 	tg->bind();
 	projection = glm::ortho(0.0f, tg->target_size.x, tg->target_size.y, 0.0f, -1.0f, 1.0f);
+	current_size = tg->target_size;
 	glViewport(0, 0, tg->target_size.x, tg->target_size.y);
 }
 
@@ -238,7 +258,25 @@ void Renderer::clear(Vec3 color)
 void Renderer::draw_target(Target* tg)
 {
 	glBindTexture(GL_TEXTURE_2D, tg->texId);
-	set_mvp(glm::mat4(1.0f));
+	
+	auto size = tg->target_size;
+
+	glm::mat4 model = glm::mat4(1.0f);
+
+	float scale = min((float)current_size.x / size.x, (float)current_size.y / size.y);
+
+	//SDL_RenderCopy(ren, current_camera->target, NULL,
+	//	&(SDL_Rect)
+	// {w / 2 - (current_camera->size.x / 2 * scale),  x
+	//	h / 2 - (current_camera->size.y / 2 * scale),  y
+	//	current_camera->size.x* scale,				   w
+	//	current_camera->size.y* scale});			   h
+
+
+	model = glm::translate(model, Vec3(current_size.x / 2 - (size.x / 2 * scale), current_size.y / 2 - (size.y / 2 * scale), 0.0f));
+	model = glm::scale(model, Vec3(size.x * scale, size.y * scale, 1.0f));
+
+	set_mvp(projection * model);
 	draw_quad();
 }
 
@@ -287,7 +325,6 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity)
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
 	model = glm::translate(model, glm::vec3(subTex->texSize.x, subTex->texSize.y, 0.0f));
-	model = glm::scale(model, Vec3(1.0f, -1.0f, 1.0f));
 	model = glm::scale(model, Vec3(subTex->texSize.x, subTex->texSize.y, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
@@ -411,27 +448,17 @@ Subtexture::Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size)
 	tex = sheetTex;
 	texSize = size;
 
-	float vertices1[] = {
-		// pos			// tex
-		-1.0f, 1.0f,	0.0f, 1.0f,
-		1.0f, -1.0f,	1.0f, 0.0f,
-		-1.0f, -1.0f,	0.0f, 0.0f,
-
-		-1.0f, 1.0f,	0.0f, 1.0f,
-		1.0f, 1.0f,		1.0f, 1.0f,
-		1.0f, -1.0f,	1.0f, 0.0f
-	};
 
 
 	float vertices[] = {
 		// pos			// tex
-		-1.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x),  px_to_ogl(pos.y, sheetTex->size.y),
-		1.0f, -1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),  px_to_ogl(pos.y + size.y, sheetTex->size.y),
-		-1.0f, -1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
+		0.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x),  px_to_ogl(pos.y + size.y, sheetTex->size.y),
+		1.0f, 0.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),  px_to_ogl(pos.y, sheetTex->size.y),
+		0.0f, 0.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y , sheetTex->size.y),
 
-		-1.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y, sheetTex->size.y),
-		1.0f, 1.0f,		px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y, sheetTex->size.y),
-		1.0f, -1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),px_to_ogl(pos.y + size.y, sheetTex->size.y),
+		0.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
+		1.0f, 1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
+		1.0f, 0.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),px_to_ogl(pos.y, sheetTex->size.y),
 	};
 
 	glGenBuffers(1, &vboId);
