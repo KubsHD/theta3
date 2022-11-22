@@ -104,6 +104,8 @@ public:
 	void init(Window* win);
 	void clear(Vec3 color = Vec3(0.03f, 0.25f, 0.03f));
 
+	void update_size(int w, int h);
+
 	void set_target(Target* tg);
 	void set_mvp(const glm::mat4& mvp);
 	void set_uniform_vec2(String uniformName, Vec2 v);

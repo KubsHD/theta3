@@ -244,8 +244,10 @@ Vec2 current_size;
 void Renderer::set_target(Target* tg)
 {
 	tg->bind();
+
 	projection = glm::ortho(0.0f, tg->target_size.x, tg->target_size.y, 0.0f, -1.0f, 1.0f);
 	current_size = tg->target_size;
+
 	glViewport(0, 0, tg->target_size.x, tg->target_size.y);
 }
 
@@ -253,6 +255,11 @@ void Renderer::clear(Vec3 color)
 {
 	glClearColor(color.x, color.y, color.z, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Renderer::update_size(int w, int h)
+{
+	Backbuffer->target_size = Vec2(w, h);
 }
 
 void Renderer::draw_target(Target* tg)

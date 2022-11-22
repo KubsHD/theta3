@@ -216,6 +216,14 @@ int main(int argc, char* argv[])
 			case SDL_WINDOWEVENT:
 				if (evt.window.event == SDL_WINDOWEVENT_CLOSE)
 					bRunning = false;
+
+				if (evt.window.event == SDL_WINDOWEVENT_RESIZED)
+				{
+					window.w = evt.window.data1;
+					window.h = evt.window.data2;
+					ren.update_size(window.w, window.h);
+				}
+
 				break;
 
 			case SDL_QUIT:
