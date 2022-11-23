@@ -7,6 +7,7 @@
 
 class PlayerMovement : public Component {
 public:
+	bool is_running, is_attacking;
 	PlayerMovement() = default;
 	PlayerMovement(float speed) : speed(speed) {};
 

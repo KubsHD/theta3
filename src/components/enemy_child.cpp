@@ -6,8 +6,9 @@ Child::Child(Entity* player_ref)
 	health = 10;
 	damage = 15;
 	souls = 7;
-	speed = 3.4f;
+	speed = 3.0f;
 
+	temp_pos = Vec2(0, 0);
 	temp_val = 0;
 	temp = 180;
 
@@ -37,15 +38,15 @@ void Child::update()
 			temp = 180;
 		}
 	}
-	else if (abs(delta_x) + abs(delta_y) > 400) {
-		entity->position.x += cos(facing_angle) * speed;
-		entity->position.y += sin(facing_angle) * speed;
-
-	}
-	// dont get too closel	
-	else if (abs(delta_x) + abs(delta_y) < 395) {
+	else if (abs(delta_x) + abs(delta_y) < 200)
+	{
 		entity->position.x -= cos(facing_angle) * speed;
 		entity->position.y -= sin(facing_angle) * speed;
+	}
+	else if (abs(delta_x) + abs(delta_y) > 220)
+	{
+		entity->position.x += cos(facing_angle) * speed;
+		entity->position.y += sin(facing_angle) * speed;
 	}
 	temp--;
 }
