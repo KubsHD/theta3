@@ -11,6 +11,9 @@
 #include <components/enemy_soldier.h>
 #include <components/enemy_fatass.h>
 
+// bullets
+#include <components/enemy_bullet.h>
+
 
 #include <core/log.h>
 #include <core/window.h>
@@ -63,6 +66,12 @@ void GameScene::init()
 	Entity* fatass = create("FatassEnemy1");
 	fatass->add(Fatass(player));
 	fatass->add(Sprite("data/spr_enemy_fatass.png"));
+
+
+	// Enemy Bullet
+	Entity* bullet = create("Bullet1");
+	bullet->add(Bullet(player));
+	bullet->add(Sprite("data/spr_enemy_bullet1.png"));
 }
 
 void GameScene::update()
