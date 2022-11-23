@@ -26,7 +26,7 @@
 void GameScene::init()
 {
 
-	game_view = CreateRef<Target>(1280, 720);
+	game_view = CreateRef<Target>(800, 450);
 	game_camera = CreateRef<Camera>();
 
 	ren->set_camera(game_camera.get());
@@ -44,6 +44,9 @@ void GameScene::init()
 	adult->add(Adult(player));
 	adult->add(Sprite("data/spr_enemy_adult.png"));
 
+	auto animator_adult = adult->add(Animator());
+	animator_adult->add_animation("data/anim/normal_human_move");
+	
 
 	// Enemy Child
 	Entity* child = create("ChildEnemy1");
@@ -78,7 +81,7 @@ void GameScene::update()
 {
 	Scene::update();
 
-	float speed = 1.0f;
+	/*float speed = 1.0f;
 
 	if (Input::key_held(SDL_SCANCODE_RIGHT))
 		game_camera->position.x += speed;
@@ -90,7 +93,9 @@ void GameScene::update()
 		game_camera->position.x -= speed;
 
 	if (Input::key_held(SDL_SCANCODE_UP))
-		game_camera->position.y -= speed;
+		game_camera->position.y -= speed;*/
+
+	//game_camera->position = player_ref->position;
 
 	//if (Input::key_down(SDL_SCANCODE_ESCAPE))
 	//	Game::Quit();

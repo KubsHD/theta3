@@ -5,12 +5,20 @@
 #include <components/sprite.h>
 #include <core/input.h>
 
+
+enum PLAYER_STATE
+{
+	IDLE, RUN, ATTACK, BLACK
+};
+
+
 void PlayerMovement::update()
 {
 
 	if (Input::key_down(SDL_SCANCODE_SPACE))
 	{
 		this->entity->get<Sprite>()->enabled = false;
+		
 		this->entity->get<Animator>()->play_anim("anm_witch_atk_R", [this]() {
 			this->entity->get<Sprite>()->enabled = true;
 			});

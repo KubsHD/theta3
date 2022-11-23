@@ -34,14 +34,14 @@ void Policeman::update()
 
 	// Movement 
 	running = false;
-	if (abs(delta_x) + abs(delta_y) > 400) {
+	if (abs(delta_x) + abs(delta_y) > 200) {
 		speed = 0.8f;
 		entity->position.x += cos(facing_angle) * speed;
 		entity->position.y += sin(facing_angle) * speed;
 		running = true;
 	}
 	// dont get too closel	
-	else if (abs(delta_x) + abs(delta_y) < 360) {
+	else if (abs(delta_x) + abs(delta_y) < 180) {
 		speed = 2.5f; // uciekaja szybciej niz gonia jak irl lmao
 		entity->position.x -= cos(facing_angle) * speed;
 		entity->position.y -= sin(facing_angle) * speed;

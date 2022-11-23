@@ -4,6 +4,8 @@
 #include <core/ecs.h>
 #include "enemy.h"
 #include <SDL_stdinc.h>
+#include <components/animator.h>
+#include <components/sprite.h>
 
 
 class Adult : public Enemy

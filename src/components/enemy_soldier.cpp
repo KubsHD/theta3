@@ -30,14 +30,14 @@ void Soldier::update()
 	facing_angle = atan2(delta_y, delta_x);
 
 	// Movement 
-	if (abs(delta_x) + abs(delta_y) > 330) {
+	if (abs(delta_x) + abs(delta_y) > 290) {
 		speed = 2.1f;
 		entity->position.x += cos(facing_angle) * speed;
 		entity->position.y += sin(facing_angle) * speed;
 		running = true;
 	}
 	// dont get too close
-	else if (abs(delta_x) + abs(delta_y) < 270) {
+	else if (abs(delta_x) + abs(delta_y) < 250) {
 		speed = 2.1f;
 		entity->position.x -= cos(facing_angle) * speed;
 		entity->position.y -= sin(facing_angle) * speed;
