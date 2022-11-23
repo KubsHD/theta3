@@ -22,5 +22,8 @@ void MenuScene::update()
 void MenuScene::render()
 {
 	ren->set_target(Renderer::Backbuffer);
+	ren->clear();
+
+
 	ren->draw_text("testowy string", font.get(), Vec2(100, 100));
 }

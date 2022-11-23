@@ -16,7 +16,10 @@
 #include "render/renderer.h"
 
 #include <scenes/scene_game.h>
-#include "scenes/scene_menu.h"
+#include <scenes/scene_menu.h>
+#include <scenes/scene_title.h>
+
+
 
 #if WIN
 #include <Windows.h>
@@ -39,12 +42,13 @@ Window window;
 Renderer ren;
 Input input;
 
-Ref<Scene> current_scene;
+Scene* current_scene;
 
 template<typename T>
 void change_scene()
 {
-	current_scene = CreateRef<T>();
+	delete current_scene;
+	current_scene = new T();
 	current_scene->ren = &ren;
 	current_scene->init();
 }
@@ -142,6 +146,9 @@ void render()
 
 			if (ImGui::MenuItem("Menu"))
 				change_scene<MenuScene>();
+
+			if (ImGui::MenuItem("Title"))
+				change_scene<TitleScene>();
 
 			ImGui::EndMenu();
 		}

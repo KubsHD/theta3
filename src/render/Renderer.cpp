@@ -11,6 +11,8 @@
 
 #include <core/window.h>
 
+
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <lib/stb_image.h>
 
@@ -108,6 +110,8 @@ void Renderer::init(Window* win)
 	Backbuffer = new Target(0,0);
 	Backbuffer->id = 0;
 	Backbuffer->target_size = Vec2(win->w, win->h);
+
+	DefaultFont = new Font("data/font/comic.fnt");
 
 	// OpenGL - start
 	float vertices_old[] = {
@@ -325,14 +329,14 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity)
+void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
 	//model = glm::translate(model, glm::vec3(subTex->texSize.x, subTex->texSize.y, 0.0f));
-	model = glm::scale(model, Vec3(subTex->texSize.x, subTex->texSize.y, 1.0f));
+	model = glm::scale(model, Vec3(subTex->texSize.x * scale, subTex->texSize.y * scale, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
@@ -375,7 +379,7 @@ void Renderer::draw_quad()
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void Renderer::draw_text(String text, Font* font, Vec2 pos)
+void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale)
 {
 	int adv = 0;
 
@@ -391,7 +395,7 @@ void Renderer::draw_text(String text, Font* font, Vec2 pos)
 
 			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
 
-			draw_subtex(g.subTex, Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff));
+			draw_subtex(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), scale);
 			draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
 			adv += g.xadv;
 		}
@@ -399,6 +403,7 @@ void Renderer::draw_text(String text, Font* font, Vec2 pos)
 }
 
 Target* Renderer::Backbuffer;
+Font* Renderer::DefaultFont;
 
 Target::Target(int w, int h)
 {
@@ -490,7 +495,7 @@ Subtexture::Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size)
 
 Subtexture::~Subtexture()
 {
-	delete tex;
+	//delete tex;
 	glDeleteBuffers(1, &this->vaoId);
 	glDeleteBuffers(1, &this->vboId);
 }
@@ -528,7 +533,7 @@ Font::Font(String path)
 
 			//log_info(path);
 
-			atlas = /*asset_load_texture*/new Texture(path + String(".png"));
+			atlas = /*asset_load_texture*/CreateRef<Texture>(path + String(".png"));
 			name = path;
 			curr_line++;
 			continue;
@@ -554,7 +559,7 @@ Font::Font(String path)
 					this->glyphs[charId].xoff = charOffsetX;
 					this->glyphs[charId].yoff = charOffsetY;
 					this->glyphs[charId].xadv = charAdvanceX;
-					this->glyphs[charId].subTex = new Subtexture(this->atlas, Vec2(charX,charY),Vec2(charWidth, charHeight));
+					this->glyphs[charId].subTex = CreateRef<Subtexture>(this->atlas.get(), Vec2(charX, charY), Vec2(charWidth, charHeight));
 				}
 			}
 			curr_line++;

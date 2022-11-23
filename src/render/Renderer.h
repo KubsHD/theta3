@@ -80,7 +80,7 @@ struct Glyph
 	int page;
 	int chnl;
 
-	Subtexture* subTex;
+	Ref<Subtexture> subTex;
 
 	/* data */
 };
@@ -90,7 +90,7 @@ public:
 	Font(String path);
 
 	String name;
-	Texture* atlas;
+	Ref<Texture> atlas;
 	Glyph glyphs[200];
 };
 
@@ -100,6 +100,7 @@ class Renderer {
 
 public:
 	static Target* Backbuffer;
+	static Font* DefaultFont;
 
 	void init(Window* win);
 	void clear(Vec3 color = Vec3(0.03f, 0.25f, 0.03f));
@@ -115,8 +116,8 @@ public:
 
 	void draw_target(Target* tg);
 	void draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f);
-	void draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f);
+	void draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f, float scale = 1.0f);
 	void draw_box(Vec2 pos, Vec2 size, Vec3 color);
 	void draw_quad();
-	void draw_text(String text, Font* font, Vec2 pos);
+	void draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f);
 };
