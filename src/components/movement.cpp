@@ -38,6 +38,7 @@ void PlayerMovement::update()
 	if (Input::key_held(SDL_SCANCODE_D)) {
 		entity->position.x += speed;
 		is_running = true;
+		entity->flip = false;
 	}
 
 	if (Input::key_held(SDL_SCANCODE_S)) {
@@ -48,6 +49,7 @@ void PlayerMovement::update()
 	if (Input::key_held(SDL_SCANCODE_A)) {
 		entity->position.x -= speed;
 		is_running = true;
+		entity->flip = true;
 	}
 
 	if (Input::key_held(SDL_SCANCODE_W)) {

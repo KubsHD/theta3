@@ -10,6 +10,8 @@ class Component {
 public:
 	Component() {};
 
+	//bool flip = false;
+
 	Entity* entity;
 	bool enabled = true;
 
@@ -46,7 +48,7 @@ public:
 	Entity() : position(640,320) {};
 
 	String name;
-
+	bool flip;
 	Vec2 position;
 	Scene* world;
 

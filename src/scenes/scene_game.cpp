@@ -4,6 +4,9 @@
 #include <components/movement.h>
 #include <components/animator.h>
 
+// player
+#include <components/player.h>
+
 // enemies
 #include <components/enemy_adult.h>
 #include <components/enemy_child.h>
@@ -35,6 +38,7 @@ void GameScene::init()
 
 	// Player initialization
 	auto player = create("Player");
+	player->add(Player());
 	player->add(Sprite("data/spr_player.png"));
 	player->add(PlayerMovement(2.0f));
 
