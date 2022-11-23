@@ -313,7 +313,7 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
-	model = glm::translate(model, glm::vec3(tex->size.x,tex->size.y, 0.0f)); 
+	//model = glm::translate(model, glm::vec3(tex->size.x,tex->size.y, 0.0f)); 
 	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
@@ -331,7 +331,7 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity)
 
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
-	model = glm::translate(model, glm::vec3(subTex->texSize.x, subTex->texSize.y, 0.0f));
+	//model = glm::translate(model, glm::vec3(subTex->texSize.x, subTex->texSize.y, 0.0f));
 	model = glm::scale(model, Vec3(subTex->texSize.x, subTex->texSize.y, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
@@ -353,7 +353,7 @@ void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
-	model = glm::translate(model, glm::vec3(size.x, size.y, 0.0f));
+	//model = glm::translate(model, glm::vec3(size.x, size.y, 0.0f));
 	model = glm::scale(model, Vec3(size.x, size.y, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
@@ -388,11 +388,12 @@ void Renderer::draw_text(String text, Font* font, Vec2 pos)
 
 			SDL_FRect dest = { pos.x + (g.xoff + adv), pos.y + g.yoff , g.w , g.h };
 
-			adv += g.xadv * 2;
 
 			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
 
-			draw_subtex(g.subTex, Vec2(dest.x, dest.y));
+			draw_subtex(g.subTex, Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff));
+			draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
+			adv += g.xadv;
 		}
 	}
 }
@@ -540,7 +541,7 @@ Font::Font(String path)
 
 
 			int isScanned = sscanf(line, "char id=%i x=%i y=%i width=%i height=%i xoffset=%i yoffset=%i xadvance=%i",
-				&charId, &charX, &charY, &charWidth, &charHeight, &charOffsetX, &charOffsetY, &charAdvanceX);
+											 &charId, &charX, &charY, &charWidth, &charHeight, &charOffsetX, &charOffsetY, &charAdvanceX);
 
 			if (isScanned) {
 				if (charId < 200)
