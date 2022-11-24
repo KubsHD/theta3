@@ -4,7 +4,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
-
 #include <core/log.h>
 
 #include <filesystem>
@@ -25,7 +24,7 @@ glm::mat4 projection(1.0f);
 
 Texture::Texture(String path)
 {
-	assert(std::filesystem::exists(path), "Texture does not exist on disk!");
+	//assert(std::filesystem::exists(path), "Texture does not exist on disk!");
 
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);
@@ -390,7 +389,7 @@ void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale)
 
 			SDL_Rect src = { g.x,  g.y,  g.w,  g.h };
 
-			SDL_FRect dest = { pos.x + (g.xoff + adv), pos.y + g.yoff , g.w , g.h };
+			//SDL_FRect dest = { pos.x + (g.xoff + adv), pos.y + g.yoff , g.w , g.h };
 
 
 			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);

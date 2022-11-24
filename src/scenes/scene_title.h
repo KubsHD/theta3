@@ -7,7 +7,7 @@
 class TitleScene : public Scene {
 public:
 	TitleScene() = default;
-
+	~TitleScene() {};
 
 	void init() override;
 

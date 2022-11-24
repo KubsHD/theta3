@@ -35,3 +35,14 @@ void Scene::render()
 	}
 }
 
+Scene::~Scene()
+{
+	for (Entity* ent : m_entities)
+	{
+		for (Component* comp : ent->m_components)
+		{
+			delete comp;
+		}
+		delete ent;
+	}
+}

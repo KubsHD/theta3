@@ -3,6 +3,7 @@
 #include <core/types.h>
 
 class Renderer;
+class Entity;
 
 class Component {
 	friend class Scene;
@@ -20,6 +21,7 @@ public:
 class Scene {
 public:
 	Scene() {};
+	~Scene();
 
 	Renderer* ren;
 
