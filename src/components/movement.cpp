@@ -37,6 +37,10 @@ void PlayerMovement::update()
 	is_running = false;
 	if (Input::key_held(SDL_SCANCODE_D)) {
 		entity->position.x += speed;
+		
+		this->entity->get<Animator>()->flip = false;
+		this->entity->get<Sprite>()->flip = false;
+
 		is_running = true;
 		entity->flip = false;
 	}
@@ -48,6 +52,10 @@ void PlayerMovement::update()
 
 	if (Input::key_held(SDL_SCANCODE_A)) {
 		entity->position.x -= speed;
+		this->entity->get<Animator>()->flip = true;
+		this->entity->get<Sprite>()->flip = true;
+
+
 		is_running = true;
 		entity->flip = true;
 	}
