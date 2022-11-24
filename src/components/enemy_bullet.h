@@ -5,19 +5,20 @@
 #include "enemy.h"
 #include <SDL_stdinc.h>
 
-
-class Child : public Enemy
+// Bullet is an enemy with body damage on contact with player;
+// Player can destroy bullets with attacs
+class Bullet : public Enemy
 {
 public:
 	// Custom Variables
-	Entity* player;
 	Vec2 temp_pos;
-	float temp_val;
-	float delta_x, delta_y;
-	
+	Entity* player;
+	bool is_destructible;
+	bool first_frame;
+
 	// Constructors
-	Child() = default;
-	Child(Entity* player_ref);
+	Bullet() = default;
+	Bullet(Entity* player_ref);
 
 	// Maintenance
 	void update() override;

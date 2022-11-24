@@ -8,6 +8,8 @@ class Sprite : public Component {
 
 public:
 
+	bool flip = false;
+
 	Sprite() = default;
 	Sprite(String texPath) {
 		tex = new Texture(texPath);
@@ -20,7 +22,7 @@ public:
 	};
 
 	void render(Renderer* ren) override {
-		ren->draw_tex(tex, entity->position);
+		ren->draw_tex(tex, entity->position, 1.0f, flip);
 		ren->draw_box(entity->position, tex->size, Vec3(0.1f, 0.1f, 1.0f));
 	};
 };

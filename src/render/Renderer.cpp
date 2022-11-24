@@ -311,12 +311,19 @@ void Renderer::set_uniform_float(String uniformName, float v)
 	glUniform1fv(modelLoc, 1, &v);
 }
 
-void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity)
+void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity, bool flip)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
 	//model = glm::translate(model, glm::vec3(tex->size.x,tex->size.y, 0.0f)); 
+
+	if (flip)
+	{
+		model = glm::translate(model, glm::vec3(tex->size.x, 0.0f, 0.0f)); 
+		model = glm::scale(model, Vec3(-1.0f, 1.0f, 1.0f));
+	}
+
 	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
@@ -328,13 +335,19 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale)
+void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale, bool flip)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
 	//model = glm::translate(model, glm::vec3(subTex->texSize.x, subTex->texSize.y, 0.0f));
+	if (flip)
+	{
+		model = glm::translate(model, glm::vec3(subTex->texSize.x,0.0f, 0.0f));
+		model = glm::scale(model, Vec3(-1.0f, 1.0f, 1.0f));
+	}
+
 	model = glm::scale(model, Vec3(subTex->texSize.x * scale, subTex->texSize.y * scale, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
@@ -357,6 +370,7 @@ void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
 	//model = glm::translate(model, glm::vec3(size.x, size.y, 0.0f));
+
 	model = glm::scale(model, Vec3(size.x, size.y, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;

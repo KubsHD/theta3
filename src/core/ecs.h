@@ -48,7 +48,7 @@ public:
 	Entity() : position(640,320) {};
 
 	String name;
-
+	bool flip;
 	Vec2 position;
 	Scene* world;
 

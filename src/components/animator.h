@@ -22,6 +22,9 @@ private:
 	bool m_animInProgress = false;
 	std::function<void()> m_finish_anim_cb;
 public:
+	
+	bool flip = false;
+
 	void add_animation(String path);
 	void play_anim(String name, std::function<void()> on_finish_anim);
 	void update() override;
