@@ -31,13 +31,13 @@
 void GameScene::init()
 {
 
-	game_view = CreateRef<Target>(800, 450);
+	game_view = CreateRef<Target>(960, 540);
 	game_camera = CreateRef<Camera>();
 
 	ren->set_camera(game_camera.get());
 
 	auto bg = create("bg");
-	bg->add(Sprite("data/tmp_map.png"));
+	bg->add(Sprite("data/tmp_map2.png"));
 
 	// Player initialization
 	auto player = create("Player");
