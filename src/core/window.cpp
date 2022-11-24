@@ -1,4 +1,4 @@
-#include "window.h"
+﻿#include "window.h"
 
 Window::Window()
 {
@@ -13,7 +13,7 @@ Window::Window()
 void Window::create()
 {
 	// Create window and get its surface
-	pWindow = SDL_CreateWindow("Ozon", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	pWindow = SDL_CreateWindow("Theta2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	if (pWindow == NULL)

@@ -10,6 +10,7 @@ public:
 	UIButton() = default;
 	UIButton(String text) : m_text(text) {};
 
+	float opacity = 1.0f;
 
 	void update() override
 	{
@@ -19,7 +20,7 @@ public:
 
 	void render(Renderer* ren) override
 	{
-		ren->draw_text(m_text, Renderer::DefaultFont, entity->position, 0.4f);
+		ren->draw_text(m_text, Renderer::DefaultFont, entity->position, opacity);
 	}
 
 };

@@ -31,6 +31,8 @@ public:
 
 	Entity* create(String name);
 
+	Entity* get(String name);
+
 	Vector<Entity*> get_entities() { return m_entities; };
 
 	virtual void init() = 0;

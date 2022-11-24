@@ -36,6 +36,9 @@ void GameScene::init()
 
 	ren->set_camera(game_camera.get());
 
+	auto bg = create("bg");
+	bg->add(Sprite("data/tmp_map.png"));
+
 	// Player initialization
 	auto player = create("Player");
 	player->add(Player());

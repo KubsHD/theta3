@@ -20,7 +20,7 @@ void Player::update()
 
 void Player::render(Renderer* ren)
 {
-	ren->draw_text("HP: " + std::to_string(health), Renderer::DefaultFont, Vec2(entity->position.x - 60, entity->position.y - 48));
+	//ren->draw_text("HP: " + std::to_string(health), Renderer::DefaultFont, Vec2(entity->position.x - 60, entity->position.y - 48));
 
 	Enemy::render(ren);
 }

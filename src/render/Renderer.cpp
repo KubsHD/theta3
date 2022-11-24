@@ -333,6 +333,9 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity, bool flip)
 	set_mvp(mvp);
 	draw_quad();
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	set_uniform_float("u_opacity", 1.0f);
+
 }
 
 void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale, bool flip)
@@ -362,6 +365,9 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	set_uniform_float("u_opacity", 1.0f);
+
 }
 
 void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)

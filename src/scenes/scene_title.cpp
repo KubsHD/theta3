@@ -2,6 +2,8 @@
 
 #include <components/ui/ui_button.h>
 
+#include <iostream>
+
 int title_stage = 0;
 
 //Ref<Texture> fade_tex;
@@ -15,11 +17,11 @@ void TitleScene::init()
 	test = CreateRef<Texture>("data/spr_player.png");
 
 	auto btn_yes = this->create("btn_yes");
-	btn_yes->add(UIButton("Tak"));
+	btn_yes->add(UIButton("Tak"))->opacity = 0.0f;
 	btn_yes->position = Vec2(600, 360);
 
 	auto btn_no = this->create("btn_no");
-	btn_no->add(UIButton("Nie"));
+	btn_no->add(UIButton("Nie"))->opacity = 0.0f;
 	btn_no->position = Vec2(600, 440);
 
 
@@ -36,21 +38,24 @@ void TitleScene::update()
 	Scene::update();
 
 	rt_begin(r);
-	{
-
-	}
-	rt_while(opacity < 1.0f);
+	rt_while(opacity <= 1.0f);
 	{
 		opacity += 0.01f;
 	}
-	rt_wait(5.0f);
+	rt_step();
 	{
-		rt_while(opacity > 0.1f);
+		rt_while(get("btn_yes")->get<UIButton>()->opacity <= 1.0f);
 		{
-			opacity -= 0.01f;
+			get("btn_yes")->get<UIButton>()->opacity += 0.01f;
+			get("btn_no")->get<UIButton>()->opacity += 0.01f;
 		}
 	}
 	rt_end();
+
+	if (get("btn_yes")->get<UIButton>()->opacity >= 1.0f)
+	{
+
+	}
 }
 
 void TitleScene::render()

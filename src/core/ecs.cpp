@@ -6,9 +6,22 @@ Entity* Scene::create(String name)
 	ent->world = this;
 	ent->name = name;
 
+	for (auto ent : m_entities)
+		if (ent->name == name)
+			throw std::invalid_argument("Entity with this name already exists!");
+
 	m_entities.push_back(ent);
 	
 	return ent;
+}
+
+Entity* Scene::get(String name)
+{
+	for (auto ent : m_entities)
+		if (ent->name == name)
+			return ent;
+
+	throw std::invalid_argument("Entity not found!");
 }
 
 void Scene::update()
