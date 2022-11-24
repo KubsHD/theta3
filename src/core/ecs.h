@@ -9,12 +9,13 @@ class Component {
 	friend class Scene;
 	friend class Entity;
 public:
-	Component() {};
+	Component();
 	virtual ~Component() = default;
 
 	Entity* entity;
 	bool enabled = true;
 
+	virtual void init();
 	virtual void update() = 0;
 	virtual void render(Renderer* ren) = 0;
 };
@@ -84,7 +85,9 @@ T* Entity::add(T&& comp /*= T()*/)
 
 	*instance = std::forward<T>(comp);
 
-	instance->entity = this;
+	((Component*)instance)->entity = this;
+
+	((Component*)instance)->init();
 
 	m_components.push_back(instance);
 	return instance;

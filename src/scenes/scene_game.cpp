@@ -39,13 +39,15 @@ void GameScene::init()
 	// Player initialization
 	auto player = create("Player");
 	player->add(Player());
-	player->add(Sprite("data/spr_player.png"));
-	player->add(PlayerMovement(2.0f));
+	//player->add(Sprite("data/spr_player.png"));
 
 	auto animator = player->add(Animator());
 	animator->add_animation("data/anim/anm_witch_atk_R");
 	animator->add_animation("data/anim/witch_idle");
 	animator->add_animation("data/anim/witch_run");
+	
+	
+	player->add(PlayerMovement(2.0f));
 
 	player_ref = player;
 

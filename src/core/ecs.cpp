@@ -46,3 +46,13 @@ Scene::~Scene()
 		delete ent;
 	}
 }
+
+Component::Component()
+{
+
+}
+
+void Component::init()
+{
+
+}

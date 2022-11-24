@@ -20,27 +20,37 @@ String player_anim[3] =
 };
 
 
+PlayerMovement::PlayerMovement(float speed) : speed(speed), is_attacking(false)
+{
+}
+
+void PlayerMovement::init()
+{
+	entity->get<Animator>()->play_anim(player_anim[IDLE]);
+}
+
+
 void PlayerMovement::update()
 {
 
 	if (Input::key_down(SDL_SCANCODE_SPACE))
 	{
 		is_attacking = true;
-		this->entity->get<Sprite>()->enabled = false;
-		
-		this->entity->get<Animator>()->play_anim(player_anim[ATTACK], [this]() {
-			this->entity->get<Sprite>()->enabled = true, is_attacking = false;
-			});
+
+		this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK], [this]() {
+			is_attacking = false;
+		});
 	}
 
 
 	is_running = false;
+	
 	if (Input::key_held(SDL_SCANCODE_D)) {
 		entity->position.x += speed;
 		
-		this->entity->get<Animator>()->flip = false;
-		this->entity->get<Sprite>()->flip = false;
 
+
+		this->entity->get<Animator>()->flip = false;
 		is_running = true;
 		entity->flip = false;
 	}
@@ -53,7 +63,6 @@ void PlayerMovement::update()
 	if (Input::key_held(SDL_SCANCODE_A)) {
 		entity->position.x -= speed;
 		this->entity->get<Animator>()->flip = true;
-		this->entity->get<Sprite>()->flip = true;
 
 
 		is_running = true;
@@ -66,21 +75,13 @@ void PlayerMovement::update()
 	}
 
 
-	if (is_running == true && is_attacking == false)
+	if (is_running == true )
 	{
-		this->entity->get<Sprite>()->enabled = false;
-
-		this->entity->get<Animator>()->play_anim(player_anim[RUN], [this]() {
-			this->entity->get<Sprite>()->enabled = true;
-			});
+		this->entity->get<Animator>()->play_anim(player_anim[RUN]);
 	}
 	else if (is_attacking == false)
 	{
-		this->entity->get<Sprite>()->enabled = false;
-
-		this->entity->get<Animator>()->play_anim(player_anim[IDLE], [this]() {
-			this->entity->get<Sprite>()->enabled = true;
-			});
+		this->entity->get<Animator>()->play_anim(player_anim[IDLE]);
 	}
 
 
