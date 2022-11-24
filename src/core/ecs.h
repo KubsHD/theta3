@@ -10,6 +10,7 @@ class Component {
 	friend class Entity;
 public:
 	Component() {};
+	virtual ~Component() = default;
 
 	Entity* entity;
 	bool enabled = true;
@@ -21,7 +22,9 @@ public:
 class Scene {
 public:
 	Scene() {};
-	~Scene();
+	virtual ~Scene();
+
+
 
 	Renderer* ren;
 
