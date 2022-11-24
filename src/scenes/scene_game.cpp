@@ -62,10 +62,14 @@ void GameScene::init()
 	child->add(Child(player));
 	child->add(Sprite("data/spr_enemy_child.png"));
 
+	auto animator_child = child->add(Animator());
+
 	// Enemy Policeman
 	Entity* policeman = create("PolicemanEnemy1");
 	policeman->add(Policeman(player));
 	policeman->add(Sprite("data/spr_enemy_police.png"));
+
+	auto animator_policeman = policeman->add(Animator());
 
 
 	// Enemy Soldier
@@ -73,17 +77,23 @@ void GameScene::init()
 	soldier->add(Soldier(player));
 	soldier->add(Sprite("data/spr_enemy_soldier.png"));
 
+	auto animator_soldier = soldier->add(Animator());
 
 	// Enemy Fatass
 	Entity* fatass = create("FatassEnemy1");
 	fatass->add(Fatass(player));
 	fatass->add(Sprite("data/spr_enemy_fatass.png"));
 
+	auto animator_fatass= fatass->add(Animator());
+
 
 	// Enemy Bullet
 	Entity* bullet = create("Bullet1");
 	bullet->add(Bullet(player));
 	bullet->add(Sprite("data/spr_enemy_bullet1.png"));
+
+	auto animator_bullet= bullet->add(Animator());
+
 }
 
 void GameScene::update()

@@ -10,8 +10,6 @@ class Component {
 public:
 	Component() {};
 
-	//bool flip = false;
-
 	Entity* entity;
 	bool enabled = true;
 

@@ -37,4 +37,6 @@ void Fatass::update()
 		entity->position.x += cos(facing_angle) * speed;
 		entity->position.y += sin(facing_angle) * speed;
 	}
+
+	flip_sprite();
 }

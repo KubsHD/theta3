@@ -33,4 +33,6 @@ void Bullet::update()
 	// Movement
 	entity->position.x += cos(facing_angle) * speed;
 	entity->position.y += sin(facing_angle) * speed;
+
+	flip_sprite();
 }

@@ -44,7 +44,5 @@ void Adult::update()
 
 	}
 
-	temp_val++;
-	if (temp_val == 360)
-		temp_val == 0;
+	flip_sprite();
 }

@@ -47,4 +47,6 @@ void Soldier::update()
 	else
 		// throw granade
 		running = false;
+
+	flip_sprite();
 }

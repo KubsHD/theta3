@@ -49,4 +49,6 @@ void Child::update()
 		entity->position.y += sin(facing_angle) * speed;
 	}
 	temp--;
+
+	flip_sprite();
 }

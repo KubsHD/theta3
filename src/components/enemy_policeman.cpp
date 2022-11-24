@@ -47,4 +47,6 @@ void Policeman::update()
 		entity->position.y -= sin(facing_angle) * speed;
 		running = true;
 	}
+
+	flip_sprite();
 }
