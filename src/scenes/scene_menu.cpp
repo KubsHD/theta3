@@ -1,12 +1,54 @@
 #include "scene_menu.h"
 
-#include <render/Renderer.h>
+#include <components/ui/ui_button.h>
+#include <core/input.h>
+#include <core/audio.h>
+#include "scene_game.h"
+#include <main.h>
 
 Ref<Font> font;
 
 void MenuScene::init()
 {
 	font = CreateRef<Font>("data/font/comic.fnt");
+	target = CreateRef<Target>(1280, 720);
+
+	{
+		auto btn = create("btn_start");
+		auto uib = btn->add(UIButton("Start"));
+		
+		btn->position = Vec2(100, 500);
+		uib->selected = false;
+		uib->on_clicked = [this]() {
+			change_scene<GameScene>();
+		};
+
+		btns.push_back(uib);
+	}
+
+	{
+		auto btn = create("btn_settings");
+		auto uib = btn->add(UIButton("Ustawienia"));
+
+		btn->position = Vec2(100, 550);
+		uib->selected = false;
+
+		btns.push_back(uib);
+	}
+
+	{
+		auto btn = create("btn_quit");
+		auto uib = btn->add(UIButton("Wyjscie"));
+
+		btn->position = Vec2(100, 600);
+		uib->selected = false;
+		uib->on_clicked = [this]() {
+		};
+
+		btns.push_back(uib);
+	}
+
+	aud = Audio::create_sound("data/ui_1.wav");
 }
 
 void MenuScene::destroy()
@@ -16,14 +58,47 @@ void MenuScene::destroy()
 
 void MenuScene::update()
 {
+	for (auto btn : btns)
+		btn->selected = false;
+
+	btns[idx]->selected = true;
+
+	if (Input::key_down(SDL_SCANCODE_DOWN))
+	{
+		if (idx + 1 < btns.size())
+		{
+			idx++;
+			Audio::play_one_shot(aud);
+		}
+	}
+	else if (Input::key_down(SDL_SCANCODE_UP))
+	{
+		if (idx - 1 >= 0)
+		{
+			idx--;
+			Audio::play_one_shot(aud);
+		}
+
+	}
+	else if (Input::key_down(SDL_SCANCODE_SPACE))
+	{
+		btns[idx]->on_clicked();
+	}
+
 
 }
 
 void MenuScene::render()
 {
+	ren->set_target(target.get());
+	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
+
+	ren->draw_text("Theta2", font.get(), Vec2(100, 100));
+
+	Scene::render();
+
 	ren->set_target(Renderer::Backbuffer);
-	ren->clear();
+	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 
-
-	ren->draw_text("testowy string", font.get(), Vec2(100, 100));
+	ren->draw_target(target.get());
 }

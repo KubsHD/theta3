@@ -56,12 +56,13 @@ void GameScene::init()
 
 	// Enemy Adult
 	Entity* adult = create("AdultEnemy1");
-	adult->add(Adult(player));
 	adult->add(Sprite("data/spr_enemy_adult.png"));
 
 	auto animator_adult = adult->add(Animator());
 	animator_adult->add_animation("data/anim/normal_human_move");
 	
+	adult->add(Adult(player));
+
 	// Enemy Child
 	Entity* child = create("ChildEnemy1");
 	child->add(Child(player));

@@ -10,8 +10,7 @@ int title_stage = 0;
 
 //Ref<Texture> fade_tex;
 
-int idx = 0;
-Vector<UIButton*> btns;
+
 
 void TitleScene::init()
 {
@@ -40,7 +39,7 @@ void TitleScene::init()
 		btns.push_back(c);
 	}
 
-	btn_no->position = Vec2(600, 420);
+	btn_no->position = Vec2(610, 420);
 
 
 	aud = Audio::create_sound("data/ui_1.wav");

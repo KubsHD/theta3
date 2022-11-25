@@ -5,6 +5,8 @@
 #include <core/routine.h>
 #include <core/audio.h>
 
+class UIButton;
+
 class TitleScene : public Scene {
 public:
 	TitleScene() = default;
@@ -23,6 +25,8 @@ public:
 	void render() override;
 	Routine r;
 
+	int idx = 0;
+	Vector<UIButton*> btns;
 
 	Ref<Texture> network_prompt;
 	Ref<Texture> test;

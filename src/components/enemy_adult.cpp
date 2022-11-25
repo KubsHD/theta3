@@ -16,6 +16,11 @@ Adult::Adult(Entity* player_ref)
 }
 
 
+void Adult::init()
+{
+	this->entity->get<Animator>()->play_anim("normal_human_move");
+}
+
 void Adult::update()
 {
 	// Play a sound here or sth
@@ -38,7 +43,6 @@ void Adult::update()
 
 	// Animation
 	this->entity->get<Sprite>()->enabled = false;
-	this->entity->get<Animator>()->play_anim("normal_human_move");
 	}
 
 	flip_sprite();

@@ -21,6 +21,7 @@ public:
 	Adult(Entity* player_ref);
 
 	// Maintenance
+	void init() override;
 	void update() override;
 	void render(Renderer* ren) override
 	{

@@ -1,4 +1,6 @@
-﻿#include <iostream>
+﻿#include "main.h"
+
+#include <iostream>
 #include <SDL.h>
 #include <lib/glad/glad.h>
 #include <lib/imgui/imgui.h>
@@ -214,6 +216,8 @@ int main(int argc, char* argv[])
 	double current = 0;
 
 	ren.init(&window);
+
+	change_scene<MenuScene>();
 
 	while (bRunning)
 	{
