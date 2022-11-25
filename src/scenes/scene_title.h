@@ -3,6 +3,7 @@
 #include <core/ecs.h>
 #include <render/Renderer.h>
 #include <core/routine.h>
+#include <core/audio.h>
 
 class TitleScene : public Scene {
 public:
@@ -27,6 +28,8 @@ public:
 	Ref<Texture> test;
 	Ref<Target> target;
 	Ref<Font> font2;
+
+	Sound* aud;
 
 	float opacity = 0.0f;
 };

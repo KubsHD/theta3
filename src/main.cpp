@@ -6,6 +6,7 @@
 #include <lib/imgui/imgui_impl_opengl3.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <core/audio.h>
 #include <core/network.h>
 #include "core/log.h"
 #include "core/window.h"
@@ -41,6 +42,7 @@ SDL_Window* win;
 Window window;
 Renderer ren;
 Input input;
+Audio audio;
 
 Scene* current_scene;
 
@@ -77,6 +79,8 @@ void init()
 	window.create();
 
 	input.init();
+
+	audio.init();
 
 	//SDL_GL_MakeCurrent(window.pWindow, maincontext);
 

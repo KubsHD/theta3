@@ -3,11 +3,15 @@
 #include <components/ui/ui_button.h>
 
 #include <iostream>
+#include <core/input.h>
+#include <core/audio.h>
 
 int title_stage = 0;
 
 //Ref<Texture> fade_tex;
 
+int idx = 0;
+Vector<UIButton*> btns;
 
 void TitleScene::init()
 {
@@ -17,13 +21,29 @@ void TitleScene::init()
 	test = CreateRef<Texture>("data/spr_player.png");
 
 	auto btn_yes = this->create("btn_yes");
-	btn_yes->add(UIButton("Tak"))->opacity = 0.0f;
+	{
+		auto c = btn_yes->add(UIButton("Tak"));
+		c->opacity = 0.0f;
+		c->selected = true;
+		btns.push_back(c);
+	}
+
 	btn_yes->position = Vec2(600, 360);
+	
 
 	auto btn_no = this->create("btn_no");
-	btn_no->add(UIButton("Nie"))->opacity = 0.0f;
-	btn_no->position = Vec2(600, 440);
 
+	{
+		auto c = btn_no->add(UIButton("Nie"));
+		c->opacity = 0.0f;
+		c->selected = false;
+		btns.push_back(c);
+	}
+
+	btn_no->position = Vec2(600, 420);
+
+
+	aud = Audio::create_sound("data/ui_1.wav");
 
 }
 
@@ -54,8 +74,35 @@ void TitleScene::update()
 
 	if (get("btn_yes")->get<UIButton>()->opacity >= 1.0f)
 	{
+		if (Input::key_down(SDL_SCANCODE_DOWN))
+		{
+			if (idx + 1 < btns.size())
+			{
+				idx++;
+				Audio::play_one_shot(aud);
+			}
+		}
+		else if (Input::key_down(SDL_SCANCODE_UP))
+		{
+			if (idx - 1 >= 0)
+			{
+				idx--;
+				Audio::play_one_shot(aud);
+			}
+
+		}
+		else if (Input::key_down(SDL_SCANCODE_SPACE))
+		{
+			btns[idx]->on_clicked();
+		}
+	
+		for (auto btn : btns)
+			btn->selected = false;
+
+		btns[idx]->selected = true;
 
 	}
+
 }
 
 void TitleScene::render()
