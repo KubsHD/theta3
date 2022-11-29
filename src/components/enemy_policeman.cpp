@@ -19,6 +19,8 @@ Policeman::Policeman(Entity* player_ref)
 
 void Policeman::update()
 {
+	Enemy::update();
+
 	//if (temp < 0) {
 	//	// shoot here
 	//	// bool running tells if he is shooting fast in safe position
@@ -47,6 +49,4 @@ void Policeman::update()
 		entity->position.y -= sin(facing_angle) * speed;
 		running = true;
 	}
-
-	flip_sprite();
 }

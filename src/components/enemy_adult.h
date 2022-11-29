@@ -15,7 +15,6 @@ public:
 	Vec2 temp_pos;
 	Entity* player;
 	int temp_val;
-
 	bool can_walk;
 
 	// Constructors

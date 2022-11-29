@@ -31,7 +31,12 @@ Sound* Audio::create_sound(String path)
 	Sound* s = new Sound();
 
 	FMOD::Sound* snd;
-	sys->createSound(path.c_str(), FMOD_DEFAULT, nullptr, &snd);
+	result = sys->createSound(path.c_str(), FMOD_DEFAULT, nullptr, &snd);
+
+	if (result != FMOD_OK)
+	{
+		log_error("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+	}
 
 	s->path = path;
 	s->ptr = snd;

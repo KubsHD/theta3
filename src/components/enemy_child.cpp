@@ -18,6 +18,8 @@ Child::Child(Entity* player_ref)
 
 void Child::update()
 {
+	Enemy::update();
+
 	// Standard
 	delta_x = player->position.x - entity->position.x;
 	delta_y = player->position.y - entity->position.y;
@@ -49,6 +51,4 @@ void Child::update()
 		entity->position.y += sin(facing_angle) * speed;
 	}
 	temp--;
-
-	flip_sprite();
 }

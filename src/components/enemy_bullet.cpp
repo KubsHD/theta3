@@ -3,6 +3,7 @@
 
 Bullet::Bullet(Entity* player_ref)
 {
+	health = 100;
 	souls = 0;
 	speed = 1.8f;
 
@@ -17,6 +18,8 @@ Bullet::Bullet(Entity* player_ref)
 
 void Bullet::update()
 {
+	Enemy::update();
+
 	if (first_frame == true)
 	{
 		temp_pos = player->position;
@@ -33,6 +36,4 @@ void Bullet::update()
 	// Movement
 	entity->position.x += cos(facing_angle) * speed;
 	entity->position.y += sin(facing_angle) * speed;
-
-	flip_sprite();
 }

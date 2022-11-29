@@ -18,6 +18,9 @@
 #include <components/enemy_bullet.h>
 
 
+// Coins
+#include <components/money.h>
+
 #include <core/log.h>
 #include <core/window.h>
 #include <core/input.h>
@@ -37,8 +40,8 @@ void GameScene::init()
 
 	ren->set_camera(game_camera.get());
 
-	auto bg = create("bg");
-	bg->add(Sprite("data/tmp_map2.png"));
+	//auto bg = create("bg");
+	//bg->add(Sprite("data/tmp_map2.png"));
 
 	// Player initialization
 	auto player = create("Player");
@@ -63,8 +66,9 @@ void GameScene::init()
 
 	auto animator_adult = adult->add(Animator());
 	animator_adult->add_animation("data/anim/normal_human_move");
-	
+
 	adult->add(Adult(player));
+
 
 	// Enemy Child
 	Entity* child = create("ChildEnemy1");
@@ -102,6 +106,14 @@ void GameScene::init()
 	bullet->add(Sprite("data/spr_enemy_bullet1.png"));
 
 	auto animator_bullet= bullet->add(Animator());
+
+
+	// Coin 
+	Entity* money = create("money1");
+	money->add(Sprite("data/coin.png"));
+	auto animator_money = money->add(Animator());
+	animator_money->add_animation("data/anim/coin");
+	money->add(Money(player));
 
 }
 

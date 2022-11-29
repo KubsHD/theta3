@@ -16,6 +16,8 @@ Soldier::Soldier(Entity* player_ref)
 
 void Soldier::update()
 {
+	Enemy::update();
+
 	// full accuracy all the time
 	if (temp < 0) {
 		if (running == false)
@@ -47,6 +49,4 @@ void Soldier::update()
 	else
 		// throw granade
 		running = false;
-
-	flip_sprite();
 }

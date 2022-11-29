@@ -10,7 +10,7 @@ Player::Player()
 	souls = 60;
 	speed = 1.0f;
 	damage_melee = 10;
-
+	money = 0;
 }
 
 void Player::update()
@@ -20,7 +20,5 @@ void Player::update()
 
 void Player::render(Renderer* ren)
 {
-	//ren->draw_text("HP: " + std::to_string(health), Renderer::DefaultFont, Vec2(entity->position.x - 60, entity->position.y - 48));
-
 	Enemy::render(ren);
 }

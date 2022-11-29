@@ -10,7 +10,7 @@ class Player : public Enemy
 {
 public:
 	// Custom variables
-	int health, souls, speed;
+	int health, souls, speed, money;
 	float damage_melee;
 
 	// Constructors

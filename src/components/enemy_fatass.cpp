@@ -16,6 +16,8 @@ Fatass::Fatass(Entity* player_ref)
 
 void Fatass::update()
 {
+	Enemy::update();
+
 	if (temp < 0) {
 		temp_pos = player->position;
 		temp = 60;
@@ -37,6 +39,4 @@ void Fatass::update()
 		entity->position.x += cos(facing_angle) * speed;
 		entity->position.y += sin(facing_angle) * speed;
 	}
-
-	flip_sprite();
 }

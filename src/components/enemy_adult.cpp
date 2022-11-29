@@ -13,6 +13,7 @@ Adult::Adult(Entity* player_ref)
 	temp_val = 0;
 	temp = 30;
 
+	audio_death = Audio::create_sound("data/audio/enemy_adult_death.mp3");
 
 
 	player = player_ref;
@@ -29,19 +30,22 @@ void Adult::init()
 
 void Adult::update()
 {
+	Enemy::update();
 
-	// Play a sound here or sth
-	/*if (temp < 0) {
-
-		temp = 30;
+	if (temp < 0) {
+		
+		
+		temp = 60;
+		health -= 15;
 	}
-	temp--;*/
+	temp--;
 
 	// Standard
 	float delta_x = player->position.x - entity->position.x;
 	float delta_y = player->position.y - entity->position.y;
 
 	facing_angle = atan2(delta_y, delta_x);
+
 
 	// Movement 
 	if (can_walk)
@@ -53,6 +57,4 @@ void Adult::update()
 	// Animation
 	this->entity->get<Sprite>()->enabled = false;
 	}
-
-	flip_sprite();
 }
