@@ -6,7 +6,6 @@
 #include "scene_game.h"
 #include <main.h>
 
-Ref<Font> font;
 
 void MenuScene::init()
 {

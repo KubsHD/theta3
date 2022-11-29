@@ -16,6 +16,8 @@ public:
 	Entity* player;
 	int temp_val;
 
+	bool can_walk;
+
 	// Constructors
 	Adult() = default;
 	Adult(Entity* player_ref);

@@ -13,6 +13,7 @@ public:
 
 	Ref<Target> target;
 
+	Ref<Font> font;
 
 	int idx = 0;
 	Vector<UIButton*> btns;

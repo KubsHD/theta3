@@ -26,6 +26,7 @@
 
 #include "render/renderer.h"
 #include <scenes/map.h>
+#include <components/collider.h>
 
 
 void GameScene::init()
@@ -42,6 +43,7 @@ void GameScene::init()
 	// Player initialization
 	auto player = create("Player");
 	player->add(Player());
+	player->add(Collider(Vec2(32,32), Vec2(0,0)));
 	//player->add(Sprite("data/spr_player.png"));
 
 	auto animator = player->add(Animator());
@@ -57,6 +59,7 @@ void GameScene::init()
 	// Enemy Adult
 	Entity* adult = create("AdultEnemy1");
 	adult->add(Sprite("data/spr_enemy_adult.png"));
+	adult->add(Collider(Vec2(32, 32), Vec2(0, 0)));
 
 	auto animator_adult = adult->add(Animator());
 	animator_adult->add_animation("data/anim/normal_human_move");
