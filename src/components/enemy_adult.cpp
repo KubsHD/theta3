@@ -2,21 +2,24 @@
 #include "collider.h"
 
 
-Adult::Adult(Entity* player_ref)
+Adult::Adult(Player* player_ref)
 {
 	health = 40;
 	damage = 10;
 	souls = 5;
-	speed = 1.3f;
+	money = 3;
 
+	speed = 1.3f;
 	temp_pos = Vec2(0, 0);
 	temp_val = 0;
 	temp = 30;
 
+	can_walk = true;
+
 	audio_death = Audio::create_sound("data/audio/enemy_adult_death.mp3");
 
-
-	player = player_ref;
+	// player reference
+	Enemy::player = player_ref;
 }
 
 
@@ -33,16 +36,15 @@ void Adult::update()
 	Enemy::update();
 
 	if (temp < 0) {
-		
-		
+		// sztucznie zabijam
 		temp = 60;
 		health -= 15;
 	}
 	temp--;
 
 	// Standard
-	float delta_x = player->position.x - entity->position.x;
-	float delta_y = player->position.y - entity->position.y;
+	float delta_x = player->entity->position.x - entity->position.x;
+	float delta_y = player->entity->position.y - entity->position.y;
 
 	facing_angle = atan2(delta_y, delta_x);
 

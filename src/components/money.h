@@ -20,7 +20,6 @@ public:
 
 	Money(Entity* player_ref)
 	{
-		Money::entity->position = Vec2(188, 30);
 		this->player_ref = player_ref;
 	}
 
@@ -30,8 +29,6 @@ public:
 
 	void render(Renderer* ren) override
 	{
-		std::cout << "Player: " << player_ref->position.x << " | " << player_ref->position.y << "\n";
-
 		this->entity->get<Animator>()->play_anim("coin");
 	}
 };

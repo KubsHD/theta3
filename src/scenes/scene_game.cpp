@@ -67,7 +67,7 @@ void GameScene::init()
 	auto animator_adult = adult->add(Animator());
 	animator_adult->add_animation("data/anim/normal_human_move");
 
-	adult->add(Adult(player));
+	adult->add(Adult(player->get<Player>()));
 
 
 	// Enemy Child
@@ -105,7 +105,7 @@ void GameScene::init()
 	bullet->add(Bullet(player));
 	bullet->add(Sprite("data/spr_enemy_bullet1.png"));
 
-	auto animator_bullet= bullet->add(Animator());
+	auto animator_bullet= bullet->add(Animator());	
 
 
 	// Coin 

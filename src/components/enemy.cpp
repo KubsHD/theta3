@@ -15,10 +15,6 @@ void Enemy::flip_sprite()
 	}
 }
 
-void Enemy::drop_loot()
-{
-	;
-}
 
 void Enemy::on_death()
 {
@@ -29,8 +25,11 @@ void Enemy::on_death()
 		if (audio_death != NULL) {
 			std::cout << entity->name << " - Zginal\n";
 			Audio::play_one_shot(audio_death);
+
+			// Death Loot
+			player->health += this->souls;
+			player->money += this->money;
 			
-			drop_loot();
 			// skasuj przeciwnika			
 		}
 	}

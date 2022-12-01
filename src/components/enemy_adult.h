@@ -13,13 +13,12 @@ class Adult : public Enemy
 public:
 	// Custom Variables
 	Vec2 temp_pos;
-	Entity* player;
 	int temp_val;
 	bool can_walk;
 
 	// Constructors
 	Adult() = default;
-	Adult(Entity* player_ref);
+	Adult(Player* player_ref);
 
 	// Maintenance
 	void init() override;

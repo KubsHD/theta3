@@ -6,11 +6,11 @@
 #include <iostream>
 
 
-class Player : public Enemy
+class Player : public Component
 {
 public:
 	// Custom variables
-	int health, souls, speed, money;
+	int health, speed, money;
 	float damage_melee;
 
 	// Constructors

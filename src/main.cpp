@@ -22,6 +22,7 @@
 #include <scenes/scene_menu.h>
 #include <scenes/scene_title.h>
 
+#include <components/player.h>
 
 
 #if WIN
@@ -34,6 +35,7 @@ extern "C" {
 
 bool bRunning = true;
 bool b_show_inspector;
+bool b_show_player_info;
 bool b_demo_open;
 
 static SDL_GLContext maincontext;
@@ -173,8 +175,16 @@ void render()
 				b_demo_open = !b_demo_open;
 			}
 
+			if (ImGui::MenuItem("Player info"))
+			{
+				if (current_scene != nullptr)
+					b_show_player_info = true;
+			}
+
 			ImGui::EndMenu();
 		}
+
+
 
 		if (ImGui::Button("Quit"))
 		{
@@ -197,6 +207,21 @@ void render()
 			{
 				ImGui::Text("Entity: %s", ent->name.c_str());
 			}
+
+			ImGui::End();
+		}
+	}
+
+	if (b_show_player_info)
+	{
+		if (ImGui::Begin("Player info"))
+		{
+			auto ent = current_scene->get("Player");
+			ImGui::Text("Entity: %s", ent->name.c_str());
+			auto ent2 = ent->get<Player>();
+			ImGui::Text("Health: %d", ent2->health);
+			ImGui::Text("Money: %d", ent2->money);
+
 
 			ImGui::End();
 		}
