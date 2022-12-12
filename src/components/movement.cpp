@@ -32,7 +32,6 @@ void PlayerMovement::init()
 
 void PlayerMovement::update()
 {
-
 	if (Input::key_down(SDL_SCANCODE_SPACE))
 	{
 		is_attacking = true;

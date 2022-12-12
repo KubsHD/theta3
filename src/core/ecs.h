@@ -5,6 +5,7 @@
 class Renderer;
 class Entity;
 class Collider;
+enum class CollisionTag;
 
 class Component {
 	friend class Scene;
@@ -46,6 +47,8 @@ public:
 private:
 	Vector<Entity*> m_entities;
 	Vector<Collider*> m_colliders;
+public:
+	bool collision_query_sphere(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor);
 };
 
 

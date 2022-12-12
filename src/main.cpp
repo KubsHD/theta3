@@ -208,7 +208,7 @@ void render()
 			for (auto ent : current_scene->get_entities())
 			{
 				auto str = "Entity: " + ent->name;
-				if (ImGui::CollapsingHeader(str.c_str()))
+				if (ImGui::CollapsingHeader(str.c_str(), true))
 				{
 					ImGui::Text("Position X: %f, Y: %f", ent->position.x, ent->position.y);
 				}

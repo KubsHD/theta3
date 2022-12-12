@@ -6,6 +6,14 @@
 #include <functional>
 #include <render/Renderer.h>
 
+// Add collision types here
+enum class CollisionTag {
+	Solid = 0,
+	Enemy = 1,
+	Bullet = 2,
+	Pickup = 3,
+	
+};
 
 class Collider : public Component {
 
@@ -16,9 +24,16 @@ public:
 	Vec2 size;
 	Vec2 offset;
 	Vec2 position;
+
+	CollisionTag tag;
 	
 	std::function<void(Entity* other)> on_collision_enter;
 	std::function<void(Entity* other)> on_collision_leave;
+
+	bool check_sphere(Vec2 point, float radius, CollisionTag tagToQueryFor)
+	{
+		return this->entity->world->collision_query_sphere(this, point, radius, tagToQueryFor);
+	}
 
 	void update() override
 	{

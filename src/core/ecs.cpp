@@ -38,6 +38,19 @@ bool check_aabb(Collider* col, Collider* col2)
 
 } 
 
+bool check_rect_sphere_collision(float rectX, float rectY, float rectWidth, float rectHeight,
+	float sphereX, float sphereY, float sphereRadius)
+{
+	float clampedX = std::clamp(sphereX, rectX, rectX + rectWidth);
+	float clampedY = std::clamp(sphereY, rectY, rectY + rectHeight);
+
+	float distanceX = sphereX - clampedX;
+	float distanceY = sphereY - clampedY;
+	float distanceSquared = distanceX * distanceX + distanceY * distanceY;
+
+	return distanceSquared <= sphereRadius * sphereRadius;
+}
+
 void Scene::update_collider_list()
 {
 	for (auto ent : m_entities)
@@ -99,10 +112,11 @@ void Scene::render()
 		for (int i = 0; i < _colliders.size(); i++)
 		{
 			auto collider = _colliders[i];
-			if (ImGui::CollapsingHeader(collider->entity->name.c_str()))
+			if (ImGui::CollapsingHeader(collider->entity->name.c_str(), true))
 			{
 				ImGui::LabelText("Position", "X: %f Y: %f", collider->position.x, collider->position.y);
 				ImGui::LabelText("Size", "X: %f Y: %f ", collider->size.x, collider->size.y);
+				ImGui::LabelText("Tag", "%d", (int)collider->tag);
 			}
 		}
 		ImGui::Text("Collision queries");
@@ -112,10 +126,22 @@ void Scene::render()
 	}
 }
 
+bool Scene::collision_query_sphere(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor)
+{
+	for (auto col : _colliders)
+	{
+		if (col->tag != tagToQueryFor)
+			continue;
+
+		if (check_rect_sphere_collision(col->position.x, col->position.y, col->size.x, col->size.y, point.x, point.y, radius))
+			return true;
+	}
+
+	return false;
+}
+
 Scene::Scene()
 {
-	// collision maybe
-
 
 }
 
