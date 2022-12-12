@@ -57,6 +57,7 @@ void change_scene()
 	current_scene = new T();
 	current_scene->ren = &ren;
 	current_scene->init();
+	current_scene->update_collider_list();
 }
 
 void init()
@@ -107,27 +108,27 @@ void init()
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 	//io.ConfigViewportsNoAutoMerge = true;
-	//io.ConfigViewportsNoTaskBarIcon = true;
+//io.ConfigViewportsNoTaskBarIcon = true;
 
-	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsLight();
+// Setup Dear ImGui style
+ImGui::StyleColorsDark();
+//ImGui::StyleColorsLight();
 
-	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-	ImGuiStyle& style = ImGui::GetStyle();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-	}
+// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+ImGuiStyle& style = ImGui::GetStyle();
+if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+{
+	style.WindowRounding = 0.0f;
+	style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+}
 
-	ImGui_ImplSDL2_InitForOpenGL(window.pWindow, maincontext);
-	ImGui_ImplOpenGL3_Init();
+ImGui_ImplSDL2_InitForOpenGL(window.pWindow, maincontext);
+ImGui_ImplOpenGL3_Init();
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	#pragma endregion
+glEnable(GL_BLEND);
+glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+#pragma endregion
 
 
 }
@@ -203,9 +204,14 @@ void render()
 	{
 		if (ImGui::Begin("Inspector"))
 		{
+			ImGui::Text("Entity list");
 			for (auto ent : current_scene->get_entities())
 			{
-				ImGui::Text("Entity: %s", ent->name.c_str());
+				auto str = "Entity: " + ent->name;
+				if (ImGui::CollapsingHeader(str.c_str()))
+				{
+					ImGui::Text("Position X: %f, Y: %f", ent->position.x, ent->position.y);
+				}
 			}
 
 			ImGui::End();

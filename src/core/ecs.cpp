@@ -1,5 +1,6 @@
 #include "ecs.h"
 #include <components/collider.h>
+#include <lib/imgui/imgui.h>
 
 Entity* Scene::create(String name)
 {
@@ -37,10 +38,25 @@ bool check_aabb(Collider* col, Collider* col2)
 
 } 
 
+void Scene::update_collider_list()
+{
+	for (auto ent : m_entities)
+	{
+		for (auto comp : ent->m_components)
+		{
+			if (comp->enabled && dynamic_cast<Collider*>(comp) != nullptr && std::find(_colliders.begin(), _colliders.end(), dynamic_cast<Collider*>(comp)) == _colliders.end())
+				_colliders.push_back(dynamic_cast<Collider*>(comp));
+		}
+	}
+}
+
+void Scene::init()
+{
+
+}
+
 void Scene::update()
 {
-	// collision maybe
-
 	if (_colliders.size() > 1)
 	{
 		for (int i = 0; i < _colliders.size() - 1; i++)
@@ -60,9 +76,6 @@ void Scene::update()
 	{
 		for (auto comp : ent->m_components)
 		{
-			if (comp->enabled && dynamic_cast<Collider*>(comp) != nullptr)
-				_colliders.push_back(dynamic_cast<Collider*>(comp));
-
 			if (comp->enabled)
 				comp->update();
 		}
@@ -79,6 +92,31 @@ void Scene::render()
 				comp->render(ren);
 		}
 	}
+
+	if (ImGui::Begin("Collider DEBUG"))
+	{
+		ImGui::Text("Active colliders");
+		for (int i = 0; i < _colliders.size(); i++)
+		{
+			auto collider = _colliders[i];
+			if (ImGui::CollapsingHeader(collider->entity->name.c_str()))
+			{
+				ImGui::LabelText("Position", "X: %f Y: %f", collider->position.x, collider->position.y);
+				ImGui::LabelText("Size", "X: %f Y: %f ", collider->size.x, collider->size.y);
+			}
+		}
+		ImGui::Text("Collision queries");
+
+
+		ImGui::End();
+	}
+}
+
+Scene::Scene()
+{
+	// collision maybe
+
+
 }
 
 Scene::~Scene()

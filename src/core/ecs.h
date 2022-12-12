@@ -4,6 +4,7 @@
 
 class Renderer;
 class Entity;
+class Collider;
 
 class Component {
 	friend class Scene;
@@ -22,7 +23,7 @@ public:
 
 class Scene {
 public:
-	Scene() {};
+	Scene();
 	virtual ~Scene();
 
 
@@ -35,6 +36,8 @@ public:
 
 	Vector<Entity*> get_entities() { return m_entities; };
 
+	void update_collider_list();
+
 	virtual void init() = 0;
 	virtual void update();
 	virtual void render();
@@ -42,6 +45,7 @@ public:
 
 private:
 	Vector<Entity*> m_entities;
+	Vector<Collider*> m_colliders;
 };
 
 
@@ -90,6 +94,9 @@ T* Entity::add(T&& comp /*= T()*/)
 	((Component*)instance)->entity = this;
 
 	((Component*)instance)->init();
+
+	// hack
+	this->world->update_collider_list();
 
 	m_components.push_back(instance);
 	return instance;
