@@ -398,7 +398,7 @@ void Renderer::draw_quad()
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale)
+void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale, float opacity)
 {
 	int adv = 0;
 
@@ -413,13 +413,15 @@ void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale)
 
 
 			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
-
-			draw_subtex(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), scale);
+			
+			draw_subtex(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), opacity, scale);
 			draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
 			adv += g.xadv;
+
 		}
 	}
 }
+
 
 Target* Renderer::Backbuffer;
 Font* Renderer::DefaultFont;

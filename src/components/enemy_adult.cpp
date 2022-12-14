@@ -25,23 +25,40 @@ Adult::Adult(Player* player_ref)
 
 void Adult::init()
 {
+	Enemy::init();
+	
+	Vec2 rand_starting_pos;
+	// 2 sides of the screen for x
+	if (rand() % 2)
+		rand_starting_pos.x = player->entity->position.x + rand() % 100 + 240;
+	else
+		rand_starting_pos.x = player->entity->position.x - rand() % 100 - 240;
+
+	// 2 sides of the screen for y
+	if (rand() % 2)
+		rand_starting_pos.y = player->entity->position.y + rand() % 100 + 240;
+	else
+		rand_starting_pos.y = player->entity->position.y - rand() % 100 - 240;
+
+	
+	entity->position = rand_starting_pos;
+	
 	this->entity->get<Animator>()->play_anim("normal_human_move");
-	auto col = entity->get<Collider>();
-	col->on_collision_enter = [this](Entity* other) { can_walk = false; };
-	col->on_collision_leave = [this](Entity* other) { can_walk = true; };
+	//auto col = entity->get<Collider>();	
 }
 
 void Adult::update()
 {
 	Enemy::update();
 
-	if (temp < 0) {
-		// sztucznie zabijam
-		temp = 60;
-		health -= 15;
-	}
-	temp--;
+	//if (temp < 0) {
+	//	// sztucznie zabijam
+	//	temp = 60;
+	//	health -= 15;
+	//}
+	//temp--;
 
+	
 	// Standard
 	float delta_x = player->entity->position.x - entity->position.x;
 	float delta_y = player->entity->position.y - entity->position.y;

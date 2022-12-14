@@ -7,16 +7,12 @@
 // player
 #include <components/player.h>
 
-// enemies
-#include <components/enemy_adult.h>
-#include <components/enemy_child.h>
-#include <components/enemy_policeman.h>
-#include <components/enemy_soldier.h>
-#include <components/enemy_fatass.h>
+// waves system
+#include <components/wave_system.h>
+
 
 // bullets
 #include <components/enemy_bullet.h>
-
 
 // Coins
 #include <components/money.h>
@@ -32,9 +28,10 @@
 #include <components/collider.h>
 
 
+
 void GameScene::init()
 {
-
+	// zmiana rozmiaru wymaga zmiany w spawnowaniu przeciwnikow [enemy]::init
 	game_view = CreateRef<Target>(960, 540);
 	game_camera = CreateRef<Camera>();
 
@@ -59,61 +56,21 @@ void GameScene::init()
 
 	player_ref = player;
 
-	// Enemy Adult
-	Entity* adult = create("AdultEnemy1");
-	adult->add(Sprite("data/spr_enemy_adult.png"));
-	adult->add(Collider(Vec2(32, 32), Vec2(0, 0)));
-
-	auto animator_adult = adult->add(Animator());
-	animator_adult->add_animation("data/anim/normal_human_move");
-
-	adult->add(Adult(player->get<Player>()));
+	auto wave = create("WaveManager");
+	wave->add(Wave(player));
 
 
-	// Enemy Child
-	Entity* child = create("ChildEnemy1");
-	child->add(Child(player));
-	child->add(Sprite("data/spr_enemy_child.png"));
 
-	auto animator_child = child->add(Animator());
-
-	// Enemy Policeman
-	Entity* policeman = create("PolicemanEnemy1");
-	policeman->add(Policeman(player));
-	policeman->add(Sprite("data/spr_enemy_police.png"));
-
-	auto animator_policeman = policeman->add(Animator());
+	
 
 
-	// Enemy Soldier
-	Entity* soldier = create("SoldierEnemy1");
-	soldier->add(Soldier(player));
-	soldier->add(Sprite("data/spr_enemy_soldier.png"));
 
-	auto animator_soldier = soldier->add(Animator());
-
-	// Enemy Fatass
-	Entity* fatass = create("FatassEnemy1");
-	fatass->add(Fatass(player));
-	fatass->add(Sprite("data/spr_enemy_fatass.png"));
-
-	auto animator_fatass= fatass->add(Animator());
-
-
-	// Enemy Bullet
-	Entity* bullet = create("Bullet1");
-	bullet->add(Bullet(player));
-	bullet->add(Sprite("data/spr_enemy_bullet1.png"));
-
-	auto animator_bullet= bullet->add(Animator());	
-
-
-	// Coin 
-	Entity* money = create("money1");
-	money->add(Sprite("data/coin.png"));
-	auto animator_money = money->add(Animator());
-	animator_money->add_animation("data/anim/coin");
-	money->add(Money(player));
+	//// Coin 
+	//Entity* money = create("money1");
+	//money->add(Sprite("data/coin.png"));
+	//auto animator_money = money->add(Animator());
+	//animator_money->add_animation("data/anim/coin");
+	//money->add(Money(player));
 
 }
 

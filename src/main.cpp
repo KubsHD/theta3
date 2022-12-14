@@ -23,6 +23,7 @@
 #include <scenes/scene_title.h>
 
 #include <components/player.h>
+#include <components/wave_system.h>
 
 
 #if WIN
@@ -37,6 +38,7 @@ bool bRunning = true;
 bool b_show_inspector;
 bool b_show_player_info;
 bool b_demo_open;
+
 
 static SDL_GLContext maincontext;
 
@@ -227,8 +229,6 @@ void render()
 			auto ent2 = ent->get<Player>();
 			ImGui::Text("Health: %d", ent2->health);
 			ImGui::Text("Money: %d", ent2->money);
-
-
 			ImGui::End();
 		}
 	}
@@ -321,7 +321,6 @@ int main(int argc, char* argv[])
 		}
 
 		SDL_GL_SwapWindow(window.pWindow);
-		
 
 
 		input.update(evt);
