@@ -85,8 +85,10 @@ void Scene::update()
 		}
 	}
 
-	for (auto ent : m_entities)
+	for (int i = 0; i < m_entities.size(); i++)
 	{
+		auto ent = m_entities[i];
+
 		for (auto comp : ent->m_components)
 		{
 			if (comp->enabled)
