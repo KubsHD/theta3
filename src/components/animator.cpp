@@ -96,12 +96,12 @@ void Animator::render(Renderer* ren)
 	if (m_oneShotInProgress)
 	{
 		ren->draw_subtex(m_currentAnim->Frames[m_currentAnim->currentFrame], entity->position, 1.0f, 1.0f, flip);
-		ren->draw_box(entity->position, m_currentAnim->Frames[m_currentAnim->currentFrame]->texSize, Vec3(1, 1, 1));
+		//ren->draw_box(entity->position, m_currentAnim->Frames[m_currentAnim->currentFrame]->texSize, Vec3(1, 1, 1));
 	}
 
 	if (m_animInProgress && !m_oneShotInProgress)
 	{
 		ren->draw_subtex(m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame], entity->position, 1.0f, 1.0f, flip);
-		ren->draw_box(entity->position, m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame]->texSize, Vec3(1, 1, 1));
+		//ren->draw_box(entity->position, m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame]->texSize, Vec3(1, 1, 1));
 	}
 }

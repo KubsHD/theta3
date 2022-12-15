@@ -391,6 +391,27 @@ void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void Renderer::draw_circle(Vec2 pos, float radius, Vec3 color)
+{
+	//glm::mat4 model = glm::mat4(1.0f);
+
+	//model = glm::translate(model, Vec3(pos, 0.0f));
+	////model = glm::translate(model, glm::vec3(size.x, size.y, 0.0f));
+
+	//model = glm::scale(model, Vec3(radius, radius, 1.0f));
+
+	//auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
+
+
+	//set_mvp(mvp);
+
+	//glUseProgram(circleShader);
+	//glBindVertexArray(boxVAO);
+	//glDrawArrays(GL_TRIANGLES, 0, 4);
+
+	//glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void Renderer::draw_quad()
 {
 	glUseProgram(shaderProgram);

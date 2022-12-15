@@ -12,7 +12,7 @@ enum class CollisionTag {
 	Enemy = 1,
 	Bullet = 2,
 	Pickup = 3,
-	
+	Player = 4,
 };
 
 class Collider : public Component {

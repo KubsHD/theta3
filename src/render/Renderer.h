@@ -118,6 +118,7 @@ public:
 	void draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);
 	void draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f, float scale = 1.0f, bool flip = false);
 	void draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0,0,0));
+	void draw_circle(Vec2 pos, float radius, Vec3 color = Vec3(0, 0, 0));
 	void draw_quad();
 	void draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);
 };

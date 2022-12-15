@@ -39,7 +39,7 @@ void GameScene::init()
 
 	// Player initialization
 	auto player = create("Player");
-	player->add(Collider(Vec2(32, 32), Vec2(0, 0)));
+	player->add(Collider(Vec2(32, 32), Vec2(0, 0)))->tag = CollisionTag::Player;
 	player->add(Player());
 	//player->add(Sprite("data/spr_player.png"));
 
