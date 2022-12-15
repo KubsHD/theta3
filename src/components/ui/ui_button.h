@@ -14,6 +14,7 @@ public:
 	std::function<void()> on_clicked;
 
 	float opacity = 1.0f;
+	float scale = 1.0f;
 	bool selected;
 
 	void update() override
@@ -24,7 +25,7 @@ public:
 
 	void render(Renderer* ren) override
 	{
-		ren->draw_text(m_text, Renderer::DefaultFont, entity->position, selected ? opacity : opacity * 0.5);
+		ren->draw_text(m_text, Renderer::DefaultFont, entity->position, scale, selected ? opacity : opacity * 0.5);
 	}
 
 };

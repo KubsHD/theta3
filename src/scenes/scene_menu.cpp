@@ -62,7 +62,7 @@ void MenuScene::update()
 
 	btns[idx]->selected = true;
 
-	if (Input::key_down(SDL_SCANCODE_DOWN))
+	if (Input::key_down(SDL_SCANCODE_DOWN) || Input::key_down(SDL_SCANCODE_S))
 	{
 		if (idx + 1 < btns.size())
 		{
@@ -70,7 +70,7 @@ void MenuScene::update()
 			Audio::play_one_shot(aud);
 		}
 	}
-	else if (Input::key_down(SDL_SCANCODE_UP))
+	else if (Input::key_down(SDL_SCANCODE_UP) || Input::key_down(SDL_SCANCODE_W))
 	{
 		if (idx - 1 >= 0)
 		{
@@ -79,7 +79,7 @@ void MenuScene::update()
 		}
 
 	}
-	else if (Input::key_down(SDL_SCANCODE_SPACE))
+	else if (Input::key_down(SDL_SCANCODE_SPACE) || Input::key_down(SDL_SCANCODE_RETURN))
 	{
 		btns[idx]->on_clicked();
 	}
@@ -88,10 +88,9 @@ void MenuScene::update()
 }
 
 void MenuScene::render()
-{
+{ 
 	ren->set_target(target.get());
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
-
 	ren->draw_text("Theta2", font.get(), Vec2(100, 100));
 
 	Scene::render();
