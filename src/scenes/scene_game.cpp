@@ -10,12 +10,9 @@
 // waves system
 #include <components/wave_system.h>
 
-
 // bullets
 #include <components/enemy_bullet.h>
 
-// Coins
-#include <components/money.h>
 
 #include <core/log.h>
 #include <core/window.h>
@@ -26,7 +23,7 @@
 #include "render/renderer.h"
 #include <scenes/map.h>
 #include <components/collider.h>
-
+#include <components/effects.h>
 
 
 void GameScene::init()
@@ -55,6 +52,15 @@ void GameScene::init()
 	player->add(PlayerMovement(2.0f));
 
 	player_ref = player;
+
+
+
+	Entity* rain = create("rain");
+	rain->add(Sprite("data/effects_rain.png"));
+	auto animator_rain = rain->add(Animator());
+	animator_rain->add_animation("data/anim/effects_rain");
+	rain->add(Effect(player));
+
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
