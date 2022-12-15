@@ -19,6 +19,7 @@ Adult::Adult(Player* player_ref)
 	audio_death = Audio::create_sound("data/audio/enemy_adult_death.mp3");
 
 	// player reference
+	player = player_ref;
  }
 
 
@@ -89,7 +90,7 @@ void Adult::update()
 	// Movement 
 	if (can_walk)
 	{ 
-		if (!collider->check_sphere(entity->position, 1, CollisionTag::Enemy))
+		if ( !collider->check_sphere(entity->position, 1, CollisionTag::Enemy))
 		{
 			if (abs(delta_x) + abs(delta_y) > 30) {
 				entity->position.x += cos(facing_angle) * speed;
