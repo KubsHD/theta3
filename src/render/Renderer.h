@@ -2,7 +2,7 @@
 
 #include <core/types.h>
 #include <glm/ext/matrix_transform.hpp>
-
+#include <render/Shader.h>
 
 
 class Camera {
@@ -58,13 +58,6 @@ public:
 	Vec2 target_size;
 };
 
-class Shader
-{
-public:
-	Shader(const char* vtx, const char* fsx);
-	int id;
-};
-
 struct Glyph
 {
 	int id;
@@ -97,6 +90,8 @@ public:
 class Renderer {
 	Camera* m_currentCamera;
 	Target* m_currentTarget;
+
+	Shader* m_circleShader;
 
 public:
 	static Target* Backbuffer;

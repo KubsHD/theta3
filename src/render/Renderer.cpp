@@ -240,6 +240,8 @@ void Renderer::init(Window* win)
 	glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	m_circleShader = new Shader("circle");
 }
 
 Vec2 current_size;
@@ -290,6 +292,7 @@ void Renderer::draw_target(Target* tg)
 	draw_quad();
 }
 
+// NOTE: this sets mvp only for the default shader
 void Renderer::set_mvp(const glm::mat4& mvp)
 {
 	glUseProgram(shaderProgram);
@@ -393,23 +396,26 @@ void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)
 
 void Renderer::draw_circle(Vec2 pos, float radius, Vec3 color)
 {
-	//glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 model = glm::mat4(1.0f);
 
-	//model = glm::translate(model, Vec3(pos, 0.0f));
-	////model = glm::translate(model, glm::vec3(size.x, size.y, 0.0f));
+	model = glm::translate(model, Vec3(pos, 0.0f));
+	//model = glm::translate(model, glm::vec3(size.x, size.y, 0.0f));
 
-	//model = glm::scale(model, Vec3(radius, radius, 1.0f));
+	model = glm::scale(model, Vec3(radius, radius, 1.0f));
 
-	//auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
+	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 
-	//set_mvp(mvp);
+	set_mvp(mvp);
 
-	//glUseProgram(circleShader);
-	//glBindVertexArray(boxVAO);
-	//glDrawArrays(GL_TRIANGLES, 0, 4);
+	glUseProgram(m_circleShader->get_id());
+	int modelLoc = glGetUniformLocation(shaderProgram, "u_mvp");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(VAO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer::draw_quad()
@@ -489,9 +495,7 @@ void Target::bind()
 	glViewport(0, 0, target_size.x, target_size.y);
 }
 
-Shader::Shader(const char* vtx, const char* fsx)
-{
-}
+
 
 float px_to_ogl(float px, float size)
 {
