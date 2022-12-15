@@ -46,7 +46,7 @@ public:
 
 private:
 	Vector<Entity*> m_entities;
-	Vector<Collider*> m_colliders;
+	Vector<Collider*> _colliders;
 public:
 	bool collision_query_sphere(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor);
 };

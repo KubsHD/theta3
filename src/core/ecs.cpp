@@ -29,7 +29,6 @@ Entity* Scene::get(String name)
 }
 
 
-static Vector<Collider*> _colliders;
 
 bool check_aabb(Collider* col, Collider* col2)
 {

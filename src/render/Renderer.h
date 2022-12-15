@@ -97,6 +97,7 @@ class Renderer {
 	Target* m_currentTarget;
 
 	Shader* m_circleShader;
+	Shader* m_defaultShader;
 
 public:
 	static Target* Backbuffer;

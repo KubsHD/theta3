@@ -59,51 +59,11 @@ Texture::~Texture()
 	glDeleteTextures(1, &id);
 }
 
-unsigned int shaderProgram;
-
 unsigned int VBO;
 unsigned int VAO;
 
 unsigned int boxVBO;
 unsigned int boxVAO;
-
-const char* vertexShaderSource = R"(
-		#version 330 core
-		layout(location = 0) in vec2 aPos;
-		layout(location = 1) in vec2 aTexCoord;
-		
-		uniform mat4 u_mvp;
-
-		out vec2 vTexCoord;
-
-		void main()
-		{
-			vTexCoord = aTexCoord;
-			gl_Position = u_mvp * vec4(aPos.x, aPos.y, 0.0, 1.0);
-		}
-	)";
-
-
-const char* fragmentShaderSource = R"(
-		#version 330 core
-		in vec2 vTexCoord;
-		
-		uniform sampler2D u_tex;
-
-		uniform vec2 u_spritePos;
-		uniform vec2 u_spriteSize;
-
-		uniform float u_opacity;
-
-		out vec4 FragColor;
-
-		void main()
-		{
-			vec2 tex = vTexCoord;
-			tex.y = -tex.y;
-			FragColor = texture(u_tex, tex) * vec4(1.0f, 1.0f, 1.0f, u_opacity);
-		}
-	)";
 
 void Renderer::init(Window* win)
 {
@@ -141,62 +101,6 @@ void Renderer::init(Window* win)
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
 
-
-	// compiling vertex shader
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	// compile vertex shader - info
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::Vertex Shader Compilation Failed!!!\n" << infoLog << std::endl;
-	}
-
-
-	// Fragment shader source - color
-
-	// compiling fragment shader 
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	// compiling fragment shader - info
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::Fragment Shader Compilation Failed!!!\n" << infoLog << std::endl;
-	}
-
-
-	// creating program object
-	shaderProgram = glCreateProgram();
-
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-
-	// creating program object - info
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success)
-	{
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::Program Object Linking Failed!!!\n" << infoLog << std::endl;
-	}
-
-
-	glUseProgram(shaderProgram);
-
-	// Deleting shaders from memory after we compiled them
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
 
 
 
@@ -243,6 +147,7 @@ void Renderer::init(Window* win)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	m_circleShader = new Shader("circle");
+	m_defaultShader = new Shader("default");
 }
 
 Vec2 current_size;
@@ -296,22 +201,22 @@ void Renderer::draw_target(Target* tg)
 // NOTE: this sets mvp only for the default shader
 void Renderer::set_mvp(const glm::mat4& mvp)
 {
-	glUseProgram(shaderProgram);
-	int modelLoc = glGetUniformLocation(shaderProgram, "u_mvp");
+	glUseProgram(m_defaultShader->get_id());
+	int modelLoc = glGetUniformLocation(m_defaultShader->get_id(), "u_mvp");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 }
 
 void Renderer::set_uniform_vec2(String uniformName, Vec2 v)
 {
-	glUseProgram(shaderProgram);
-	int modelLoc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+	glUseProgram(m_defaultShader->get_id());
+	int modelLoc = glGetUniformLocation(m_defaultShader->get_id(), uniformName.c_str());
 	glUniform2fv(modelLoc, 1, glm::value_ptr(v));
 }
 
 void Renderer::set_uniform_float(String uniformName, float v)
 {
-	glUseProgram(shaderProgram);
-	int modelLoc = glGetUniformLocation(shaderProgram, uniformName.c_str());
+	glUseProgram(m_defaultShader->get_id());
+	int modelLoc = glGetUniformLocation(m_defaultShader->get_id(), uniformName.c_str());
 	glUniform1fv(modelLoc, 1, &v);
 }
 
@@ -362,7 +267,7 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 	set_uniform_float("u_opacity", opacity);
 	set_mvp(mvp);
 	
-	glUseProgram(shaderProgram);
+	glUseProgram(m_defaultShader->get_id());
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
 	
 	glBindVertexArray(subTex->vaoId);
@@ -388,7 +293,7 @@ void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)
 
 	set_mvp(mvp);
 	
-	glUseProgram(shaderProgram);
+	glUseProgram(m_defaultShader->get_id());
 	glBindVertexArray(boxVAO);
 	glDrawArrays(GL_LINE_LOOP, 0, 4);
 
@@ -411,7 +316,7 @@ void Renderer::draw_circle(Vec2 pos, float radius, Vec3 color)
 	set_mvp(mvp);
 
 	glUseProgram(m_circleShader->get_id());
-	int modelLoc = glGetUniformLocation(shaderProgram, "u_mvp");
+	int modelLoc = glGetUniformLocation(m_defaultShader->get_id(), "u_mvp");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 
 	glBindVertexArray(VAO);
@@ -422,7 +327,7 @@ void Renderer::draw_circle(Vec2 pos, float radius, Vec3 color)
 
 void Renderer::draw_quad()
 {
-	glUseProgram(shaderProgram);
+	glUseProgram(m_defaultShader->get_id());
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
