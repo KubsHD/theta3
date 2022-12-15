@@ -22,6 +22,7 @@ public:
 	Sound* audio_death;
 	Player* player;
 	bool is_dead = false;
+	Collider* collider;
 
 	Vec2 text_pos;
 	int t = 0;
@@ -33,11 +34,15 @@ public:
 
 	void init() override
 	{
-		text_pos = entity->position;
+		//collider = entity->get<Collider>();
+		//// todo zmienic na rozmiar spritea
+		//collider->size = Vec2(32, 32);
+		//collider->tag = CollisionTag::Enemy;
 	}
 
 	void flip_sprite();
 	void on_death();
+	void handle_collision();
 
 	void update() override 
 	{
@@ -51,10 +56,10 @@ public:
 	void render(Renderer* ren) override
 	{
 		// renderowanie
-		if (is_dead == true) {
-			ren->draw_text("elooo", Renderer::DefaultFont, text_pos, 0.8, 1);
-			//text_opacity -= 0.1f;
-		}
+		//if (is_dead == true) {
+		//	ren->draw_text("elooo", Renderer::DefaultFont, text_pos, 0.8, 1);
+		//	//text_opacity -= 0.1f;
+		//}
 	}
 };
 

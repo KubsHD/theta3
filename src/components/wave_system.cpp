@@ -22,7 +22,7 @@ void Wave::update()
 	{
 		round_time++;
 		frames = 0;
-		if (round_time % 5 == 0)
+		if (round_time % 2 == 0)
 		{
 			waveID++;
 			wave_spawn();
@@ -46,7 +46,7 @@ void Wave::render(Renderer* ren)
 void Wave::wave_spawn()
 {
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		Entity* adult = entity->world->create("AdultEnemyW" + std::to_string(waveID) + "E" + std::to_string(i));
 		adult->add(Sprite("data/spr_enemy_adult.png"));
@@ -57,7 +57,6 @@ void Wave::wave_spawn()
 
 		adult->add(Adult(player->get<Player>()));
 	}
-
 
 
 

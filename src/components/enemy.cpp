@@ -37,3 +37,8 @@ void Enemy::on_death()
 		}
 	}
 }
+
+void Enemy::handle_collision()
+{
+
+}
