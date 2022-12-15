@@ -135,6 +135,9 @@ bool Scene::collision_query_sphere(Collider* requestor, Vec2 point, float radius
 		if (col->tag != tagToQueryFor)
 			continue;
 
+		if (requestor == col)
+			continue;
+
 		if (check_rect_sphere_collision(col->position.x, col->position.y, col->size.x, col->size.y, point.x, point.y, radius))
 			return true;
 	}
