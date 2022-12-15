@@ -25,6 +25,8 @@ public:
 	Vec2 offset;
 	Vec2 position;
 
+	std::pair<Vec2, float> last_circle_query;
+
 	CollisionTag tag;
 	
 	std::function<void(Entity* other)> on_collision_enter;
@@ -32,6 +34,8 @@ public:
 
 	bool check_sphere(Vec2 point, float radius, CollisionTag tagToQueryFor)
 	{
+		last_circle_query.first = point;
+		last_circle_query.second = radius;
 		return this->entity->world->collision_query_sphere(this, point, radius, tagToQueryFor);
 	}
 
@@ -43,6 +47,8 @@ public:
 	void render(Renderer* ren) override
 	{
 		ren->draw_box(entity->position, size, Vec3(0.1f, 0.1f, 1.0f));
+		if (last_circle_query.second != 0)
+			ren->draw_circle(last_circle_query.first, last_circle_query.second);
 	}
 
 };

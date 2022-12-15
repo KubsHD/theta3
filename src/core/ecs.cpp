@@ -1,4 +1,6 @@
 #include "ecs.h"
+
+#include <map>
 #include <components/collider.h>
 #include <lib/imgui/imgui.h>
 
@@ -126,6 +128,7 @@ void Scene::render()
 
 		ImGui::End();
 	}
+
 }
 
 bool Scene::collision_query_sphere(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor)
