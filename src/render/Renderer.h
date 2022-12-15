@@ -24,8 +24,10 @@ class Window;
 
 class Texture
 {
-public:
 	Texture(String path);
+
+	friend class Asset;
+public:
 	~Texture();
 
 	unsigned int id;
@@ -79,11 +81,14 @@ struct Glyph
 };
 
 class Font {
-public:
+private:
+	friend class Asset;
+	
 	Font(String path);
+public:
 
 	String name;
-	Ref<Texture> atlas;
+	Texture* atlas;
 	Glyph glyphs[200];
 };
 

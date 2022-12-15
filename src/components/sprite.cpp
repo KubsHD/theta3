@@ -1,8 +1,9 @@
 #include "sprite.h"
+#include <core/asset.h>
 
 Sprite::Sprite(String texPath)
 {
-	tex = new Texture(texPath);
+	tex = Asset::load_texture(texPath);
 };
 
 void Sprite::update()

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <core/input.h>
 #include <core/audio.h>
+#include <core/asset.h>
 
 int title_stage = 0;
 
@@ -14,10 +15,10 @@ int title_stage = 0;
 
 void TitleScene::init()
 {
-	font2 = CreateRef<Font>("data/font/comic.fnt");
+	font2 = Asset::load_font("data/font/comic.fnt");
 	target = CreateRef<Target>(1280, 720);
-	network_prompt = CreateRef<Texture>("data/ui/ui_title_network_prompt.png");
-	test = CreateRef<Texture>("data/spr_player.png");
+	network_prompt = Asset::load_texture("data/ui/ui_title_network_prompt.png");
+	test = Asset::load_texture("data/spr_player.png");
 
 	auto btn_yes = this->create("btn_yes");
 	{
@@ -42,7 +43,7 @@ void TitleScene::init()
 	btn_no->position = Vec2(610, 420);
 
 
-	aud = Audio::create_sound("data/ui_1.wav");
+	aud = Asset::load_sound("data/ui_1.wav");
 
 }
 
@@ -109,7 +110,7 @@ void TitleScene::render()
 	ren->set_target(target.get());
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 
-	ren->draw_tex(network_prompt.get(), Vec2(0, 0), opacity);
+	ren->draw_tex(network_prompt, Vec2(0, 0), opacity);
 	
 	Scene::render();
 

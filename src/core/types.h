@@ -4,6 +4,7 @@
 #include <memory>
 #include <filesystem>
 #include <string>
+#include <map>
 
 #include <glm/glm.hpp>
 
@@ -25,3 +26,6 @@ constexpr Ref<T> CreateRef(Args&& ... args)
 {
 	return std::make_shared<T>(std::forward<Args>(args)...);
 }
+
+template<typename K, typename V>
+using Map = std::map<K,V>;

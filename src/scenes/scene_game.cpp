@@ -21,7 +21,6 @@
 #include <core/ecs.h>
 
 #include "render/renderer.h"
-#include <scenes/map.h>
 #include <components/collider.h>
 #include <components/effects.h>
 

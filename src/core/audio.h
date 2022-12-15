@@ -14,12 +14,15 @@ struct Sound {
 };
 
 class Audio {
+private:
+	friend class Asset;
+
+	static Sound* create_sound(String path);
 public:
 	Audio() {};
 
 	void init();
 	
-	static Sound* create_sound(String path);
 	
 	static void play_one_shot(Sound* snd);
 };

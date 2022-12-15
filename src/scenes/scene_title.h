@@ -28,10 +28,10 @@ public:
 	int idx = 0;
 	Vector<UIButton*> btns;
 
-	Ref<Texture> network_prompt;
-	Ref<Texture> test;
+	Texture* network_prompt;
+	Texture* test;
 	Ref<Target> target;
-	Ref<Font> font2;
+	Font* font2;
 
 	Sound* aud;
 

@@ -5,11 +5,12 @@
 #include <core/audio.h>
 #include "scene_game.h"
 #include <main.h>
+#include <core/asset.h>
 
 
 void MenuScene::init()
 {
-	font = CreateRef<Font>("data/font/comic.fnt");
+	font = Asset::load_font("data/font/comic.fnt");
 	target = CreateRef<Target>(1280, 720);
 
 	{
@@ -47,7 +48,7 @@ void MenuScene::init()
 		btns.push_back(uib);
 	}
 
-	aud = Audio::create_sound("data/ui_1.wav");
+	aud = Asset::load_sound("data/ui_1.wav");
 }
 
 void MenuScene::destroy()
@@ -91,7 +92,7 @@ void MenuScene::render()
 { 
 	ren->set_target(target.get());
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
-	ren->draw_text("Theta2", font.get(), Vec2(100, 100));
+	ren->draw_text("Theta2", font, Vec2(100, 100));
 	ren->draw_circle(Vec2(0, 0), 100);
 
 

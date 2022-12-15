@@ -2,13 +2,13 @@
 
 
 #include <lib/glad/glad.h>
-#include <core/resource.h>
+#include <core/asset.h>
 #include <iostream>
 
 Shader::Shader(String shaderName)
 {
-	String vertexShaderSource = Resource::read_file("data/shader/" + shaderName + ".vs");
-	String fragmentShaderSource = Resource::read_file("data/shader/" + shaderName + ".fs");
+	String vertexShaderSource = Asset::read_file("data/shader/" + shaderName + ".vs");
+	String fragmentShaderSource = Asset::read_file("data/shader/" + shaderName + ".fs");
 	const char* data;
 
 

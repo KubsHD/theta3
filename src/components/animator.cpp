@@ -1,6 +1,7 @@
 #include "animator.h"
 
 #include <lib/json.hpp>
+#include <core/asset.h>
 
 void Animator::add_animation(String path)
 {
@@ -13,7 +14,7 @@ void Animator::add_animation(String path)
 
 	std::ifstream ifs(path + ".json");
 	auto data = nlohmann::json::parse(ifs);
-	ad.animTex = new Texture(path + ".png");
+	ad.animTex = Asset::load_texture(path + ".png");
 
 	for (auto frame : data["frames"])
 	{

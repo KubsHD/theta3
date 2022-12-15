@@ -1,5 +1,6 @@
 #include "enemy_adult.h"
 #include "collider.h"
+#include <core/asset.h>
 
 
 Adult::Adult(Player* player_ref)
@@ -16,7 +17,7 @@ Adult::Adult(Player* player_ref)
 
 	can_walk = true;
 
-	audio_death = Audio::create_sound("data/audio/enemy_adult_death.mp3");
+	audio_death = Asset::load_sound("data/audio/enemy_adult_death.mp3");
 
 	// player reference
 	player = player_ref;

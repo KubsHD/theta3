@@ -15,6 +15,7 @@
 #include "core/input.h"
 #include "core/types.h"
 #include "core/ecs.h"
+#include "core/asset.h"
 
 #include "render/renderer.h"
 
@@ -49,6 +50,7 @@ Window window;
 Renderer ren;
 Input input;
 Audio audio;
+Asset ass;
 
 Scene* current_scene;
 
@@ -88,6 +90,8 @@ void init()
 	input.init();
 
 	audio.init();
+
+	ass.init(&ren);
 
 	//SDL_GL_MakeCurrent(window.pWindow, maincontext);
 

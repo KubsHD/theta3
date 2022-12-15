@@ -18,6 +18,7 @@
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
+#include <core/asset.h>
 
 glm::mat4 view(1.0f);
 glm::mat4 projection(1.0f);
@@ -110,7 +111,7 @@ void Renderer::init(Window* win)
 	Backbuffer->id = 0;
 	Backbuffer->target_size = Vec2(win->w, win->h);
 
-	DefaultFont = new Font("data/font/comic.fnt");
+	DefaultFont = Asset::load_font("data/font/comic.fnt");
 
 	// OpenGL - start
 	float vertices_old[] = {
@@ -580,7 +581,7 @@ Font::Font(String path)
 
 			//log_info(path);
 
-			atlas = /*asset_load_texture*/CreateRef<Texture>(path + String(".png"));
+			atlas = /*asset_load_texture*/Asset::load_texture(path + String(".png"));
 			name = path;
 			curr_line++;
 			continue;
@@ -606,7 +607,7 @@ Font::Font(String path)
 					this->glyphs[charId].xoff = charOffsetX;
 					this->glyphs[charId].yoff = charOffsetY;
 					this->glyphs[charId].xadv = charAdvanceX;
-					this->glyphs[charId].subTex = CreateRef<Subtexture>(this->atlas.get(), Vec2(charX, charY), Vec2(charWidth, charHeight));
+					this->glyphs[charId].subTex = CreateRef<Subtexture>(this->atlas, Vec2(charX, charY), Vec2(charWidth, charHeight));
 				}
 			}
 			curr_line++;
