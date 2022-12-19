@@ -55,7 +55,7 @@ void GameScene::init()
 
 
 	Entity* rain = create("rain");
-	rain->add(Sprite("data/effects_rain.png"));
+	//rain->add(Sprite("data/effects_rain.png"));
 	auto animator_rain = rain->add(Animator());
 	animator_rain->add_animation("data/anim/effects_rain");
 	rain->add(Effect(player));

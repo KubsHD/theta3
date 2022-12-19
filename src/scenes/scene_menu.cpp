@@ -53,7 +53,6 @@ void MenuScene::init()
 
 void MenuScene::destroy()
 {
-
 }
 
 void MenuScene::update()

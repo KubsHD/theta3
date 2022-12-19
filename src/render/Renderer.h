@@ -113,6 +113,7 @@ public:
 	void set_uniform_vec2(String uniformName, Vec2 v);
 	void set_uniform_float(String uniformName, float v);
 
+	// todo: change this to smart pointer or dont forget to cleanup
 	inline void set_camera(Camera* cam) { m_currentCamera = cam; };
 
 	void draw_target(Target* tg);

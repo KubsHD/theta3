@@ -57,6 +57,12 @@ Scene* current_scene;
 template<typename T>
 void change_scene()
 {
+	// reset camera when changing scene, otherwise it remembers the last one
+	ren.set_camera(nullptr);
+
+	if (current_scene)
+		current_scene->destroy();
+
 	delete current_scene;
 	current_scene = new T();
 	current_scene->ren = &ren;
