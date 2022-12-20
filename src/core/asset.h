@@ -23,6 +23,7 @@ public:
 	static Sound* load_sound(String path);
 	static Font* load_font(String path);
 
+	static const char* get_asset_path(const char* virtualPath);
 
 	static std::string read_file(String filePath);
 };

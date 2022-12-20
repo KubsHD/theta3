@@ -7,8 +7,8 @@
 
 Shader::Shader(String shaderName)
 {
-	String vertexShaderSource = Asset::read_file("data/shader/" + shaderName + ".vs");
-	String fragmentShaderSource = Asset::read_file("data/shader/" + shaderName + ".fs");
+	String vertexShaderSource = Asset::read_file("shader/" + shaderName + ".vs");
+	String fragmentShaderSource = Asset::read_file("shader/" + shaderName + ".fs");
 	const char* data;
 
 
