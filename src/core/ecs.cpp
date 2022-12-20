@@ -30,6 +30,11 @@ Entity* Scene::get(String name)
 
 
 
+void Scene::remove(Entity* name)
+{
+	m_entites_marked_for_deletion.push_back(name);
+}
+
 bool check_aabb(Collider* col, Collider* col2)
 {
 	return (col->position.x < col2->position.x + col2->size.x &&
@@ -90,18 +95,46 @@ void Scene::update()
 	{
 		auto ent = m_entities[i];
 
+		if (ent == nullptr)
+			continue;
+
 		for (auto comp : ent->m_components)
 		{
 			if (comp->enabled)
 				comp->update();
 		}
 	}
+
+	// remove entities
+	for (int i = m_entites_marked_for_deletion.size() - 1; i >= 0; --i) 
+	{
+		auto ent = m_entites_marked_for_deletion[i];
+
+		for (int y = 0; y < _colliders.size(); y++)
+		{
+			auto col = _colliders[y];
+
+			if (col->entity == ent)
+				_colliders.erase(std::remove(_colliders.begin(), _colliders.end(), col), _colliders.end());
+		}
+
+		for (auto comp : ent->m_components)
+		{
+			delete comp;
+		}
+
+		m_entities.erase(std::remove(m_entities.begin(), m_entities.end(), ent), m_entities.end());
+		m_entites_marked_for_deletion.pop_back();
+		delete ent;
+	}
 }
 
 void Scene::render()
 {
-	for (auto ent : m_entities)
+	for (int i = 0; i < m_entities.size(); i++)
 	{
+		auto ent = m_entities[i];
+
 		for (auto comp : ent->m_components)
 		{
 			if (comp->enabled)
@@ -128,6 +161,26 @@ void Scene::render()
 		ImGui::End();
 	}
 
+}
+
+bool Scene::collision_query_sphere_result(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor, Entity& hit)
+{
+	for (auto col : _colliders)
+	{
+		if (col->tag != tagToQueryFor)
+			continue;
+
+		if (requestor == col)
+			continue;
+
+		if (check_rect_sphere_collision(col->position.x, col->position.y, col->size.x, col->size.y, point.x, point.y, radius))
+		{
+			hit = *col->entity;
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool Scene::collision_query_sphere(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor)

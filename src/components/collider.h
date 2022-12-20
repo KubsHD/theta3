@@ -39,6 +39,13 @@ public:
 		return this->entity->world->collision_query_sphere(this, point, radius, tagToQueryFor);
 	}
 
+	bool check_sphere(Vec2 point, float radius, CollisionTag tagToQueryFor, Entity& hit)
+	{
+		last_circle_query.first = point;
+		last_circle_query.second = radius;
+		return this->entity->world->collision_query_sphere_result(this, point, radius, tagToQueryFor, hit);
+	}
+
 	void update() override
 	{
 		position = entity->position;

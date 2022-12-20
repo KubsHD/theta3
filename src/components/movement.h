@@ -11,8 +11,12 @@ public:
 	PlayerMovement() = default;
 	PlayerMovement(float speed);
 
+	bool is_on_broom = false;
 
 	float speed = 1.0f;
+
+	float speed_base = 2.0f;
+	float speed_when_attacking = 0.2f;
 	
 	void init() override;
 	void update() override;

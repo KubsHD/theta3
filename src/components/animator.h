@@ -27,6 +27,7 @@ private:
 
 public:
 	
+	// zarówno entity jak i animator maj¹ pole flip, przyda³oby siê imo zunifikowaæ to
 	bool flip = false;
 
 	void add_animation(String path);

@@ -14,7 +14,6 @@ Player::Player()
 
 void Player::update()
 {
-	;
 }
 
 void Player::render(Renderer* ren)

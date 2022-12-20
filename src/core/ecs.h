@@ -35,6 +35,8 @@ public:
 
 	Entity* get(String name);
 
+	void remove(Entity* name);
+
 	Vector<Entity*> get_entities() { return m_entities; };
 
 	void update_collider_list();
@@ -45,10 +47,12 @@ public:
 	virtual void destroy() = 0;
 
 private:
-	Vector<Entity*> m_entities;
+	Vector<Entity*> m_entities; 
+	Vector<Entity*> m_entites_marked_for_deletion;
 	Vector<Collider*> _colliders;
 public:
 	bool collision_query_sphere(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor);
+	bool collision_query_sphere_result(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor, Entity& hit);
 };
 
 

@@ -26,14 +26,15 @@ void Enemy::on_death()
 			std::cout << entity->name << " - Zginal\n" + std::to_string(entity->position.x)
 				+ " / " + std::to_string(entity->position.y);
 			
-			Audio::play_one_shot(audio_death);
+			//Audio::play_one_shot(audio_death);
 
 			// Death Loot
 			player->health += this->souls;
 			player->money += this->money;
 		
 
-			// skasuj przeciwnika			
+			// skasuj przeciwnika		
+			this->entity->world->remove(this->entity);
 		}
 	}
 }

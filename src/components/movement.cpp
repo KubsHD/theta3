@@ -3,6 +3,8 @@
 #include <SDL.h>
 #include <components/animator.h>
 #include <components/sprite.h>
+#include <components/collider.h>
+#include <components/enemy.h>
 #include <core/input.h>
 
 
@@ -36,8 +38,19 @@ void PlayerMovement::update()
 	{
 		is_attacking = true;
 
+		speed = speed_when_attacking;
+
+		Entity e;
+		if (entity->get<Collider>()->check_sphere(entity->position + Vec2(entity->flip ? -10 : 65, 30.0f), 25.0f, CollisionTag::Enemy, e))
+		{
+			e.get<Enemy>()->health = -1;
+		}
+
 		this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK], [this]() {
 			is_attacking = false;
+			speed = speed_base;
+
+			
 		});
 	}
 
@@ -48,10 +61,12 @@ void PlayerMovement::update()
 		entity->position.x += speed;
 		
 
-
-		this->entity->get<Animator>()->flip = false;
-		is_running = true;
-		entity->flip = false;
+		if (!is_attacking)
+		{
+			this->entity->get<Animator>()->flip = false;
+			is_running = true;
+			entity->flip = false;
+		}
 	}
 
 	if (Input::key_held(SDL_SCANCODE_S)) {
@@ -61,11 +76,14 @@ void PlayerMovement::update()
 
 	if (Input::key_held(SDL_SCANCODE_A)) {
 		entity->position.x -= speed;
-		this->entity->get<Animator>()->flip = true;
 
 
-		is_running = true;
-		entity->flip = true;
+		if (!is_attacking)
+		{
+			this->entity->get<Animator>()->flip = true;
+			is_running = true;
+			entity->flip = true;
+		}
 	}
 
 	if (Input::key_held(SDL_SCANCODE_W)) {
