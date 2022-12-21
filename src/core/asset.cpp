@@ -93,7 +93,10 @@ Font* Asset::load_font(String path)
 std::string Asset::read_file(String filePath)
 {
 	std::string content;
-	std::ifstream fileStream(filePath, std::ios::in);
+
+	auto realFilePath = get_asset_path(filePath.c_str());
+
+	std::ifstream fileStream(realFilePath, std::ios::in);
 
 	if (!fileStream.is_open()) {
 		std::cout << "file not found! " << filePath << std::endl;
@@ -110,7 +113,7 @@ std::string Asset::read_file(String filePath)
 	return content;
 }
 
-const char* get_asset_path(char* virtualPath)
+const char* Asset::get_asset_path(const char* virtualPath)
 {
 	size_t needed = snprintf(NULL, 0, "%s%s", path_prefix, virtualPath) + 1;
 

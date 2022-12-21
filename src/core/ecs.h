@@ -60,7 +60,7 @@ public:
 class Entity final {
 
 	friend class Scene;
-
+	
 public:
 	Entity() : position(640,320) {};
 
@@ -87,7 +87,11 @@ public:
 		return nullptr;
 	};
 
+	int get_component_count() {return m_components.size();}
+	int get_id() {return m_id;}
+
 private:
+	int m_id;
 	Vector<Component*> m_components;
 };
 
