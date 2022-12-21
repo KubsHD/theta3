@@ -71,7 +71,7 @@ void Renderer::init(Window* win)
 	Backbuffer->id = 0;
 	Backbuffer->target_size = Vec2(win->w, win->h);
 
-	DefaultFont = Asset::load_font("data/font/comic.fnt");
+	DefaultFont = Asset::load_font("font/comic.fnt");
 
 	// OpenGL - start
 	float vertices_old[] = {
@@ -482,7 +482,7 @@ Font::Font(String path)
 
 			char path[200] = { 0 };
 
-			sprintf(path, "data/font/%s", img);
+			sprintf(path, "font/%s", img);
 
 			//log_info(path);
 

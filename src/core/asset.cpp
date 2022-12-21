@@ -59,7 +59,7 @@ Texture* Asset::load_texture(String path)
 			return v;
 	}
 
-	Texture* tex = new Texture(path);
+	Texture* tex = new Texture(get_asset_path(path.c_str()));
 	cache_texture.emplace(path, tex);
 	return tex;
 }
@@ -72,7 +72,7 @@ Sound* Asset::load_sound(String path)
 			return v;
 	}
 
-	Sound* snd = Audio::create_sound(path);
+	Sound* snd = Audio::create_sound(get_asset_path(path.c_str()));
 	cache_sound.emplace(path, snd);
 	return snd;
 }
@@ -85,7 +85,7 @@ Font* Asset::load_font(String path)
 			return v;
 	}
 
-	Font* fnt = new Font(path);
+	Font* fnt = new Font(get_asset_path(path.c_str()));
 	cache_font.emplace(path, fnt);
 	return fnt;
 }

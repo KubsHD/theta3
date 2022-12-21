@@ -37,7 +37,6 @@ Sound* Audio::create_sound(String path)
 
 	s->path = path;
 	s->ptr = snd;
-
 	return s;
 }
 
@@ -49,10 +48,10 @@ void Audio::play_one_shot(Sound* snd)
 
 void Audio::play_one_shot(Sound* snd, float volume)
 {
-	result = snd->chnl->setVolume(volume);
+	result = sys->playSound(snd->ptr, NULL, 0, &snd->chnl);
 	fmod_check_for_error(result);
 
-	result = sys->playSound(snd->ptr, NULL, 0, &snd->chnl);
+	result = snd->chnl->setVolume(volume);
 	fmod_check_for_error(result);
 }
 

@@ -17,8 +17,8 @@ Adult::Adult(Player* player_ref) : Enemy(player_ref)
 
 	can_walk = true;
 
-	audio_death = Asset::load_sound("data/audio/adult_death.mp3");
-	audio_damage_dealt = Asset::load_sound("data/audio/adult_damage_dealt.mp3");
+	audio_death = Asset::load_sound("audio/adult_death.mp3");
+	audio_damage_dealt = Asset::load_sound("audio/adult_damage_dealt.mp3");
 }
 
 

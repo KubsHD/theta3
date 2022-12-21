@@ -30,19 +30,19 @@ void GameScene::init()
 
 	// Backround Image // TODO: replace with generated tiles maybe
 	auto map = create("Map");
-	map->add(Sprite("data/test_map.png"));
+	map->add(Sprite("test_map.png"));
 	map->add(MapGenerator());
 
 
 	// Backround Sound
-	Sound* backround_music = Asset::load_sound("data/audio/background_music_1.mp3");
+	Sound* backround_music = Asset::load_sound("audio/background_music_1.mp3");
 	Audio::play_one_shot(backround_music, 0.1f);
 
 
 
 	// Player initialization
 	auto player = create("Player");
-	player->add(Sprite("data/spr_player.png"));
+	player->add(Sprite("spr_player.png"));
 	player->get<Sprite>()->enabled = false;
 	// Forgetting hitboxs for noobs
 	Vec2 player_hitbox = Vec2(player->get<Sprite>()->tex->size.x * 2 / 3, player->get<Sprite>()->tex->size.y * 2 / 3);
@@ -51,11 +51,11 @@ void GameScene::init()
 	player->add(Player());
 
 	auto animator = player->add(Animator());
-	animator->add_animation("data/anim/anm_witch_atk_R");
-	animator->add_animation("data/anim/witch_broom_activation");
-	animator->add_animation("data/anim/witch_broom_move");
-	animator->add_animation("data/anim/witch_idle");
-	animator->add_animation("data/anim/witch_run");
+	animator->add_animation("anim/anm_witch_atk_R");
+	animator->add_animation("anim/witch_broom_activation");
+	animator->add_animation("anim/witch_broom_move");
+	animator->add_animation("anim/witch_idle");
+	animator->add_animation("anim/witch_run");
 	
 	
 	player->add(PlayerMovement(2.0f));
@@ -69,7 +69,7 @@ void GameScene::init()
 	Entity* rain = create("rain");
 	//rain->add(Sprite("data/effects_rain.png"));
 	auto animator_rain = rain->add(Animator());
-	animator_rain->add_animation("data/anim/effects_rain");
+	animator_rain->add_animation("anim/effects_rain");
 	rain->add(Effect(player));
 
 

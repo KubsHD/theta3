@@ -10,7 +10,7 @@
 
 void MenuScene::init()
 {
-	font = Asset::load_font("data/font/comic.fnt");
+	font = Asset::load_font("font/comic.fnt");
 	target = CreateRef<Target>(1280, 720);
 
 	{
@@ -48,7 +48,7 @@ void MenuScene::init()
 		btns.push_back(uib);
 	}
 
-	aud = Asset::load_sound("data/ui_1.wav");
+	aud = Asset::load_sound("ui_1.wav");
 }
 
 void MenuScene::destroy()

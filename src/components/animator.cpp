@@ -8,11 +8,11 @@ void Animator::add_animation(String path)
 	m_ad.push_back(AnimData());
 	auto& ad = m_ad.back();
 
-	ad.name = Path(path + ".json").filename().stem().string();
+	ad.name = Path(std::string(Asset::get_asset_path(path.c_str())) + ".json").filename().stem().string();
 
 	//log_info("Loaded anim: %s\n", ad.name);
 
-	std::ifstream ifs(path + ".json");
+	std::ifstream ifs(std::string(Asset::get_asset_path(path.c_str())) + ".json");
 	auto data = nlohmann::json::parse(ifs);
 	ad.animTex = Asset::load_texture(path + ".png");
 

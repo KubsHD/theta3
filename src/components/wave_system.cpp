@@ -49,12 +49,12 @@ void Wave::wave_spawn()
 	for (int i = 0; i < 5; i++)
 	{
 		Entity* adult = entity->world->create("AdultEnemyW" + std::to_string(waveID) + "E" + std::to_string(i));
-		adult->add(Sprite("data/spr_enemy_adult.png"));
+		adult->add(Sprite("spr_enemy_adult.png"));
 		adult->add(Collider(Vec2(32, 32), Vec2(0, 0)));
 
 		auto animator_adult = adult->add(Animator());
-		animator_adult->add_animation("data/anim/adult_enemy_run");
-		animator_adult->add_animation("data/anim/adult_enemy_attack");
+		animator_adult->add_animation("anim/adult_enemy_run");
+		animator_adult->add_animation("anim/adult_enemy_attack");
 
 		adult->add(Adult(player->get<Player>()));
 	}
