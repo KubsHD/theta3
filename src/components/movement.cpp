@@ -120,6 +120,10 @@ void PlayerMovement::update()
 	{
 		this->entity->get<Animator>()->play_anim(player_anim[IDLE]);
 	}
+	else if (is_on_broom)
+	{
+		this->entity->get<Animator>()->play_anim(player_anim[BROOM]);
+	}
 
 
 };
