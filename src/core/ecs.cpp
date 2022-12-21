@@ -9,6 +9,7 @@ Entity* Scene::create(String name)
 	auto ent = new Entity();
 	ent->world = this;
 	ent->name = name;
+	ent->m_id = this->m_entities.size() + 1;
 
 	for (auto ent : m_entities)
 		if (ent->name == name)
@@ -148,7 +149,8 @@ void Scene::render()
 		for (int i = 0; i < _colliders.size(); i++)
 		{
 			auto collider = _colliders[i];
-			if (ImGui::CollapsingHeader(collider->entity->name.c_str(), true))
+			auto name = std::to_string(collider->entity->m_id).c_str() + collider->entity->name;
+			if (ImGui::CollapsingHeader(name.c_str(), true))
 			{
 				ImGui::LabelText("Position", "X: %f Y: %f", collider->position.x, collider->position.y);
 				ImGui::LabelText("Size", "X: %f Y: %f ", collider->size.x, collider->size.y);

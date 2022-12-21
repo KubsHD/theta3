@@ -7,6 +7,7 @@
 #include <lib/imgui/imgui_impl_sdl.h>
 #include <lib/imgui/imgui_impl_opengl3.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <string>
 
 #include <core/audio.h>
 #include <core/network.h>
@@ -219,10 +220,12 @@ void render()
 			ImGui::Text("Entity list");
 			for (auto ent : current_scene->get_entities())
 			{
-				auto str = "Entity: " + ent->name;
+
+				auto str = "Entity " + (std::string)std::to_string(ent->get_id()).c_str() + ": " + ent->name;
 				if (ImGui::CollapsingHeader(str.c_str(), true))
 				{
 					ImGui::Text("Position X: %f, Y: %f", ent->position.x, ent->position.y);
+					ImGui::Text("Num of components: %d", ent->get_component_count());
 				}
 			}
 
