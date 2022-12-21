@@ -22,4 +22,6 @@ public:
 	void update() override;
 
 	void render(Renderer* ren) override;
+private:
+	float speed_on_broom = 4.0f;
 };

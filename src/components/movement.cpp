@@ -10,15 +10,16 @@
 
 enum PLAYER_STATES
 {
-	IDLE, RUN, ATTACK
+	IDLE, RUN, ATTACK, BROOM
 };
 
 
-String player_anim[3] =
+String player_anim[4] =
 {
 	"witch_idle",
 	"witch_run",
-	"anm_witch_atk_R"
+	"anm_witch_atk_R",
+	"witch_broom_move"
 };
 
 
@@ -34,26 +35,28 @@ void PlayerMovement::init()
 
 void PlayerMovement::update()
 {
-	if (Input::key_down(SDL_SCANCODE_SPACE))
+	if (!is_on_broom)
 	{
-		is_attacking = true;
-
-		speed = speed_when_attacking;
-
-		Entity e;
-		if (entity->get<Collider>()->check_sphere(entity->position + Vec2(entity->flip ? -10 : 65, 30.0f), 25.0f, CollisionTag::Enemy, e))
+		if (Input::key_down(SDL_SCANCODE_SPACE))
 		{
-			e.get<Enemy>()->health = -1;
-		}
+			is_attacking = true;
 
-		this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK], [this]() {
-			is_attacking = false;
+			speed = speed_when_attacking;
+
+			Entity e;
+			if (entity->get<Collider>()->check_sphere(entity->position + Vec2(entity->flip ? -10 : 65, 30.0f), 25.0f, CollisionTag::Enemy, e))
+			{
+				e.get<Enemy>()->health = -1;
+			}
+
+			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK], [this]() {
+				is_attacking = false;
 			speed = speed_base;
 
-			
-		});
-	}
 
+				});
+		}
+	}
 
 	is_running = false;
 	
@@ -92,11 +95,28 @@ void PlayerMovement::update()
 	}
 
 
+	if (Input::key_down(SDL_SCANCODE_G) && is_attacking == false) {
+		if (is_on_broom)
+		{
+			is_on_broom = false;
+			speed = speed_base;
+		}
+		else {
+			this->entity->get<Animator>()->play_one_shot("witch_broom_activation", []() {});
+			speed = speed_on_broom;
+			is_on_broom = true;
+		}
+		
+	}
+
 	if (is_running == true )
 	{
-		this->entity->get<Animator>()->play_anim(player_anim[RUN]);
+		if (!is_on_broom)
+			this->entity->get<Animator>()->play_anim(player_anim[RUN]);
+		else
+			this->entity->get<Animator>()->play_anim(player_anim[BROOM]);
 	}
-	else if (is_attacking == false)
+	else if (is_attacking == false && !is_on_broom)
 	{
 		this->entity->get<Animator>()->play_anim(player_anim[IDLE]);
 	}
