@@ -3,15 +3,11 @@
 #include <components/sprite.h>
 #include <components/movement.h>
 #include <components/animator.h>
-
-// player
-#include <components/player.h>
-
-// waves system
+#include <components/collider.h>
+#include <components/effects.h>
 #include <components/wave_system.h>
-
-// bullets
-#include <components/enemy_bullet.h>
+#include <components/player.h>
+#include <components/animator.h>
 
 
 #include <core/log.h>
@@ -19,10 +15,10 @@
 #include <core/input.h>
 #include <core/types.h>
 #include <core/ecs.h>
+#include <core/audio.h>
+#include <core/asset.h>
 
 #include "render/renderer.h"
-#include <components/collider.h>
-#include <components/effects.h>
 
 
 void GameScene::init()
@@ -33,14 +29,26 @@ void GameScene::init()
 
 	ren->set_camera(game_camera.get());
 
-	auto bg = create("bg");
-	bg->add(Sprite("data/tmp_map2.png"));
+	// Backround Image // TODO: replace with generated tiles maybe
+	auto background_image = create("bg");
+	background_image->add(Sprite("data/tmp_map2.png"));
+
+
+	// Backround Sound
+	Sound* backround_music = Asset::load_sound("data/audio/sad.mp3");
+	Audio::play_one_shot(backround_music);
+
+
 
 	// Player initialization
 	auto player = create("Player");
-	player->add(Collider(Vec2(32, 32), Vec2(0, 0)))->tag = CollisionTag::Player;
+	player->add(Sprite("data/spr_player.png"));
+	player->get<Sprite>()->enabled = false;
+	// Forgetting hitboxs for noobs
+	Vec2 player_hitbox = Vec2(player->get<Sprite>()->tex->size.x * 2 / 3, player->get<Sprite>()->tex->size.y * 2 / 3);
+	Vec2 player_hitbox_offset = Vec2(player->get<Sprite>()->tex->size.x * 2 / 6, player->get<Sprite>()->tex->size.y * 2 / 6);
+	player->add(Collider(player_hitbox, player_hitbox_offset))->tag = CollisionTag::Player;
 	player->add(Player());
-	//player->add(Sprite("data/spr_player.png"));
 
 	auto animator = player->add(Animator());
 	animator->add_animation("data/anim/anm_witch_atk_R");
@@ -65,21 +73,8 @@ void GameScene::init()
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
-
-
-
-	
-
-
-
-	//// Coin 
-	//Entity* money = create("money1");
-	//money->add(Sprite("data/coin.png"));
-	//auto animator_money = money->add(Animator());
-	//animator_money->add_animation("data/anim/coin");
-	//money->add(Money(player));
-
 }
+
 
 void GameScene::update()
 {

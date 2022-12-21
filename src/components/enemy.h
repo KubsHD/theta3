@@ -8,6 +8,7 @@
 #include <components/animator.h>
 #include <components/sprite.h>	
 #include <core/audio.h>
+#include <core/asset.h>
 #include <components/player.h>
 #include <render/Renderer.h>
 
@@ -23,14 +24,17 @@ public:
 	Player* player;
 	bool is_dead = false;
 	Collider* collider;
-
 	Vec2 text_pos;
-	int t = 0;
 
+	int attack_cooldown;
 	// gameplay
 	float health, damage, souls, speed, money;
 
 	Enemy() = default;
+	Enemy(Player* player_ref)
+	{
+		player = player_ref;
+	}
 
 	void init() override
 	{
