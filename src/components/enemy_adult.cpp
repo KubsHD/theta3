@@ -9,14 +9,16 @@ Adult::Adult(Player* player_ref) : Enemy(player_ref)
 	souls = 5;
 	money = 3;
 
+	attack_cooldown = 3;
 	speed = 1.1f;
 	temp_pos = Vec2(0, 0);
 	temp_val = 0;
-	temp = 30;
+	temp = 0;
 
 	can_walk = true;
 
-	audio_death = Asset::load_sound("data/audio/enemy_adult_death.mp3");
+	audio_death = Asset::load_sound("data/audio/adult_death.mp3");
+	audio_damage_dealt = Asset::load_sound("data/audio/adult_damage_dealt.mp3");
 }
 
 
@@ -70,20 +72,11 @@ void Adult::update()
 {
 	Enemy::update();
 
-	//if (temp < 0) {
-	//	// sztucznie zabijam
-	//	temp = 60;
-	//	health -= 15;
-	//}
-	//temp--;
-
-	
 	// Standard
 	float delta_x = player->entity->position.x - entity->position.x;
 	float delta_y = player->entity->position.y - entity->position.y;
 
 	facing_angle = atan2(delta_y, delta_x);
-
 
 	// Movement 
 	if (can_walk)
@@ -112,9 +105,22 @@ void Adult::update()
 		if (collider->check_sphere(Vec2(entity->position.x + collider->size.x / 2 + cos(facing_angle) * collider->size.x / 2,
 			entity->position.y + collider->size.y / 2 + sin(facing_angle) * collider->size.y / 2), 2, CollisionTag::Player))
 		{
-				this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this](){});
+			if (temp > attack_cooldown * 60)
+			{
+				// Play attack animation
+				this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
 
+				// Play attack sound
+				Audio::play_one_shot(audio_damage_dealt);
+
+				// Player Damage
+				player->health -= damage;
+
+				// Reset cooldown
+				temp = 0;
+			}
 		}
+		temp += 1;
 
 
 	// Animation

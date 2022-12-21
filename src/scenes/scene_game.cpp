@@ -1,22 +1,21 @@
 #include "scene_game.h"
 
-#include <components/sprite.h>
-#include <components/movement.h>
 #include <components/animator.h>
 #include <components/collider.h>
 #include <components/effects.h>
-#include <components/wave_system.h>
+#include <components/map.h>
+#include <components/movement.h>
 #include <components/player.h>
-#include <components/animator.h>
+#include <components/sprite.h>
+#include <components/wave_system.h>
 
-
+#include <core/asset.h>
+#include <core/audio.h>
+#include <core/ecs.h>
 #include <core/log.h>
-#include <core/window.h>
 #include <core/input.h>
 #include <core/types.h>
-#include <core/ecs.h>
-#include <core/audio.h>
-#include <core/asset.h>
+#include <core/window.h>
 
 #include "render/renderer.h"
 
@@ -30,13 +29,14 @@ void GameScene::init()
 	ren->set_camera(game_camera.get());
 
 	// Backround Image // TODO: replace with generated tiles maybe
-	auto background_image = create("bg");
-	background_image->add(Sprite("data/tmp_map2.png"));
+	auto map = create("Map");
+	map->add(Sprite("data/test_map.png"));
+	map->add(MapGenerator());
 
 
 	// Backround Sound
-	Sound* backround_music = Asset::load_sound("data/audio/sad.mp3");
-	Audio::play_one_shot(backround_music);
+	Sound* backround_music = Asset::load_sound("data/audio/background_music_1.mp3");
+	Audio::play_one_shot(backround_music, 0.1f);
 
 
 
@@ -62,6 +62,8 @@ void GameScene::init()
 
 	player_ref = player;
 
+	// TO MAP
+	map->get<MapGenerator>()->player_ref = player;
 
 
 	Entity* rain = create("rain");

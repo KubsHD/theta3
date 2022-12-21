@@ -20,13 +20,18 @@ class Enemy : public Component
 public:
 	// backend
 	float facing_angle, temp, text_opacity = 1;
+	int attack_cooldown;
+
+	// Audio
 	Sound* audio_death;
-	Player* player;
-	bool is_dead = false;
+	Sound* audio_damage_dealt;
+	Sound* audio_damage_recived;
+
 	Collider* collider;
 	Vec2 text_pos;
+	Player* player;
+	bool is_dead = false;
 
-	int attack_cooldown;
 	// gameplay
 	float health, damage, souls, speed, money;
 
