@@ -59,6 +59,7 @@ void Adult::init()
 	entity->position = rand_starting_pos;
 
 	this->entity->get<Animator>()->play_anim("adult_enemy_run");
+	this->entity->get<Sprite>()->enabled = false;
 
 	collider = entity->get<Collider>();
 	// todo zmienic na rozmiar spritea
@@ -80,35 +81,43 @@ void Adult::update()
 
 	// Movement 
 	if (can_walk)
-	{ 
-		if (!collider->check_sphere(Vec2(entity->position.x + collider->size.x/2 + cos(facing_angle) * collider->size.x/2,
-				entity->position.y + collider->size.y/2 + sin(facing_angle) * collider->size.y/2), 2, CollisionTag::Enemy))
+	{
+		if (collider->check_sphere(Vec2(entity->position.x + collider->size.x / 8 * 3 + cos(facing_angle) * collider->size.x / 8 * 3,
+			entity->position.y + collider->size.y / 8 * 3 + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Enemy))
 		{
-			if (abs(delta_x) + abs(delta_y) > 30) {
-				entity->position.x += cos(facing_angle) * speed;
-				entity->position.y += sin(facing_angle) * speed;
-			}
+			// If enemy on the path - move different way
+
 		}
-
-		/*else if (delta_y > 0 && !collider->check_sphere(Vec2(entity->position.x + collider->size.x / 2, entity->position.y + collider->size.y / 2), 2, CollisionTag::Enemy))
+		else if (!collider->check_sphere(Vec2(entity->position.x + collider->size.x / 8 * 3 + cos(facing_angle) * collider->size.x / 8 * 3,
+			entity->position.y + collider->size.y / 8 * 3 + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player))
 		{
-			entity->position.y += speed;
+			// If not close enough to player - come closer
+			entity->position.x += cos(facing_angle) * speed;
+			entity->position.y += sin(facing_angle) * speed;
 		}
-		else
+		else  	
 		{
-			entity->position.y += speed;
-		}*/
-
-
-		// Damage to player
-		//TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
-		if (collider->check_sphere(Vec2(entity->position.x + collider->size.x / 2 + cos(facing_angle) * collider->size.x / 2,
-			entity->position.y + collider->size.y / 2 + sin(facing_angle) * collider->size.y / 2), 2, CollisionTag::Player))
-		{
+			// If close enough to player - attack this mofo
 			if (temp > attack_cooldown * 60)
 			{
 				// Play attack animation
-				this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
+				// trick do animacji - XDDD
+				if (facing_angle > (M_PI / 2) || facing_angle < -(M_PI / 2))
+				{
+					if (this->entity->position.x > 0)
+					{
+						this->entity->position.x -= 10;
+						this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {this->entity->position.x += 10; });
+					}
+					else {
+						this->entity->position.x += 10;
+						this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {this->entity->position.x -= 10; });
+					}
+				}
+				else
+				{
+					this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
+				}
 
 				// Play attack sound
 				Audio::play_one_shot(audio_damage_dealt);
@@ -118,12 +127,13 @@ void Adult::update()
 
 				// Reset cooldown
 				temp = 0;
+
+
 			}
 		}
-		temp += 1;
+		//TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
 
-
-	// Animation
-	this->entity->get<Sprite>()->enabled = false;
+		// Cooldown countdown
+		temp += 1;			
 	}
 }
