@@ -10,15 +10,17 @@
 
 enum PLAYER_STATES
 {
-	IDLE, RUN, ATTACK, BROOM
+	IDLE, RUN, ATTACK1, ATTACK2, ATTACK3, BROOM
 };
 
 
-String player_anim[4] =
+Vector<String> player_anim =
 {
 	"witch_idle",
 	"witch_run",
-	"anm_witch_atk_R",
+	"anm_witch_attack_cmb_1",
+	"anm_witch_attack_cmb_2",
+	"anm_witch_attack_cmb_3",
 	"witch_broom_move"
 };
 
@@ -33,14 +35,25 @@ void PlayerMovement::init()
 }
 
 
+bool in_combo = false;
+int combo_step = 1;
+int counter = 0;
+
 void PlayerMovement::update()
 {
+	if (counter > 0)
+		counter--;
+	else
+		combo_step = 1;
+
+
 	if (!is_on_broom)
 	{
-		if (Input::key_down(SDL_SCANCODE_SPACE))
+		if (Input::key_down(SDL_SCANCODE_SPACE) && in_combo == false)
 		{
-			is_attacking = true;
+			counter = 60;
 
+			is_attacking = true;
 			speed = speed_when_attacking;
 
 			Entity e;
@@ -49,12 +62,42 @@ void PlayerMovement::update()
 				e.get<Enemy>()->health = -1;
 			}
 
-			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK], [this]() {
-				is_attacking = false;
-			speed = speed_base;
+			switch (combo_step)
+			{
+			case 1:
+
+				in_combo = true;
+				combo_step = 2;
+
+				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK1], [this]() {
+					is_attacking = false;
+					speed = speed_base;
+					in_combo = false;
+					});
+				break;
+			case 2:
+
+				combo_step = 3;
+
+				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK2], [this]() {
+					is_attacking = false;
+				speed = speed_base;
+				in_combo = false;
+					});
+				break;
+			case 3:
+
+				combo_step = 1;
+
+				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK3], [this]() {
+					is_attacking = false;
+					speed = speed_base;
+					in_combo = false;
+					});
+				break;
+			}
 
 
-				});
 		}
 	}
 

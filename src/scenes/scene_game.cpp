@@ -36,7 +36,7 @@ void GameScene::init()
 
 	// Backround Sound
 	Sound* backround_music = Asset::load_sound("audio/background_music_1.mp3");
-	Audio::play_one_shot(backround_music, 0.1f);
+	//Audio::play_one_shot(backround_music, 0.1f);
 
 
 
@@ -51,7 +51,10 @@ void GameScene::init()
 	player->add(Player());
 
 	auto animator = player->add(Animator());
-	animator->add_animation("anim/anm_witch_atk_R");
+	animator->add_animation("anim/anm_witch_attack_cmb_1");
+	animator->add_animation("anim/anm_witch_attack_cmb_2");
+	animator->add_animation("anim/anm_witch_attack_cmb_3");
+
 	animator->add_animation("anim/witch_broom_activation");
 	animator->add_animation("anim/witch_broom_move");
 	animator->add_animation("anim/witch_idle");
