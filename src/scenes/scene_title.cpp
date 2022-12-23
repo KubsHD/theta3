@@ -15,10 +15,10 @@ int title_stage = 0;
 
 void TitleScene::init()
 {
-	font2 = Asset::load_font("data/font/comic.fnt");
+	font2 = Asset::load_font("font/comic.fnt");
 	target = CreateRef<Target>(1280, 720);
-	network_prompt = Asset::load_texture("data/ui/ui_title_network_prompt.png");
-	test = Asset::load_texture("data/spr_player.png");
+	network_prompt = Asset::load_texture("ui/ui_title_network_prompt.png");
+	test = Asset::load_texture("spr_player.png");
 
 	auto btn_yes = this->create("btn_yes");
 	{
@@ -43,7 +43,7 @@ void TitleScene::init()
 	btn_no->position = Vec2(610, 420);
 
 
-	aud = Asset::load_sound("data/ui_1.wav");
+	aud = Asset::load_sound("ui_1.wav");
 
 }
 

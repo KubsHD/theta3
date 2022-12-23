@@ -123,4 +123,5 @@ public:
 	void draw_circle(Vec2 pos, float radius, Vec3 color = Vec3(0, 0, 0));
 	void draw_quad();
 	void draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);
+	void draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd);
 };

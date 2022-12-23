@@ -92,7 +92,6 @@ void MenuScene::render()
 	ren->set_target(target.get());
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 	ren->draw_text("Theta2", font, Vec2(100, 100));
-	ren->draw_circle(Vec2(0, 0), 100);
 
 
 	Scene::render();
