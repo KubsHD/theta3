@@ -7,6 +7,12 @@
 class UIButton;
 class Sound;
 
+enum MenuState {
+	Menu,
+	Settings,
+	NewGame
+};
+
 class MenuScene : public Scene {
 public:
 	MenuScene() {};
@@ -14,6 +20,8 @@ public:
 	Ref<Target> target;
 
 	Font* font;
+
+	MenuState current_state = MenuState::Menu;
 
 	int idx = 0;
 	Vector<UIButton*> btns;
