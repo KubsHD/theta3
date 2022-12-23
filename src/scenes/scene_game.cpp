@@ -51,7 +51,10 @@ void GameScene::init()
 	player->add(Player());
 
 	auto animator = player->add(Animator());
-	animator->add_animation("anim/anm_witch_atk_R");
+	animator->add_animation("anim/anm_witch_attack_cmb_1");
+	animator->add_animation("anim/anm_witch_attack_cmb_2");
+	animator->add_animation("anim/anm_witch_attack_cmb_3");
+
 	animator->add_animation("anim/witch_broom_activation");
 	animator->add_animation("anim/witch_broom_move");
 	animator->add_animation("anim/witch_idle");

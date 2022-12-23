@@ -18,6 +18,10 @@
 #include "core/ecs.h"
 #include "core/asset.h"
 
+#include "tools/tool.h"
+#include "tools/tool_anim.h"
+
+
 #include "render/renderer.h"
 
 #include <scenes/scene_game.h>
@@ -44,6 +48,8 @@ bool b_demo_open;
 
 static SDL_GLContext maincontext;
 
+float seconds_elapsed = 0.0f;
+
 SDL_Event evt;
 SDL_Window* win;
 
@@ -54,6 +60,8 @@ Audio audio;
 Asset ass;
 
 Scene* current_scene;
+
+Vector<Tool*> tools;
 
 template<typename T>
 void change_scene()
@@ -74,7 +82,7 @@ void change_scene()
 void init()
 {
 
-	#pragma region EngineInit
+#pragma region EngineInit
 
 	// Initializing SDL2O
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
@@ -87,8 +95,8 @@ void init()
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG );
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	// Initializing window
@@ -111,7 +119,7 @@ void init()
 	{
 		std::cout << "Failed to initialize GLAD. " << std::endl;
 	}
-	
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -124,26 +132,32 @@ void init()
 //io.ConfigViewportsNoTaskBarIcon = true;
 
 // Setup Dear ImGui style
-ImGui::StyleColorsDark();
-//ImGui::StyleColorsLight();
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsLight();
 
-// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-ImGuiStyle& style = ImGui::GetStyle();
-if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-{
-	style.WindowRounding = 0.0f;
-	style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-}
+	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
 
-ImGui_ImplSDL2_InitForOpenGL(window.pWindow, maincontext);
-ImGui_ImplOpenGL3_Init();
+	ImGui_ImplSDL2_InitForOpenGL(window.pWindow, maincontext);
+	ImGui_ImplOpenGL3_Init();
 
-glEnable(GL_BLEND);
-glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 #pragma endregion
 
+	tools.push_back(new AnimationTool());
 
+
+	for (auto& tool : tools)
+	{
+		tool->init();
+	}
 }
 
 void update(float dt)
@@ -156,6 +170,14 @@ void render()
 {
 	if (current_scene != nullptr)
 		current_scene->render();
+
+
+	{
+		for (auto& tool : tools)
+		{
+			tool->render();
+		}
+	}
 
 	{
 		ImGui::BeginMainMenuBar();
@@ -297,6 +319,7 @@ int main(int argc, char* argv[])
 		last = current;
 		lag += dt;
 
+		seconds_elapsed = current / 1000;
 
 		while (lag < MS)
 		{
@@ -349,4 +372,9 @@ int main(int argc, char* argv[])
 	SDL_Quit();
 
 	return 0;
+}
+
+float get_time()
+{
+	return seconds_elapsed;
 }

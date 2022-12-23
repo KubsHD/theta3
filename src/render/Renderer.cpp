@@ -10,6 +10,8 @@
 
 #include <core/window.h>
 
+#include <main.h>
+
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -349,13 +351,42 @@ void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale, float o
 			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
 			
 			draw_subtex(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), opacity, scale);
-			draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
+			//draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
 			adv += g.xadv;
 
 		}
 	}
 }
 
+
+void Renderer::draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, Vec3(pos, 0.0f));
+	//model = glm::translate(model, glm::vec3(size.x, size.y, 0.0f));
+
+	model = glm::scale(model, Vec3(size.x, size.y, 1.0f));
+
+	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
+
+
+	set_mvp(mvp);
+
+	glUseProgram(shd->get_id());
+
+	int modelLoc = glGetUniformLocation(shd->get_id(), "u_mvp");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp));
+
+	modelLoc = glGetUniformLocation(shd->get_id(), "u_time");
+	glUniform1f(modelLoc, get_time());
+
+
+	glBindVertexArray(VAO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
 
 Target* Renderer::Backbuffer;
 Font* Renderer::DefaultFont;
