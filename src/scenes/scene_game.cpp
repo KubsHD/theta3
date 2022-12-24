@@ -36,7 +36,7 @@ void GameScene::init()
 
 	// Backround Sound
 	Sound* backround_music = Asset::load_sound("audio/background_music_1.mp3");
-	//Audio::play_one_shot(backround_music, 0.1f);
+	Audio::play_one_shot(backround_music, 0.01f);
 
 
 
