@@ -12,6 +12,7 @@ struct AnimData {
 	Vector<Subtexture*> Frames;
 	int currentFrame;
 	Texture* animTex;
+	float speed_override = 1.0f;
 };
 
 class Animator : public Component {
@@ -31,7 +32,7 @@ public:
 	bool flip = false;
 
 	void add_animation(String path);
-	void play_one_shot(String name, std::function<void()> on_finish_anim);
+	void play_one_shot(String name, std::function<void()> on_finish_anim, float speed_mul = 1.0f);
 	void play_anim(String name);
 	void update() override;
 	void render(Renderer* ren) override;

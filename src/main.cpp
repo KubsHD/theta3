@@ -251,8 +251,8 @@ void render()
 				}
 			}
 
-			ImGui::End();
 		}
+			ImGui::End();
 	}
 
 	if (b_show_player_info)
@@ -264,8 +264,8 @@ void render()
 			auto ent2 = ent->get<Player>();
 			ImGui::Text("Health: %d", ent2->health);
 			ImGui::Text("Money: %d", ent2->money);
-			ImGui::End();
 		}
+			ImGui::End();
 	}
 
 }
@@ -341,6 +341,7 @@ int main(int argc, char* argv[])
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
+		ImGui::DockSpaceOverViewport(0, ImGuiDockNodeFlags_PassthruCentralNode);
 
 		render();
 

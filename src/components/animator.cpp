@@ -27,7 +27,7 @@ void Animator::add_animation(String path)
 	}
 }
 
-void Animator::play_one_shot(String name, std::function<void()> on_finish_anim)
+void Animator::play_one_shot(String name, std::function<void()> on_finish_anim, float speed_mul)
 {
 	m_finish_anim_cb = on_finish_anim;
 
@@ -36,6 +36,7 @@ void Animator::play_one_shot(String name, std::function<void()> on_finish_anim)
 		if (anim.name == name)
 		{
 			m_currentAnim = &anim;
+			m_currentAnim->speed_override = speed_mul;
 			m_animInProgress = false;
 			m_oneShotInProgress = true;
 			break;
@@ -62,7 +63,7 @@ void Animator::update()
 	{
 		timer++;
 
-		if (timer % 4 == 0)
+		if (timer % int(4 * m_currentAnim->speed_override) == 0)
 		{
 			m_currentAnim->currentFrame++;
 		}
@@ -80,7 +81,7 @@ void Animator::update()
 	{
 		timer++;
 
-		if (timer % 4 == 0)
+		if (timer % int(4 * m_currentLoopingAnim->speed_override) == 0)
 		{
 			m_currentLoopingAnim->currentFrame++;
 		}

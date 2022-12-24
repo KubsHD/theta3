@@ -160,8 +160,8 @@ void Scene::render()
 		ImGui::Text("Collision queries");
 
 
-		ImGui::End();
 	}
+	ImGui::End();
 
 }
 

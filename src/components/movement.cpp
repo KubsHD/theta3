@@ -73,7 +73,7 @@ void PlayerMovement::update()
 					is_attacking = false;
 					speed = speed_base;
 					in_combo = false;
-					});
+					}, 1.5f);
 				break;
 			case 2:
 
@@ -83,7 +83,7 @@ void PlayerMovement::update()
 					is_attacking = false;
 				speed = speed_base;
 				in_combo = false;
-					});
+					}, 1.5f);
 				break;
 			case 3:
 
@@ -93,7 +93,7 @@ void PlayerMovement::update()
 					is_attacking = false;
 					speed = speed_base;
 					in_combo = false;
-					});
+					}, 1.5f);
 				break;
 			}
 
