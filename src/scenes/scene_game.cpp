@@ -77,6 +77,7 @@ void GameScene::init()
 	rain->add(Effect(player));
 
 	auto hp = create("hpbar");
+	hp->position = Vec2(0, 0);
 	hp->add(UIHpBar());
 
 	auto wave = create("WaveManager");

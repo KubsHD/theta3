@@ -7,12 +7,12 @@ class Target;
 class Camera;
 
 class GameScene : public Scene {
-	Entity* player_ref;
 	Ref<Target> game_view;
 	Ref<Camera> game_camera;
 
 
 public:
+	Entity* player_ref;
 	void init() override;
 	void update() override;
 	void render() override;
