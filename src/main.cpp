@@ -49,6 +49,7 @@ bool b_demo_open;
 static SDL_GLContext maincontext;
 
 float seconds_elapsed = 0.0f;
+float g_time_scale = 1.0;
 
 SDL_Event evt;
 SDL_Window* win;
@@ -206,6 +207,7 @@ void render()
 
 			}
 
+
 			if (ImGui::MenuItem("ImGui Demo"))
 			{
 				b_demo_open = !b_demo_open;
@@ -234,6 +236,13 @@ void render()
 	if (b_demo_open)
 		ImGui::ShowDemoWindow();
 
+	if (ImGui::Begin("Global settings"))
+	{
+		float a = get_time_scale();
+		ImGui::DragFloat("Time scale", &a, 0.01f, 0.1f, 2.0f);
+		set_time_scale(a);
+	}
+	ImGui::End();
 
 	if (b_show_inspector)
 	{
@@ -276,7 +285,7 @@ int main(int argc, char* argv[])
 
 	init();
 	// Keeping game running at 60 fps
-	const float MS = 16.6666666666667f;
+	float MS = g_time_scale * 16.6666666666667f;
 	double last = SDL_GetTicks64();
 	double lag = 0.0;
 	double current = 0;
@@ -287,6 +296,7 @@ int main(int argc, char* argv[])
 
 	while (bRunning)
 	{
+		MS = g_time_scale * 16.6666666666667f;
 
 		while (SDL_PollEvent(&evt) != 0)
 		{
@@ -378,4 +388,14 @@ int main(int argc, char* argv[])
 float get_time()
 {
 	return seconds_elapsed;
+}
+
+float get_time_scale()
+{
+	return g_time_scale;
+}
+
+void set_time_scale(float t)
+{
+	g_time_scale = t;
 }

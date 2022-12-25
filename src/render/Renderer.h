@@ -108,6 +108,8 @@ public:
 
 	void update_size(int w, int h);
 
+	Target* get_target() { return m_currentTarget; }
+
 	void set_target(Target* tg);
 	void set_mvp(const glm::mat4& mvp);
 	void set_uniform_vec2(String uniformName, Vec2 v);

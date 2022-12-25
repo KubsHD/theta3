@@ -57,7 +57,7 @@ void PlayerMovement::update()
 			speed = speed_when_attacking;
 
 			Entity e;
-			if (entity->get<Collider>()->check_sphere(entity->position + Vec2(entity->flip ? -10 : 65, 30.0f), 25.0f, CollisionTag::Enemy, e))
+			if (entity->get<Collider>()->check_sphere(entity->position + Vec2(entity->flip ? -10 : 45, 30.0f), 25.0f, CollisionTag::Enemy, e))
 			{
 				e.get<Enemy>()->health = -1;
 			}

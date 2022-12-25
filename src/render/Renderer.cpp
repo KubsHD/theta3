@@ -156,6 +156,7 @@ Vec2 current_size;
 
 void Renderer::set_target(Target* tg)
 {
+	m_currentTarget = tg;
 	tg->bind();
 
 	projection = glm::ortho(0.0f, tg->target_size.x, tg->target_size.y, 0.0f, -1.0f, 1.0f);
