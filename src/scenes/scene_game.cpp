@@ -7,6 +7,7 @@
 #include <components/movement.h>
 #include <components/player.h>
 #include <components/sprite.h>
+#include <components/ui/ui_hp_bar.h>
 #include <components/wave_system.h>
 
 #include <core/asset.h>
@@ -75,6 +76,8 @@ void GameScene::init()
 	animator_rain->add_animation("anim/effects_rain");
 	rain->add(Effect(player));
 
+	auto hp = create("hpbar");
+	hp->add(UIHpBar());
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));

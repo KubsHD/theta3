@@ -98,6 +98,7 @@ class Renderer {
 
 	Shader* m_circleShader;
 	Shader* m_defaultShader;
+	Shader* m_filledBoxShader;
 
 public:
 	static Target* Backbuffer;
@@ -111,9 +112,6 @@ public:
 	Target* get_target() { return m_currentTarget; }
 
 	void set_target(Target* tg);
-	void set_mvp(const glm::mat4& mvp);
-	void set_uniform_vec2(String uniformName, Vec2 v);
-	void set_uniform_float(String uniformName, float v);
 
 	// todo: change this to smart pointer or dont forget to cleanup
 	inline void set_camera(Camera* cam) { m_currentCamera = cam; };
@@ -121,7 +119,7 @@ public:
 	void draw_target(Target* tg);
 	void draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);
 	void draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f, float scale = 1.0f, bool flip = false);
-	void draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0,0,0));
+	void draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0,0,0), bool fill = false);
 	void draw_circle(Vec2 pos, float radius, Vec3 color = Vec3(0, 0, 0));
 	void draw_quad();
 	void draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);

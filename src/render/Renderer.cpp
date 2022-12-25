@@ -150,6 +150,7 @@ void Renderer::init(Window* win)
 
 	m_circleShader = new Shader("circle");
 	m_defaultShader = new Shader("default");
+	m_filledBoxShader = new Shader("box");
 }
 
 Vec2 current_size;
@@ -197,31 +198,11 @@ void Renderer::draw_target(Target* tg)
 	model = glm::translate(model, Vec3(current_size.x / 2 - (size.x / 2 * scale), current_size.y / 2 - (size.y / 2 * scale), 0.0f));
 	model = glm::scale(model, Vec3(size.x * scale, size.y * scale, 1.0f));
 
-	set_mvp(projection * model);
+	m_defaultShader->set_uniform_mat4("u_mvp", projection * model);
 	draw_quad();
 }
 
-// NOTE: this sets mvp only for the default shader
-void Renderer::set_mvp(const glm::mat4& mvp)
-{
-	glUseProgram(m_defaultShader->get_id());
-	int modelLoc = glGetUniformLocation(m_defaultShader->get_id(), "u_mvp");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp));
-}
 
-void Renderer::set_uniform_vec2(String uniformName, Vec2 v)
-{
-	glUseProgram(m_defaultShader->get_id());
-	int modelLoc = glGetUniformLocation(m_defaultShader->get_id(), uniformName.c_str());
-	glUniform2fv(modelLoc, 1, glm::value_ptr(v));
-}
-
-void Renderer::set_uniform_float(String uniformName, float v)
-{
-	glUseProgram(m_defaultShader->get_id());
-	int modelLoc = glGetUniformLocation(m_defaultShader->get_id(), uniformName.c_str());
-	glUniform1fv(modelLoc, 1, &v);
-}
 
 void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity, bool flip)
 {
@@ -241,13 +222,13 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity, bool flip)
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 	glBindTexture(GL_TEXTURE_2D, tex->id);
-	set_uniform_float("u_opacity", opacity);
-	set_mvp(mvp);
+	m_defaultShader->set_uniform_float("u_opacity", opacity);
+	m_defaultShader->set_uniform_mat4("u_mvp", mvp);
+
 	draw_quad();
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	set_uniform_float("u_opacity", 1.0f);
-
+	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
 }
 
 void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale, bool flip)
@@ -267,8 +248,9 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
-	set_uniform_float("u_opacity", opacity);
-	set_mvp(mvp);
+	m_defaultShader->set_uniform_float("u_opacity", opacity);
+	m_defaultShader->set_uniform_mat4("u_mvp", mvp);
+
 	
 	glUseProgram(m_defaultShader->get_id());
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
@@ -278,11 +260,11 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	set_uniform_float("u_opacity", 1.0f);
+	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
 
 }
 
-void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)
+void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color, bool fill)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 
@@ -294,11 +276,24 @@ void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color)
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 
-	set_mvp(mvp);
+	m_filledBoxShader->set_uniform_mat4("u_mvp", mvp);
+	m_filledBoxShader->set_uniform_vec3("u_color", color);
+
+	m_defaultShader->set_uniform_mat4("u_mvp", mvp);
+
 	
-	glUseProgram(m_defaultShader->get_id());
-	glBindVertexArray(boxVAO);
-	glDrawArrays(GL_LINE_LOOP, 0, 4);
+	if (fill)
+	{
+		glUseProgram(m_filledBoxShader->get_id());
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+	else
+	{
+		glUseProgram(m_defaultShader->get_id());
+		glBindVertexArray(boxVAO);
+		glDrawArrays(GL_LINE_LOOP, 0, 4);
+	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -316,11 +311,8 @@ void Renderer::draw_circle(Vec2 pos, float radius, Vec3 color)
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 
-	set_mvp(mvp);
 
-	glUseProgram(m_circleShader->get_id());
-	int modelLoc = glGetUniformLocation(m_defaultShader->get_id(), "u_mvp");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp));
+	m_circleShader->set_uniform_mat4("u_mvp", mvp);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -372,16 +364,11 @@ void Renderer::draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd)
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 
-	set_mvp(mvp);
 
-	glUseProgram(shd->get_id());
 
-	int modelLoc = glGetUniformLocation(shd->get_id(), "u_mvp");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 
-	modelLoc = glGetUniformLocation(shd->get_id(), "u_time");
-	glUniform1f(modelLoc, get_time());
-
+	shd->set_uniform_mat4("u_mvp", mvp);
+	shd->set_uniform_float("u_time", get_time());
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
