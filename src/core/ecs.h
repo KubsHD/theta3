@@ -105,10 +105,10 @@ T* Entity::add(T&& comp /*= T()*/)
 	((Component*)instance)->entity = this;
 
 	((Component*)instance)->init();
-
+    
 	// hack
 	this->world->update_collider_list();
 
-	m_components.push_back(instance);
+	m_components.push_back((Component*)instance);
 	return instance;
 }

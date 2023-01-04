@@ -9,6 +9,7 @@
 #include <components/sprite.h>
 #include <components/ui/ui_hp_bar.h>
 #include <components/wave_system.h>
+#include <components/bullet_manager.h>
 
 #include <core/asset.h>
 #include <core/audio.h>
@@ -45,7 +46,7 @@ void GameScene::init()
 	auto player = create("Player");
 	player->add(Sprite("spr_player.png"));
 	player->get<Sprite>()->enabled = false;
-	// Forgetting hitboxs for noobs
+	// Forgiving hitboxs for noobs
 	Vec2 player_hitbox = Vec2(player->get<Sprite>()->tex->size.x * 2 / 3, player->get<Sprite>()->tex->size.y * 2 / 3);
 	Vec2 player_hitbox_offset = Vec2(player->get<Sprite>()->tex->size.x * 2 / 6, player->get<Sprite>()->tex->size.y * 2 / 6);
 	player->add(Collider(player_hitbox, player_hitbox_offset))->tag = CollisionTag::Player;
@@ -82,6 +83,9 @@ void GameScene::init()
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
+
+	auto bullet_system = create("BulletManager");
+	bullet_system->add(BulletManager());
 }
 
 

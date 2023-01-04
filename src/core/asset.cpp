@@ -4,6 +4,8 @@
 #include <core/audio.h>
 #include <core/log.h>
 
+#include <SDL_filesystem.h>
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -37,7 +39,7 @@ void Asset::init(Renderer* ren)
 
 	char* base = SDL_GetBasePath();
 	int size = snprintf(NULL, 0, "%sdata/", base);
-	char* buf = malloc(size + 1);
+	char* buf = (char*)malloc(size + 1);
 	sprintf(buf, "%sdata/", base);
 	path_prefix = buf;
 #else
