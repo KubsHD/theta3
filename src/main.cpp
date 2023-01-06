@@ -213,12 +213,6 @@ void render()
 				b_demo_open = !b_demo_open;
 			}
 
-			if (ImGui::MenuItem("Player info"))
-			{
-				if (current_scene != nullptr)
-					b_show_player_info = true;
-			}
-
 			ImGui::EndMenu();
 		}
 
@@ -264,18 +258,7 @@ void render()
 			ImGui::End();
 	}
 
-	if (b_show_player_info)
-	{
-		if (ImGui::Begin("Player info"))
-		{
-			auto ent = current_scene->get("Player");
-			ImGui::Text("Entity: %s", ent->name.c_str());
-			auto ent2 = ent->get<Player>();
-			ImGui::Text("Health: %d", ent2->health);
-			ImGui::Text("Money: %d", ent2->money);
-		}
-			ImGui::End();
-	}
+	
 
 }
 

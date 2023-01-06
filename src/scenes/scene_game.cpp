@@ -1,16 +1,19 @@
 #include "scene_game.h"
 
 #include <components/animator.h>
+#include <components/bullet_manager.h>
 #include <components/collider.h>
 #include <components/effects.h>
+#include <components/gun.h>
 #include <components/map.h>
 #include <components/movement.h>
 #include <components/player.h>
 #include <components/sprite.h>
-#include <components/ui/ui_hp_bar.h>
 #include <components/wave_system.h>
-#include <components/bullet_manager.h>
-#include <components/gun.h>
+#include <components/ui/ui_hp_bar.h>
+#include <components/ui/ui_weapon.h>
+
+
 
 #include <core/asset.h>
 #include <core/audio.h>
@@ -101,7 +104,7 @@ void GameScene::init()
 	
 	ui->add(UIHpBar());
 	ui->add(UICoinDisplay());
-
+	ui->add(UIWeaponDisplay());
 
 }
 

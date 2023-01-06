@@ -16,7 +16,8 @@ class Wave : public Component
 public: 
 	Entity* player;
 
-	int waveID, round_time, frames;
+	int waveID, frames;
+	static unsigned int round_time;
 
 	// Maintenance
 	Wave() = default;

@@ -2,7 +2,7 @@
 
 #include <lib/imgui/imgui.h>
 
-
+unsigned int Wave::round_time;
 
 Wave::Wave(Entity* player)
 {
@@ -22,7 +22,7 @@ void Wave::update()
 	{
 		round_time++;
 		frames = 0;
-		if (round_time == 1)
+		if (round_time % 4 == 0 )
 		{
 			waveID++;
 			wave_spawn();

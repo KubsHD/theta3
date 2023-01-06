@@ -167,6 +167,7 @@ void Adult::update()
 				Audio::play_one_shot(audio_damage_dealt);
 
 				// Player Damage
+				if (player->god_mode == false)
 				player->health -= damage;
 
 				// Reset cooldown

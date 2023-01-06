@@ -14,15 +14,12 @@ public:
 	int money;
 	float damage_melee;
 	Collider* collider;
-
+	bool god_mode;
+	float health_decay;
 
 	Player();
-
-
 
 	// Maintenance
 	void update() override;
 	void render(Renderer* ren) override;
-private:
-	float health_decay;
 };
