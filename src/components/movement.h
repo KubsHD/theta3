@@ -15,7 +15,7 @@ public:
 
 	float speed = 1.0f;
 
-	float melee_damage = 15.0f;
+	float melee_damage = 100.0f;
 	float knockback_rate = 1.0f;
 
 	float speed_base = 2.0f;

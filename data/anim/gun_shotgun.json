@@ -1,0 +1,58 @@
+{ "frames": {
+   "gun 0.aseprite": {
+    "frame": { "x": 19, "y": 18, "w": 20, "h": 16 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 3, "y": 8, "w": 20, "h": 16 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 100
+   },
+   "gun 1.aseprite": {
+    "frame": { "x": 19, "y": 0, "w": 19, "h": 18 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 4, "y": 6, "w": 19, "h": 18 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 100
+   },
+   "gun 2.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 19, "h": 20 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 4, "y": 4, "w": 19, "h": 20 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 100
+   },
+   "gun 3.aseprite": {
+    "frame": { "x": 19, "y": 0, "w": 19, "h": 18 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 4, "y": 6, "w": 19, "h": 18 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 100
+   },
+   "gun 4.aseprite": {
+    "frame": { "x": 19, "y": 18, "w": 20, "h": 16 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 3, "y": 8, "w": 20, "h": 16 },
+    "sourceSize": { "w": 24, "h": 24 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.3-beta6-dev",
+  "image": "gun.png",
+  "format": "RGBA8888",
+  "size": { "w": 39, "h": 34 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

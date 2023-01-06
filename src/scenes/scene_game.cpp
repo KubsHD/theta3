@@ -10,6 +10,7 @@
 #include <components/ui/ui_hp_bar.h>
 #include <components/wave_system.h>
 #include <components/bullet_manager.h>
+#include <components/gun.h>
 
 #include <core/asset.h>
 #include <core/audio.h>
@@ -37,8 +38,8 @@ void GameScene::init()
 
 
 	// Backround Sound
-	Sound* backround_music = Asset::load_sound("audio/background_music_1.mp3");
-	Audio::play_one_shot(backround_music, 0.01f);
+	//Sound* backround_music = Asset::load_sound("audio/background_music_1.mp3");
+	//Audio::play_one_shot(backround_music, 0.01f);
 
 
 
@@ -80,6 +81,9 @@ void GameScene::init()
 	auto hp = create("hpbar");
 	hp->position = Vec2(0, 0);
 	hp->add(UIHpBar());
+
+	auto gun_spawner = create("GunSpawner");
+	gun_spawner->add(GunSpawner(player));
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
