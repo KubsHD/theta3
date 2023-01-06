@@ -2,6 +2,7 @@
 
 #include <render/Renderer.h>
 #include <string>
+#include <core/log.h>
 
 
 Player::Player()
@@ -10,10 +11,13 @@ Player::Player()
 	speed = 1.0f;
 	damage_melee = 10;
 	money = 0;
+	health_decay = 0.05f;
 }
 
 void Player::update()
 {
+	log_info("%f", health);
+	health -= health_decay;
 }
 
 void Player::render(Renderer* ren)

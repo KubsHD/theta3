@@ -161,7 +161,7 @@ void PlayerMovement::update()
 	}
 	else if (is_attacking == false && !is_on_broom)
 	{
-		this->entity->get<Animator>()->play_anim(player_anim[IDLE]);
+		this->entity->get<Animator>()->play_anim(player_anim[IDLE], 2.0f);
 	}
 	else if (is_on_broom)
 	{

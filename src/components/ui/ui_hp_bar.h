@@ -14,13 +14,13 @@ public:
 	{
 		GameScene* scn = ((GameScene*)this->entity->world);
 
-		width = scn->player_ref->get<Player>()->health * 9.6f;
+		width = scn->player_ref->get<Player>()->health * 12.8f;
 	}
 
 
 	void render(Renderer* ren) override
 	{
-		ren->ui_draw_box(Vec2(0, 530), Vec2(width, 50), Vec3(1, 0.2f, 0), true);
+		ren->draw_box(Vec2(0, 700), Vec2(width, 50), Vec3(1, 0.2f, 0), true);
 	}
 
 };

@@ -21,12 +21,16 @@
 #include <core/window.h>
 
 #include "render/renderer.h"
-
+#include <components/ui/ui_coin_display.h>
+#include "main.h"
+#include "scene_menu.h"
 
 void GameScene::init()
 {
 	// zmiana rozmiaru wymaga zmiany w spawnowaniu przeciwnikow [enemy]::init
 	game_view = CreateRef<Target>(960, 540);
+	menu_view = CreateRef<Target>(1280, 720, TargetScalingType::Linear);
+
 	game_camera = CreateRef<Camera>();
 
 	ren->set_camera(game_camera.get());
@@ -54,6 +58,7 @@ void GameScene::init()
 	player->add(Player());
 
 	auto animator = player->add(Animator());
+
 	animator->add_animation("anim/anm_witch_attack_cmb_1");
 	animator->add_animation("anim/anm_witch_attack_cmb_2");
 	animator->add_animation("anim/anm_witch_attack_cmb_3");
@@ -78,18 +83,23 @@ void GameScene::init()
 	animator_rain->add_animation("anim/effects_rain");
 	rain->add(Effect(player));
 
-	// prepare ui
-	ui = new Entity();
-	ui->name = "ui";
-	ui->world = this;
-	ui->position = Vec2(0, 0);
-	ui->add(UIHpBar());
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
 
 	auto bullet_system = create("BulletManager");
 	bullet_system->add(BulletManager());
+
+
+	// prepare ui
+	ui = new Entity();
+	ui->name = "ui";
+	ui->world = this;
+	ui->position = Vec2(0, 0);
+	
+	ui->add(UIHpBar());
+	ui->add(UICoinDisplay());
+
 
 }
 
@@ -116,6 +126,13 @@ void GameScene::update()
 	game_camera->position = Vec2(player_ref->position.x - game_view->target_size.x / 2 + 16,
 							player_ref->position.y - game_view->target_size.y / 2 + 16);
 
+	if (player_ref->get<Player>()->health < 0)
+	{
+		// game over
+		change_scene<MenuScene>();
+		return;
+	}
+
 	//if (Input::key_down(SDL_SCANCODE_ESCAPE))
 	//	Game::Quit();
 	for (auto& c : ui->get_components())
@@ -126,20 +143,31 @@ void GameScene::update()
 
 void GameScene::render()
 {
+	ren->set_camera(game_camera.get());
 	ren->set_target(game_view.get());
-	ren->clear();
+	ren->clear(Vec3(0.03f, 0.4f, 0.03f));
 
 	Scene::render();
+
+
+	ren->set_camera(nullptr);
+	ren->set_target(menu_view.get());
+
+	ren->clear(Vec3(0, 0, 0));
+
 
 	for (auto& c : ui->get_components())
 	{
 		c->render(ren);
 	}
 
+
 	ren->set_target(Renderer::Backbuffer);
-	ren->clear();
+	ren->clear(Vec3(0, 0, 0));
 
 	ren->draw_target(game_view.get());
+	ren->draw_target(menu_view.get());
+
 }
 
 void GameScene::destroy()

@@ -44,13 +44,14 @@ void Animator::play_one_shot(String name, std::function<void()> on_finish_anim, 
 	}
 }
 
-void Animator::play_anim(String name)
+void Animator::play_anim(String name, float speed_mul)
 {
 	for (auto& anim : m_ad)
 	{
 		if (anim.name == name)
 		{
 			m_currentLoopingAnim = &anim;
+			m_currentLoopingAnim->speed_override = speed_mul;
 			m_animInProgress = true;
 			break;
 		}
