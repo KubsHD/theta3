@@ -28,6 +28,8 @@ void GameScene::init()
 {
 	// zmiana rozmiaru wymaga zmiany w spawnowaniu przeciwnikow [enemy]::init
 	game_view = CreateRef<Target>(960, 540);
+	menu_view = CreateRef<Target>(1280, 720);
+
 	game_camera = CreateRef<Camera>();
 
 	ren->set_camera(game_camera.get());
@@ -144,16 +146,23 @@ void GameScene::render()
 
 
 	ren->set_camera(nullptr);
-	ren->set_target(Renderer::Backbuffer);
+	ren->set_target(menu_view.get());
 
 	ren->clear(Vec3(0, 0, 0));
 
-	ren->draw_target(game_view.get());
 
 	for (auto& c : ui->get_components())
 	{
 		c->render(ren);
 	}
+
+
+	ren->set_target(Renderer::Backbuffer);
+	ren->clear(Vec3(0, 0, 0));
+
+	ren->draw_target(game_view.get());
+	ren->draw_target(menu_view.get());
+
 }
 
 void GameScene::destroy()

@@ -8,7 +8,10 @@ class Camera;
 
 class GameScene : public Scene {
 	Ref<Target> game_view;
+	Ref<Target> menu_view;
+	
 	Ref<Camera> game_camera;
+
 
 
 public:
