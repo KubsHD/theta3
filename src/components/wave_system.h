@@ -10,15 +10,18 @@
 #include <components/enemy_soldier.h>
 #include <components/enemy_fatass.h>
 
+
 class Wave : public Component
 {
 public: 
 	Entity* player;
+
 	int waveID, round_time, frames;
 
 	// Maintenance
 	Wave() = default;
 	Wave(Entity* player);
+
 
 	void init() override;
 	void update()  override;

@@ -56,7 +56,8 @@ void Wave::wave_spawn()
 		animator_adult->add_animation("anim/adult_enemy_run");
 		animator_adult->add_animation("anim/adult_enemy_attack");
 
-		adult->add(Adult(player->get<Player>()));
+		adult->add(Adult(player->get<Player>()));		
+
 	
 
 

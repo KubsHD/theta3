@@ -86,9 +86,6 @@ void GameScene::init()
 	rain->add(Effect(player));
 
 
-	auto gun_spawner = create("GunSpawner");
-	gun_spawner->add(GunSpawner(player));
-
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
 

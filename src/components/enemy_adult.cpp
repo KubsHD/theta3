@@ -1,5 +1,6 @@
 #include "enemy_adult.h"
 #include "collider.h"
+#include "gun.h"
 
 
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
@@ -26,11 +27,22 @@ void Adult::on_death()
 {
 	if (health <= 0 && is_dead == false)
 	{
+		Entity* gun =this->entity->world->create("Gun" + entity->name);
+		auto gun_collider = gun->add(Collider(Vec2(24, 24), Vec2(0, 0)));
+		gun_collider->tag = CollisionTag::Gun;
+
+		auto animator_gun = gun->add(Animator());
+		animator_gun->add_animation("anim/gun_shotgun");
+		gun->add(Gun(player->entity));
+		
+
 		is_dead = true;
 
+		this->death_pos = entity->position;
+
 		if (audio_death != NULL) {
-			std::cout << entity->name << " - Zginal\n" + std::to_string(entity->position.x)
-				+ " / " + std::to_string(entity->position.y);
+			std::cout << entity->name << " - Zginal : " + std::to_string(entity->position.x)
+				+ " / " + std::to_string(entity->position.y) + "\n";
 
 			// play death sound
 			Audio::play_one_shot(audio_death);
@@ -41,6 +53,8 @@ void Adult::on_death()
 
 			// skasuj przeciwnika		
 			this->entity->world->remove(this->entity);
+
+
 		}
 	}
 }
