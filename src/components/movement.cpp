@@ -59,7 +59,7 @@ void PlayerMovement::update()
 			Entity e;
 			if (entity->get<Collider>()->check_sphere(entity->position + Vec2(entity->flip ? -10 : 45, 30.0f), 25.0f, CollisionTag::Enemy, e))
 			{
-				e.get<Enemy>()->health = -1;
+				e.get<Enemy>()->take_damage(melee_damage, knockback_rate);
 			}
 
 			switch (combo_step)

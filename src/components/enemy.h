@@ -70,5 +70,6 @@ public:
 		//	//text_opacity -= 0.1f;
 		//}
 	}
+	void take_damage(float melee_damage, float knockback_rate);
 };
 
