@@ -37,7 +37,6 @@ void GameScene::init()
 
 	// Backround Image // TODO: replace with generated tiles maybe
 	auto map = create("Map");
-	map->add(Sprite("test_map.png"));
 	map->add(MapGenerator());
 
 
@@ -51,6 +50,9 @@ void GameScene::init()
 	auto player = create("Player");
 	player->add(Sprite("spr_player.png"));
 	player->get<Sprite>()->enabled = false;
+
+	player->position = Vec2(100, 100);
+
 	// Forgiving hitboxs for noobs
 	Vec2 player_hitbox = Vec2(player->get<Sprite>()->tex->size.x * 2 / 3, player->get<Sprite>()->tex->size.y * 2 / 3);
 	Vec2 player_hitbox_offset = Vec2(player->get<Sprite>()->tex->size.x * 2 / 6, player->get<Sprite>()->tex->size.y * 2 / 6);

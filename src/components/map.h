@@ -4,6 +4,8 @@
 #include <SDL_stdinc.h>
 #include <components/animator.h>
 #include <components/sprite.h>
+#include <core/asset.h>
+#include <lib/imgui/imgui.h>
 
 
 class Player;
@@ -13,27 +15,74 @@ class MapGenerator : public Component
 public:
 	Entity* player_ref;
 
+	Vector<Texture*> map_textures;
+	UnorderedMap<Vec2, int> positions_to_draw_map_at;
+
+	Vec2 player_pos_during_last_map_update = Vec2(100000, 10000);
+
+	int a = 300;
 
 	MapGenerator() = default;
+	MapGenerator(Entity* player)
+	{
+		player_ref = player;
+	}
 
 	void init() override
 	{	
-
+		map_textures.push_back(Asset::load_texture("map/main/png/Level_0.png"));
 	}
 
+	long roundDown(long n, long m) {
+		return n >= 0 ? (n / m) * m : ((n - m + 1) / m) * m;
+	}
 	void update() override
 	{
-		if (player_ref != NULL)
+		auto player_pos = player_ref->position;
+
+		Vec2 map_pos = Vec2(0,0);
+		map_pos.x = roundDown(player_pos.x, 960);
+		map_pos.y = roundDown(player_pos.y, 544);
+
+		auto delta = (player_pos - player_pos_during_last_map_update);
+
+		if (glm::length(delta) > a)
 		{
+			positions_to_draw_map_at.clear();
 
+			positions_to_draw_map_at.insert({ map_pos, 0 });
+			
+			positions_to_draw_map_at.insert({ map_pos + Vec2(960, 544), 0 });
+			positions_to_draw_map_at.insert({ map_pos - Vec2(960, 544), 0 });
 
+			positions_to_draw_map_at.insert({ map_pos + Vec2(960, -544), 0 });
+			positions_to_draw_map_at.insert({ map_pos - Vec2(960, -544), 0 });
 
+			positions_to_draw_map_at.insert({ map_pos + Vec2(960, 0), 0 });
+			positions_to_draw_map_at.insert({ map_pos - Vec2(960, 0), 0 });
+			
+			positions_to_draw_map_at.insert({ map_pos + Vec2(0, 544), 0 });
+			positions_to_draw_map_at.insert({ map_pos - Vec2(0, 544), 0 });
+
+			
+			player_pos_during_last_map_update = player_pos;
 		}
 	};
 
 	void render(Renderer* ren) override
 	{
-		
+		{
+			if(	ImGui::Begin("Map dbg"))
+			{
+				ImGui::InputInt("a", &a);
+			}
+			ImGui::End();
+		}
+
+		for (auto [pos, idx] : positions_to_draw_map_at)
+		{
+			ren->draw_tex(map_textures[idx], pos);
+		}
 	}
 };
 

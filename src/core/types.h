@@ -5,8 +5,14 @@
 #include <filesystem>
 #include <string>
 #include <map>
+#include <unordered_map>
 
 #include <glm/glm.hpp>
+
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
+
 
 using Vec2 = glm::vec2;
 using Vec3 = glm::vec3;
@@ -29,3 +35,6 @@ constexpr Ref<T> CreateRef(Args&& ... args)
 
 template<typename K, typename V>
 using Map = std::map<K,V>;
+
+template<typename K, typename V>
+using UnorderedMap = std::unordered_map<K, V>;
