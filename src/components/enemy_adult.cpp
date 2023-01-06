@@ -74,8 +74,8 @@ void Adult::update()
 	Enemy::update();
 
 	// Standard
-	float delta_x = player->entity->position.x - entity->position.x;
-	float delta_y = player->entity->position.y - entity->position.y;
+	delta_x = player->entity->position.x - entity->position.x > 0 ? 1 : -1;
+	delta_y = player->entity->position.y - entity->position.y > 0 ? 1 : -1;;
 
 	facing_angle = atan2(delta_y, delta_x);
 
@@ -92,8 +92,8 @@ void Adult::update()
 			entity->position.y + collider->size.y / 8 * 3 + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player))
 		{
 			// If not close enough to player - come closer
-			entity->position.x += cos(facing_angle) * speed;
-			entity->position.y += sin(facing_angle) * speed;
+			//entity->position.x += cos(facing_angle) * speed;
+			//entity->position.y += sin(facing_angle) * speed;
 		}
 		else  	
 		{
@@ -106,12 +106,12 @@ void Adult::update()
 				{
 					if (this->entity->position.x > 0)
 					{
-						this->entity->position.x -= 10;
-						this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {this->entity->position.x += 10; });
+						delta_x = -10;
+						this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
 					}
 					else {
-						this->entity->position.x += 10;
-						this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {this->entity->position.x -= 10; });
+						delta_x = 10;
+						this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
 					}
 				}
 				else
@@ -134,6 +134,9 @@ void Adult::update()
 		//TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
 
 		// Cooldown countdown
-		temp += 1;			
+		temp += 1;		
+
+		entity->position += Vec2(delta_x, delta_y);
+
 	}
 }

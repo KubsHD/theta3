@@ -32,6 +32,9 @@ public:
 	Player* player;
 	bool is_dead = false;
 
+	// movement
+	float delta_x, delta_y;
+
 	// gameplay
 	float health, damage, souls, speed, money;
 

@@ -24,8 +24,8 @@ public:
 	{
 		if (ImGui::Begin("Animation Tool"))
 		{
-			ImGui::End();
 		}
+		ImGui::End();
 	}
 
 };

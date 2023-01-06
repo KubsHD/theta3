@@ -33,7 +33,7 @@ public:
 
 	void add_animation(String path);
 	void play_one_shot(String name, std::function<void()> on_finish_anim, float speed_mul = 1.0f);
-	void play_anim(String name);
+	void play_anim(String name, float speed_mul = 1.0f);
 	void update() override;
 	void render(Renderer* ren) override;
 };

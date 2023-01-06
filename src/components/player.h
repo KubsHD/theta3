@@ -10,8 +10,10 @@ class Player : public Component
 {
 public:
 	// Custom variables
-	int health, speed, money;
+	float health, speed;
+	int money;
 	float damage_melee;
+
 
 	// Constructors
 	Player();
@@ -20,4 +22,6 @@ public:
 	// Maintenance
 	void update() override;
 	void render(Renderer* ren) override;
+private:
+	float health_decay;
 };

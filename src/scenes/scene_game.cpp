@@ -20,6 +20,7 @@
 #include <core/window.h>
 
 #include "render/renderer.h"
+#include <components/ui/ui_coin_display.h>
 
 
 void GameScene::init()
@@ -53,6 +54,7 @@ void GameScene::init()
 	player->add(Player());
 
 	auto animator = player->add(Animator());
+
 	animator->add_animation("anim/anm_witch_attack_cmb_1");
 	animator->add_animation("anim/anm_witch_attack_cmb_2");
 	animator->add_animation("anim/anm_witch_attack_cmb_3");
@@ -77,18 +79,24 @@ void GameScene::init()
 	animator_rain->add_animation("anim/effects_rain");
 	rain->add(Effect(player));
 
-	// prepare ui
-	ui = new Entity();
-	ui->name = "ui";
-	ui->world = this;
-	ui->position = Vec2(0, 0);
-	ui->add(UIHpBar());
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
 
 	auto bullet_system = create("BulletManager");
 	bullet_system->add(BulletManager());
+
+
+	// prepare ui
+	ui = new Entity();
+	ui->name = "ui";
+	ui->world = this;
+	ui->position = Vec2(0, 0);
+	
+	ui->add(UIHpBar());
+	ui->add(UICoinDisplay());
+
+
 }
 
 
@@ -124,20 +132,24 @@ void GameScene::update()
 
 void GameScene::render()
 {
+	ren->set_camera(game_camera.get());
 	ren->set_target(game_view.get());
-	ren->clear();
+	ren->clear(Vec3(0.03f, 0.4f, 0.03f));
 
 	Scene::render();
+
+
+	ren->set_camera(nullptr);
+	ren->set_target(Renderer::Backbuffer);
+
+	ren->clear(Vec3(0, 0, 0));
+
+	ren->draw_target(game_view.get());
 
 	for (auto& c : ui->get_components())
 	{
 		c->render(ren);
 	}
-
-	ren->set_target(Renderer::Backbuffer);
-	ren->clear();
-
-	ren->draw_target(game_view.get());
 }
 
 void GameScene::destroy()
