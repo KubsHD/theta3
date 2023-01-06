@@ -13,6 +13,7 @@ class GameScene : public Scene {
 
 public:
 	Entity* player_ref;
+	Entity* ui;
 	void init() override;
 	void update() override;
 	void render() override;

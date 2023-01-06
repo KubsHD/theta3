@@ -77,9 +77,12 @@ void GameScene::init()
 	animator_rain->add_animation("anim/effects_rain");
 	rain->add(Effect(player));
 
-	auto hp = create("hpbar");
-	hp->position = Vec2(0, 0);
-	hp->add(UIHpBar());
+	// prepare ui
+	ui = new Entity();
+	ui->name = "ui";
+	ui->world = this;
+	ui->position = Vec2(0, 0);
+	ui->add(UIHpBar());
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
@@ -113,6 +116,10 @@ void GameScene::update()
 
 	//if (Input::key_down(SDL_SCANCODE_ESCAPE))
 	//	Game::Quit();
+	for (auto& c : ui->get_components())
+	{
+		c->update();
+	}
 }
 
 void GameScene::render()
@@ -121,6 +128,11 @@ void GameScene::render()
 	ren->clear();
 
 	Scene::render();
+
+	for (auto& c : ui->get_components())
+	{
+		c->render(ren);
+	}
 
 	ren->set_target(Renderer::Backbuffer);
 	ren->clear();
