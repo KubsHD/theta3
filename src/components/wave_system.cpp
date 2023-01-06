@@ -22,7 +22,7 @@ void Wave::update()
 	{
 		round_time++;
 		frames = 0;
-		if (round_time % 5 == 0)
+		if (round_time == 1)
 		{
 			waveID++;
 			wave_spawn();
@@ -46,9 +46,9 @@ void Wave::render(Renderer* ren)
 void Wave::wave_spawn()
 {
 
-	//for (int i = 0; i < 5; i++)
-	//{
-		Entity* adult = entity->world->create("AdultEnemyW" + std::to_string(waveID) + "E" + std::to_string(1));
+	for (int i = 0; i < 4; i++)
+	{
+		Entity* adult = entity->world->create("AdultEnemyW" + std::to_string(waveID) + "E" + std::to_string(i));
 		adult->add(Sprite("spr_enemy_adult.png"));
 		adult->add(Collider(Vec2(32, 32), Vec2(0, 0)));
 
@@ -57,38 +57,38 @@ void Wave::wave_spawn()
 		animator_adult->add_animation("anim/adult_enemy_attack");
 
 		adult->add(Adult(player->get<Player>()));
-	//}
+	
 
 
 
 	//// Enemy Child
-	//Entity* child = entity->world->create("ChildEnemy1");
-	//child->add(Child(player));
-	//child->add(Sprite("data/spr_enemy_child.png"));
-
+	//Entity* child = entity->world->create("ChildEnemyW" + std::to_string(waveID) + "E" + std::to_string(i));
+	//child->add(Sprite("spr_enemy_child.png"));
 	//auto animator_child = child->add(Animator());
+	//child->add(Child(player));
 
+	//
 	//// Enemy Policeman
-	//Entity* policeman = entity->world->create("PolicemanEnemy1");
+	//Entity* policeman = entity->world->create("PolicemanEnemyW" + std::to_string(waveID) + "E" + std::to_string(i));
 	//policeman->add(Policeman(player));
-	//policeman->add(Sprite("data/spr_enemy_police.png"));
+	//policeman->add(Sprite("spr_enemy_police.png"));
 
 	//auto animator_policeman = policeman->add(Animator());
 
 
 	//// Enemy Soldier
-	//Entity* soldier = entity->world->create("SoldierEnemy1");
+	//Entity* soldier = entity->world->create("SoldierEnemyW" + std::to_string(waveID) + "E" + std::to_string(i));
 	//soldier->add(Soldier(player));
-	//soldier->add(Sprite("data/spr_enemy_soldier.png"));
+	//soldier->add(Sprite("spr_enemy_soldier.png"));
 
 	//auto animator_soldier = soldier->add(Animator());
 
 	//// Enemy Fatass
-	//Entity* fatass = entity->world->create("FatassEnemy1");
+	//Entity* fatass = entity->world->create("FatassEnemyW" + std::to_string(waveID) + "E" + std::to_string(i));
 	//fatass->add(Fatass(player));
-	//fatass->add(Sprite("data/spr_enemy_fatass.png"));
+	//fatass->add(Sprite("spr_enemy_fatass.png"));
 
 	//auto animator_fatass = fatass->add(Animator());
-
+	}
 
 }

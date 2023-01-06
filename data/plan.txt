@@ -1,0 +1,17 @@
+- dziwek przestaje grac po x razach
+- naprawic blokowanie
+- naprawic hitbox gracza
+- naprawic hitbox ataku
+- mozliwosc zadawania dmg wielu wrogom na raz
+
+
+- dmg numbers
+- ładne menu
+- hp wrogów
+- knockback wrogów
+- mape zrobic
+- atak na miotle lub dostanie dmg przerywa latanie
+- paski hp nad wrogami // jesli hp < 100
+- dodac bronie
+- UI
+- potki

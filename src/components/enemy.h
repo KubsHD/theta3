@@ -11,7 +11,7 @@
 #include <core/asset.h>
 #include <components/player.h>
 #include <render/Renderer.h>
-
+#include <components/gun.h>
 
 class Player;
 
@@ -53,15 +53,14 @@ public:
 	}
 
 	void flip_sprite();
-	void on_death();
+	//void on_death();
 	void handle_collision();
 
 	void update() override 
 	{
 		//text_pos.y -= 0.1f;
-	
 
-		on_death();
+		//on_death();
 		flip_sprite();
 	}
 

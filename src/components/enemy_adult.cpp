@@ -22,9 +22,36 @@ Adult::Adult(Player* player_ref) : Enemy(player_ref)
 }
 
 
+void Adult::on_death()
+{
+	if (health <= 0 && is_dead == false)
+	{
+		is_dead = true;
+
+		if (audio_death != NULL) {
+			std::cout << entity->name << " - Zginal\n" + std::to_string(entity->position.x)
+				+ " / " + std::to_string(entity->position.y);
+
+			// play death sound
+			Audio::play_one_shot(audio_death);
+
+			// Death Loot Instantly added
+			player->health += this->souls;
+			player->money += this->money;
+
+			// skasuj przeciwnika		
+			this->entity->world->remove(this->entity);
+		}
+	}
+}
+
+
 void Adult::init()
 {
 	Enemy::init();
+
+	on_death();
+
 
 	Vec2 rand_starting_pos;
 	// 2 sides of the screen for x
@@ -72,6 +99,9 @@ void Adult::init()
 void Adult::update()
 {
 	Enemy::update();
+
+	on_death();
+
 
 	// Standard
 	delta_x = player->entity->position.x - entity->position.x > 0 ? 1 : -1;

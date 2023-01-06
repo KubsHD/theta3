@@ -20,6 +20,8 @@ public:
 	Adult() = default;
 	Adult(Player* player_ref);
 
+	void on_death();
+
 	// Maintenance
 	void init() override;
 	void update() override;
@@ -27,4 +29,5 @@ public:
 	{
 		Enemy::render(ren);
 	};
+
 };

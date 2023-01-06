@@ -15,30 +15,30 @@ void Enemy::flip_sprite()
 	}
 }
 
-
-void Enemy::on_death()
-{
-	if (health <= 0 && is_dead == false)
-	{
-		is_dead = true;
-
-		if (audio_death != NULL) {
-			std::cout << entity->name << " - Zginal\n" + std::to_string(entity->position.x)
-				+ " / " + std::to_string(entity->position.y);
-			
-			// play death sound
-			Audio::play_one_shot(audio_death);
-
-			// Death Loot Instantly added
-			player->health += this->souls;
-			player->money += this->money;
-		
-
-			// skasuj przeciwnika		
-			this->entity->world->remove(this->entity);
-		}
-	}
-}
+// Move to each enemy type separately
+//void Enemy::on_death()
+//{
+//	if (health <= 0 && is_dead == false)
+//	{
+//		is_dead = true;
+//
+//		if (audio_death != NULL) {
+//			std::cout << entity->name << " - Zginal\n" + std::to_string(entity->position.x)
+//				+ " / " + std::to_string(entity->position.y);
+//			
+//			// play death sound
+//			Audio::play_one_shot(audio_death);
+//
+//			// Death Loot Instantly added
+//			player->health += this->souls;
+//			player->money += this->money;
+//			
+//
+//			// skasuj przeciwnika		
+//			this->entity->world->remove(this->entity);
+//		}
+//	}
+//}
 
 void Enemy::handle_collision()
 {
