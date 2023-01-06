@@ -389,7 +389,7 @@ void Renderer::ui_draw_box(Vec2 pos, Vec2 size, Vec3 color /*= Vec3(0, 0, 0)*/, 
 Target* Renderer::Backbuffer;
 Font* Renderer::DefaultFont;
 
-Target::Target(int w, int h)
+Target::Target(int w, int h, TargetScalingType type)
 {
 	if (w == 0 && h == 0)
 	{
@@ -405,8 +405,8 @@ Target::Target(int w, int h)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, type == TargetScalingType::Nearest ? GL_NEAREST : GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, type == TargetScalingType::Nearest ? GL_NEAREST : GL_LINEAR);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);

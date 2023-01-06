@@ -22,13 +22,14 @@
 
 #include "render/renderer.h"
 #include <components/ui/ui_coin_display.h>
-
+#include "main.h"
+#include "scene_menu.h"
 
 void GameScene::init()
 {
 	// zmiana rozmiaru wymaga zmiany w spawnowaniu przeciwnikow [enemy]::init
 	game_view = CreateRef<Target>(960, 540);
-	menu_view = CreateRef<Target>(1280, 720);
+	menu_view = CreateRef<Target>(1280, 720, TargetScalingType::Linear);
 
 	game_camera = CreateRef<Camera>();
 
@@ -127,6 +128,13 @@ void GameScene::update()
 	// Player in center of the screen
 	game_camera->position = Vec2(player_ref->position.x - game_view->target_size.x / 2 + 16,
 							player_ref->position.y - game_view->target_size.y / 2 + 16);
+
+	if (player_ref->get<Player>()->health < 0)
+	{
+		// game over
+		change_scene<MenuScene>();
+		return;
+	}
 
 	//if (Input::key_down(SDL_SCANCODE_ESCAPE))
 	//	Game::Quit();

@@ -46,10 +46,15 @@ public:
 	unsigned int vaoId;
 };
 
+enum TargetScalingType {
+	Nearest,
+	Linear
+};
+
 class Target
 {
 public:
-	Target(int w, int h);
+	Target(int w, int h, TargetScalingType type = TargetScalingType::Nearest);
 	~Target();
 
 	void bind();
