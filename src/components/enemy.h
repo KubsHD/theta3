@@ -28,7 +28,7 @@ public:
 	Sound* audio_damage_recived;
 
 	Collider* collider;
-	Vec2 text_pos;
+	Vec2 death_pos, text_pos;
 	Player* player;
 	bool is_dead = false;
 

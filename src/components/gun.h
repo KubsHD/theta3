@@ -17,9 +17,11 @@ class Player;
 
 enum GUN_TYPE { SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW };
 
-class GunSpawner: public Component
+class Gun : public Component
 {
 public:
+	Vec2 last_dead_enemy_pos;
+
 	// backend
 	float attack_cooldown;
 	float damage;
@@ -31,10 +33,11 @@ public:
 	Entity* player;
 
 
-	GunSpawner() = default;
-	GunSpawner(Entity* player_ref)
+	Gun() = default;
+	Gun(Entity* player_ref)
 	{
 		player = player_ref;
+		last_dead_enemy_pos = Vec2(0, 0);
 		attack_cooldown = 0;
 		magazine_capacity = 0;
 		bullets_left = 0;
@@ -43,6 +46,8 @@ public:
 
 	void init() override
 	{
+		entity->position = player->position;
+		this->entity->get<Animator>()->play_anim("gun_shotgun");
 	}
 
 	void update() override
@@ -53,5 +58,5 @@ public:
 	{
 	}
 
-	void drop_gun(int gun_type);
+	void gun_choose_type(int gun_type);
 };

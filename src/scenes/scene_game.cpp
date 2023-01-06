@@ -85,14 +85,12 @@ void GameScene::init()
 	ui->position = Vec2(0, 0);
 	ui->add(UIHpBar());
 
-	auto gun_spawner = create("GunSpawner");
-	gun_spawner->add(GunSpawner(player));
-
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
 
 	auto bullet_system = create("BulletManager");
 	bullet_system->add(BulletManager());
+
 }
 
 
