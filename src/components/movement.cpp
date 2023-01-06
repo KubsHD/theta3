@@ -49,7 +49,7 @@ void PlayerMovement::update()
 
 	if (!is_on_broom)
 	{
-		if (Input::key_down(SDL_SCANCODE_SPACE) && in_combo == false)
+		if (Input::mouse_down(0) && in_combo == false)
 		{
 			counter = 60;
 
