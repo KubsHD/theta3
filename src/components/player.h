@@ -13,10 +13,11 @@ public:
 	float health, speed;
 	int money;
 	float damage_melee;
+	Collider* collider;
 
 
-	// Constructors
 	Player();
+
 
 
 	// Maintenance

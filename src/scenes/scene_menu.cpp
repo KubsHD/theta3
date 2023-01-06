@@ -7,9 +7,16 @@
 #include <main.h>
 #include <core/asset.h>
 
-
 void MenuScene::init()
 {
+
+	Entity* witch = create("Player");
+	auto animator_witch = witch->add(Animator());
+	animator_witch->add_animation("anim/witch_run");
+	animator_witch->play_anim("witch_run");
+	witch->position = Vec2(260, 113);
+
+
 	font = Asset::load_font("font/comic.fnt");
 	target = CreateRef<Target>(1280, 720);
 
@@ -49,11 +56,13 @@ void MenuScene::init()
 	}
 
 	aud = Asset::load_sound("ui_1.wav");
+
 }
 
 void MenuScene::destroy()
 {
 }
+
 
 void MenuScene::update()
 {

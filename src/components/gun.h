@@ -4,6 +4,7 @@
 #include <core/ecs.h>
 #include <stdlib.h>
 #include <SDL_stdinc.h>
+#include <core/log.h>
 
 #include <components/animator.h>
 #include <components/collider.h>
@@ -30,13 +31,14 @@ public:
 
 	// Audio
 	Sound* shot, on_hit;
-	Entity* player;
+	Entity* enemy;
+	Collider* collider;
 
 
 	Gun() = default;
-	Gun(Entity* player_ref)
+	Gun(Entity* enemy_ref)
 	{
-		player = player_ref;
+		enemy = enemy_ref;
 		last_dead_enemy_pos = Vec2(0, 0);
 		attack_cooldown = 0;
 		magazine_capacity = 0;
@@ -46,12 +48,20 @@ public:
 
 	void init() override
 	{
-		entity->position = player->position;
+		entity->position = enemy->position;
+		collider = this->entity->get<Collider>();
 		this->entity->get<Animator>()->play_anim("gun_shotgun");
 	}
 
 	void update() override
 	{
+		if (collider->check_sphere(Vec2(this->entity->position.x + collider->size.x/2,
+			this->entity->position.y + collider->size.y/2), 20.0f, CollisionTag::Player))
+		{
+			log_info("you picked up A GUN OMG");
+			this->entity->world->remove(this->entity);
+				
+		}
 	}
 
 	void render(Renderer* ren) override

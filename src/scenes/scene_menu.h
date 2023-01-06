@@ -2,7 +2,12 @@
 
 #include <core/types.h>
 #include <core/ecs.h>
+#include <core/window.h>
+#include <core/audio.h>
 #include <render/Renderer.h>
+
+#include <components/enemy_adult.h>
+#include <components/animator.h>
 
 class UIButton;
 class Sound;

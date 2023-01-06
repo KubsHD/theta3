@@ -16,7 +16,6 @@ Player::Player()
 
 void Player::update()
 {
-	log_info("%f", health);
 	health -= health_decay;
 }
 
