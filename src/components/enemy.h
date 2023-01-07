@@ -34,6 +34,7 @@ public:
 
 	// movement
 	float delta_x, delta_y;
+	int direction_x, direction_y;
 
 	// gameplay
 	float health, damage, souls, speed, money;

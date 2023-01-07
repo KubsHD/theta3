@@ -185,6 +185,27 @@ bool Scene::collision_query_sphere_result(Collider* requestor, Vec2 point, float
 	return false;
 }
 
+
+std::list<Collider*> Scene::collision_query_sphere_list(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor)
+{
+	std::list<Collider*> result;
+	for (auto col : _colliders)
+	{
+		if (col->tag != tagToQueryFor)
+			continue;
+
+		if (requestor == col)
+			continue;
+
+		if (check_rect_sphere_collision(col->position.x, col->position.y, col->size.x, col->size.y, point.x, point.y, radius))
+			result.push_back(col);
+	}
+
+	return result;
+}
+
+
+
 bool Scene::collision_query_sphere(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor)
 {
 	for (auto col : _colliders)

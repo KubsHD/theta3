@@ -34,7 +34,7 @@ void Player::render(Renderer* ren)
 		ImGui::Text("health: %f", this->health);
 		ImGui::Text("money: %d", this->money);
 		ImGui::Text("speed: %d", this->speed);
-		ImGui::Text("health_decay: %d", this->health_decay);
+		ImGui::Text("health_decay: %f", this->health_decay);
 		ImGui::Text("god_mode: %d", this->god_mode);
 
 		if (ImGui::Button("god mode"))

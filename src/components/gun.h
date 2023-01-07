@@ -19,7 +19,7 @@ class Player;
 enum GUN_TYPE { SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW };
 
 class Gun : public Component
-{
+{ 
 public:
 	Vec2 last_dead_enemy_pos;
 

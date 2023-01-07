@@ -27,6 +27,7 @@ void Adult::on_death()
 {
 	if (health <= 0 && is_dead == false)
 	{
+		// DROP GUN
 		Entity* gun =this->entity->world->create("Gun" + entity->name);
 		auto gun_collider = gun->add(Collider(Vec2(24, 24), Vec2(0, 0)));
 		gun_collider->tag = CollisionTag::Gun;
@@ -36,6 +37,7 @@ void Adult::on_death()
 		gun->add(Gun(this->entity));
 		
 
+		// fucking die lmao
 		is_dead = true;
 
 		this->death_pos = entity->position;
@@ -118,8 +120,12 @@ void Adult::update()
 
 
 	// Standard
-	delta_x = player->entity->position.x - entity->position.x > 0 ? 1 : -1;
-	delta_y = player->entity->position.y - entity->position.y > 0 ? 1 : -1;;
+	delta_x = player->entity->position.x - entity->position.x;// > 0 ? 1 : -1;
+	delta_y = player->entity->position.y - entity->position.y;// > 0 ? 1 : -1;
+	direction_x = player->entity->position.x - entity->position.x > 0 ? 1 : -1;
+	direction_y = player->entity->position.y - entity->position.y > 0 ? 1 : -1;
+
+	
 
 	facing_angle = atan2(delta_y, delta_x);
 
@@ -136,8 +142,8 @@ void Adult::update()
 			entity->position.y + collider->size.y / 8 * 3 + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player))
 		{
 			// If not close enough to player - come closer
-			//entity->position.x += cos(facing_angle) * speed;
-			//entity->position.y += sin(facing_angle) * speed;
+			entity->position.x += cos(facing_angle) * speed;
+			entity->position.y += sin(facing_angle) * speed;
 		}
 		else  	
 		{
@@ -181,7 +187,8 @@ void Adult::update()
 		// Cooldown countdown
 		temp += 1;		
 
-		entity->position += Vec2(delta_x, delta_y);
+		// 8-way movement
+		//entity->position += Vec2(speed * direction_x, speed * direction_y);
 
 	}
 }

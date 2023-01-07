@@ -47,6 +47,16 @@ public:
 		return this->entity->world->collision_query_sphere_result(this, point, radius, tagToQueryFor, hit);
 	}
 
+
+	std::list<Collider*> check_sphere_list(Vec2 point, float radius, CollisionTag tagToQueryFor)
+	{
+		last_circle_query.first = point;
+		last_circle_query.second = radius;
+		return this->entity->world->collision_query_sphere_list(this, point, radius, tagToQueryFor);
+	}
+
+
+
 	void update() override
 	{
 		position = entity->position;

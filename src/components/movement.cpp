@@ -49,17 +49,17 @@ void PlayerMovement::update()
 
 	if (!is_on_broom)
 	{
-		if (Input::mouse_down(0) && in_combo == false)
+		if ((Input::mouse_down(0) || Input::key_down(SDL_SCANCODE_SPACE)) && in_combo == false)
 		{
 			counter = 60;
 
 			is_attacking = true;
 			speed = speed_when_attacking;
 
-			Entity e;
-			if (entity->get<Collider>()->check_sphere(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy, e))
+			for (auto& i: entity->get<Collider>()->check_sphere_list(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy))
 			{
-				e.get<Enemy>()->take_damage(melee_damage, knockback_rate);
+
+				i->entity->get<Enemy>()->take_damage(melee_damage, knockback_rate);
 			}
 
 			switch (combo_step)

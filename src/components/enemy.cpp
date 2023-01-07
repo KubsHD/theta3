@@ -50,7 +50,5 @@ void Enemy::take_damage(float melee_damage, float knockback_rate)
 	health -= melee_damage;
 	// todo: knockback
 	Audio::play_one_shot(audio_damage_dealt);
-	delta_x *= -1 * knockback_rate;
-	//delta_y *= -1 * knockback_rate;
-	entity->position += Vec2(delta_x, delta_y);
+	//entity->position += Vec2(-1 * * delta_x * knockback_rate, -1 * delta_x * knockback_rate);
 }
