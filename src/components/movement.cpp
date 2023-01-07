@@ -160,9 +160,9 @@ void PlayerMovement::update()
 		else
 		{
 			ParticleProps pp = {
-			.Position = entity->position + Vec2(entity->flip ? 0 : 24.0f, 32.0f),
+			.Position = entity->position + Vec2(entity->flip ? 32.0f : 0, 32.0f),
 			.LifeTime = 100,
-			.Velocity = Vec2((entity->flip ? 1 : -1) * speed * 5, 0.3f),
+			.Velocity = Vec2((entity->flip ? 1 : -1) * speed * 2, 0.3f),
 			.Color = Vec3(0.3f,1.0f,1.0f),
 			.Size = Vec2(10.0f ,10.0f),
 			.Shape = ParticleShape::Rectangle,
