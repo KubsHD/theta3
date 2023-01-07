@@ -27,6 +27,12 @@ void Audio::init()
 	fmod_check_for_error(result);
 }
 
+void Audio::update()
+{
+	result = sys->update();
+	fmod_check_for_error(result);
+}
+
 Sound* Audio::create_sound(String path)
 {
 	Sound* s = new Sound();

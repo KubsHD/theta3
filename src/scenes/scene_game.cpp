@@ -27,6 +27,7 @@
 #include <components/ui/ui_coin_display.h>
 #include "main.h"
 #include "scene_menu.h"
+#include <components/skills/skill_spinner.h>
 
 void GameScene::init()
 {
@@ -61,6 +62,9 @@ void GameScene::init()
 	Vec2 player_hitbox_offset = Vec2(player->get<Sprite>()->tex->size.x * 2 / 6, player->get<Sprite>()->tex->size.y * 2 / 6);
 	player->add(Collider(player_hitbox, player_hitbox_offset))->tag = CollisionTag::Player;
 	player->add(Player());
+
+	player->add(SkillSpinner(player));
+
 
 	auto animator = player->add(Animator());
 

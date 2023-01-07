@@ -11,7 +11,7 @@ static Uint8* last_key_state;
 
 static SDL_GameController* pad;
 
-
+static SDL_MouseWheelEvent wheel;
 
 static bool input_locked = false;
 
@@ -49,6 +49,11 @@ void Input::update(SDL_Event& evt)
 
 }
 
+void Input::update_mouse_wheel(SDL_MouseWheelEvent mevt)
+{
+	wheel = mevt;
+}
+
 bool Input::mouse_down(int key)
 {
 	if (key == 0)
@@ -67,6 +72,11 @@ bool Input::key_down(SDL_Scancode scanCode)
 bool Input::key_held(SDL_Scancode scanCode)
 {
 	return (key_state[scanCode] == 1 && last_key_state[scanCode] == 1);
+}
+
+SDL_MouseWheelEvent Input::get_wheel()
+{
+	return wheel;
 }
 
 void Input::init()

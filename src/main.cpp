@@ -299,7 +299,9 @@ int main(int argc, char* argv[])
 				}
 
 				break;
-
+			case SDL_MOUSEWHEEL:
+				input.update_mouse_wheel(evt.wheel);
+				break;
 			case SDL_QUIT:
 				bRunning = false;
 				break;
@@ -354,7 +356,7 @@ int main(int argc, char* argv[])
 
 
 		input.update(evt);
-		//audio_update();
+		audio.update();
 	}
 
 

@@ -23,6 +23,7 @@ public:
 
 	void init();
 	
+	void update();
 	
 	static void play_one_shot(Sound* snd);
 	static void play_one_shot(Sound* snd, float volume);
