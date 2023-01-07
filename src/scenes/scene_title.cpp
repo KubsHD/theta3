@@ -6,6 +6,7 @@
 #include <core/input.h>
 #include <core/audio.h>
 #include <core/asset.h>
+#include <components/particle_system.h>
 
 int title_stage = 0;
 
@@ -15,6 +16,9 @@ int title_stage = 0;
 
 void TitleScene::init()
 {
+	auto a = create("test");
+	a->add(ParticleSystem());
+
 	font2 = Asset::load_font("font/comic.fnt");
 	target = CreateRef<Target>(1280, 720);
 	network_prompt = Asset::load_texture("ui/ui_title_network_prompt.png");
@@ -56,6 +60,16 @@ void TitleScene::destroy()
 void TitleScene::update()
 {
 	Scene::update();
+
+	ParticleProps pp = {
+		.Position = get("test")->position,
+		.LifeTime = 1.0f,
+		.Velocity = Vec2(1.0f, 1.0f),
+		.Color = Vec3(0.3f,1.0f,1.0f),
+		.Shape = ParticleShape::Rectangle,
+	};
+
+	get("test")->get<ParticleSystem>()->emit(pp);
 
 	rt_begin(r);
 	rt_while(opacity <= 1.0f);

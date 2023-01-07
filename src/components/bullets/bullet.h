@@ -1,6 +1,3 @@
-#ifndef BULLET_H
-#define BULLET_H
-
 #pragma once
 
 #include <core/types.h>
@@ -17,5 +14,3 @@ public:
 private:
 
 };
-
-#endif

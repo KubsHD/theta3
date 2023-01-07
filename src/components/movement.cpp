@@ -6,6 +6,7 @@
 #include <components/collider.h>
 #include <components/enemy.h>
 #include <core/input.h>
+#include "particle_system.h"
 
 
 enum PLAYER_STATES
@@ -157,7 +158,19 @@ void PlayerMovement::update()
 		if (!is_on_broom)
 			this->entity->get<Animator>()->play_anim(player_anim[RUN]);
 		else
+		{
+			ParticleProps pp = {
+			.Position = entity->position + Vec2(entity->flip ? 0 : 24.0f, 32.0f),
+			.LifeTime = 100,
+			.Velocity = Vec2((entity->flip ? 1 : -1) * speed * 5, 0.3f),
+			.Color = Vec3(0.3f,1.0f,1.0f),
+			.Size = Vec2(10.0f ,10.0f),
+			.Shape = ParticleShape::Rectangle,
+			};
+
+			entity->get<ParticleSystem>()->emit(pp);
 			this->entity->get<Animator>()->play_anim(player_anim[BROOM]);
+		}
 	}
 	else if (is_attacking == false && !is_on_broom)
 	{
@@ -165,6 +178,8 @@ void PlayerMovement::update()
 	}
 	else if (is_on_broom)
 	{
+
+
 		this->entity->get<Animator>()->play_anim(player_anim[BROOM]);
 	}
 };

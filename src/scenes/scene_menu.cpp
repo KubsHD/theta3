@@ -6,6 +6,7 @@
 #include "scene_game.h"
 #include <main.h>
 #include <core/asset.h>
+#include <components/particle_system.h>
 
 void MenuScene::init()
 {
@@ -15,6 +16,10 @@ void MenuScene::init()
 	animator_witch->add_animation("anim/witch_run");
 	animator_witch->play_anim("witch_run");
 	witch->position = Vec2(260, 113);
+
+	witch->add(ParticleSystem());
+
+
 
 
 	font = Asset::load_font("font/comic.fnt");
@@ -66,6 +71,20 @@ void MenuScene::destroy()
 
 void MenuScene::update()
 {
+	Scene::update();
+
+	ParticleProps pp = {
+	.Position = get("Player")->position,
+	.LifeTime = 10000,
+	.Velocity = Vec2(0, 1),
+	.Color = Vec3(0.3f,1.0f,1.0f),
+	.Size = Vec2(10.0f ,30.0f),
+	.Shape = ParticleShape::Rectangle,
+	};
+
+	if (Input::key_down(SDL_SCANCODE_D))
+		get("Player")->get<ParticleSystem>()->emit(pp);
+
 	for (auto btn : btns)
 		btn->selected = false;
 

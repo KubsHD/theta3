@@ -1,6 +1,5 @@
 #include "Renderer.h"
 
-#include <lib/glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
@@ -160,7 +159,7 @@ void Renderer::set_target(Target* tg)
 	m_currentTarget = tg;
 	tg->bind();
 
-	projection = glm::ortho(0.0f, tg->target_size.x, tg->target_size.y, 0.0f, -1.0f, 1.0f);
+	projection = glm::ortho(0.0f, tg->target_size.x, tg->target_size.y, 0.0f, -1000.0f, 1000.0f);
 	current_size = tg->target_size;
 
 	glViewport(0, 0, tg->target_size.x, tg->target_size.y);
@@ -384,6 +383,18 @@ void Renderer::ui_draw_box(Vec2 pos, Vec2 size, Vec3 color /*= Vec3(0, 0, 0)*/, 
 	set_camera(nullptr);
 	draw_box(pos, size, color, fill);
 	set_camera(cam);
+}
+
+
+void Renderer::draw_vao(GLuint vao, Shader* shd, glm::mat4 model)
+{
+	
+	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
+
+	glUseProgram(shd->get_id());
+	shd->set_uniform_mat4("u_mvp", mvp);
+	glBindVertexArray(vao);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
 Target* Renderer::Backbuffer;

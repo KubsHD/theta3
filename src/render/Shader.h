@@ -18,4 +18,5 @@ private:
 	int id;
 public:
 	void set_uniform_vec3(String uniformName, Vec3 color);
+	void set_uniform_vec4(String uniformName, glm::vec4 color);
 };

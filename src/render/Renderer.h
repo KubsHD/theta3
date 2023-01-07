@@ -3,7 +3,7 @@
 #include <core/types.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <render/Shader.h>
-
+#include <lib/glad/glad.h>
 
 class Camera {
 	glm::mat4 m_viewMatrix;
@@ -130,6 +130,7 @@ public:
 	void draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);
 	void draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd);
 
+	//void draw_vao(GLuint vao, Shader& shd, u);
 
 	//void ui_draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);
 	//void ui_draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f, float scale = 1.0f, bool flip = false);
@@ -137,4 +138,5 @@ public:
 	//void ui_draw_circle(Vec2 pos, float radius, Vec3 color = Vec3(0, 0, 0));
 	//void ui_draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);
 	//void ui_draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd);
+	void draw_vao(GLuint m_particle_vao, Shader* m_ptl_shader, glm::mat4 model);
 };

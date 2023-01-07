@@ -51,6 +51,8 @@ static SDL_GLContext maincontext;
 float seconds_elapsed = 0.0f;
 float g_time_scale = 1.0;
 
+double dt;
+
 SDL_Event evt;
 SDL_Window* win;
 
@@ -310,7 +312,7 @@ int main(int argc, char* argv[])
 
 
 		current = SDL_GetTicks64();
-		double dt = current - last;
+		dt = current - last;
 		last = current;
 		lag += dt;
 
@@ -373,6 +375,11 @@ int main(int argc, char* argv[])
 float get_time()
 {
 	return seconds_elapsed;
+}
+
+float get_delta()
+{
+	return dt;
 }
 
 float get_time_scale()
