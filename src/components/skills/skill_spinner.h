@@ -1,6 +1,3 @@
-#ifndef BULLET_H
-#define BULLET_H
-
 #pragma once
 
 #include <core/types.h>
@@ -18,10 +15,9 @@ public:
 		plr_ref = plr;
 	};
 
-	~SkillSpinner() {};
+	~SkillSpinner() {}; 
 
 	float dist = 100.0f;
-
 	float speed = 2.0f;
 
 	Vec2 pos;
@@ -41,8 +37,14 @@ public:
 	{
 		ren->draw_circle(pos, 50.0f);
 	};
-private:
-
 };
 
-#endif
+namespace Factory {
+	void CreateSkillSpinner(Scene* scn, Entity* plr)
+	{
+		auto ent = scn->create("SkillSpinner");
+		ent->add(SkillSpinner(plr));
+		ent->add(Collider());
+	}
+}
+
