@@ -64,8 +64,7 @@ void GameScene::init()
 	player->add(Collider(player_hitbox, player_hitbox_offset))->tag = CollisionTag::Player;
 	player->add(Player());
 
-	player->add(SkillSpinner(player));
-
+	Factory::CreateSkillSpinner(this, player);
 
 	auto animator = player->add(Animator());
 
