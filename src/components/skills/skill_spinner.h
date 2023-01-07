@@ -33,7 +33,7 @@ public:
 
 		for (auto& ent : entity->get<Collider>()->check_sphere_list(pos, 50.0f, CollisionTag::Enemy))
 		{
-			ent->entity->get<Enemy>()->take_damage(1.0f, 15.0f);
+			ent->entity->get<Enemy>()->take_damage(20.0f, 1.0f);
 		}
 	};
 

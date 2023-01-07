@@ -14,12 +14,29 @@ public:
 	int duration;
 	bool follow;
 	Entity* player_ref;
+	Animator* anim;
+	Sprite* sprite;
+	String name;
 
 	Effect() = default;
-	Effect(Entity* player_ref);
+	Effect(Entity* player_ref, String name)
+	{
+		this->name = name;
+
+		duration = -1;
+		follow = true;
+		this->player_ref = player_ref;
+	}
 
 	void init() override
-	{	}
+	{	
+		if (sprite = this->entity->get<Sprite>())
+			sprite->enabled = true;
+		if (anim = this->entity->get<Animator>())
+			anim->play_anim(name);
+
+
+	}
 
 	void update() override
 	{
@@ -28,7 +45,7 @@ public:
 
 	void render(Renderer* ren) override
 	{
-		this->entity->get<Animator>()->play_anim("effects_rain");
+
 	}
 };
 

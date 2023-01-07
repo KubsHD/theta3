@@ -84,7 +84,7 @@ public:
 				return m;
 		}
 
-		throw std::runtime_error("Component not found!");
+		//throw std::runtime_error("Component not found!");
 		return nullptr;
 	};
 

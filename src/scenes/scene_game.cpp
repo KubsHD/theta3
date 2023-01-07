@@ -45,10 +45,11 @@ void GameScene::init()
 
 
 	// Backround Sound
-	//Sound* backround_music = Asset::load_sound("audio/background_music_1.mp3");
-	//Audio::play_one_shot(backround_music, 0.01f);
+	Sound* backround_music = Asset::load_sound("audio/background_music_1.mp3");
+	Audio::play_one_shot(backround_music, 0.01f);
+	
 
-
+	
 
 	// Player initialization
 	auto player = create("Player");
@@ -86,11 +87,18 @@ void GameScene::init()
 	map->get<MapGenerator>()->player_ref = player;
 
 
+	// Effects
 	Entity* rain = create("rain");
 	//rain->add(Sprite("data/effects_rain.png"));
 	auto animator_rain = rain->add(Animator());
 	animator_rain->add_animation("anim/effects_rain");
-	rain->add(Effect(player));
+	rain->add(Effect(player, "effects_rain"));
+
+	Entity* fog = create("fog");
+	fog->add(Sprite("effects_fog.png"));
+	fog->add(Effect(player, "effects_fog"));
+	
+
 
 
 	auto wave = create("WaveManager");
