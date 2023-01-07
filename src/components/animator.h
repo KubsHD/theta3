@@ -31,6 +31,7 @@ public:
 	// zarówno entity jak i animator maj¹ pole flip, przyda³oby siê imo zunifikowaæ to
 	bool flip = false;
 
+	Vec2 get_frame_size();
 	void add_animation(String path);
 	void play_one_shot(String name, std::function<void()> on_finish_anim, float speed_mul = 1.0f);
 	void play_anim(String name, float speed_mul = 1.0f);
