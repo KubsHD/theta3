@@ -15,7 +15,11 @@ Player::Player()
 	money = 0;
 	health_decay = 0.05f;
 
+}
 
+void Player::init()
+{
+	player_offset = Vec2(entity->get<Sprite>()->tex->size.x / 2, entity->get<Sprite>()->tex->size.y / 2);
 }
 
 void Player::update()
@@ -23,10 +27,7 @@ void Player::update()
 	if(god_mode == false)
 		health -= health_decay;
 
-
-	pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
-		entity->position.y + entity->get<Sprite>()->tex->size.y / 2);
-
+	pos_sprite_center = Vec2(entity->position.x, entity->position.y) + player_offset;
 }
 
 void Player::render(Renderer* ren)

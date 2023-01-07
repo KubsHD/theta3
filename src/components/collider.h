@@ -59,12 +59,12 @@ public:
 
 	void update() override
 	{
-		position = entity->position;
+		position = Vec2(entity->position.x + offset.x, entity->position.y + offset.y);
 	}
 
 	void render(Renderer* ren) override
 	{
-		ren->draw_box(entity->position, size, Vec3(0.1f, 0.1f, 1.0f));
+		ren->draw_box(position, size, Vec3(0.1f, 0.1f, 1.0f));
 		if (last_circle_query.second != 0)
 			ren->draw_circle(last_circle_query.first, last_circle_query.second);
 	}

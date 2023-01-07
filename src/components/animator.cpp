@@ -2,6 +2,22 @@
 
 #include <lib/json.hpp>
 #include <core/asset.h>
+#include <iostream>
+
+
+Vec2 Animator::get_frame_size()
+{
+	if (this->m_currentLoopingAnim != nullptr)
+	{
+		return m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame]->texSize;
+	}
+	else if (this->m_currentAnim != nullptr)
+	{
+		return m_currentAnim->Frames[m_currentAnim->currentFrame]->texSize;
+	}
+
+	return Vec2(0, 0);
+}
 
 void Animator::add_animation(String path)
 {
