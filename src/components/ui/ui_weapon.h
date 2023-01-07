@@ -12,32 +12,39 @@ class UIWeaponDisplay : public Component
 public:
 
 	std::vector <Texture*> tex;
+	Player* player;
 	int temp;
+	int selected;
+	float opacity;
 
 	UIWeaponDisplay()
 	{
 		temp = 0;
+		selected = 0;
 
 		tex.push_back(Asset::load_texture("icon_broom.png"));
-		tex.push_back(Asset::load_texture("icon_gun.png"));
+		tex.push_back(Asset::load_texture("icon_shotgun.png"));
+		tex.push_back(Asset::load_texture("icon_pistol.png"));
+
 
 	};
 
 
+	void init() override
+	{
+		player = entity->world->get("Player")->get<Player>();
+	}
+
 	void update() override
 	{
-
+		selected = player->selected_weapon;
 
 	}
 
 	void render(Renderer* ren) override
-	{
-
-		for (auto i : tex) {
-			ren->draw_tex(i, Vec2(temp*i->size.x + (temp+1) * 20, 50));
-			temp++;
-		}
-		temp = 0;
+	{		
+		if (selected < tex.size())
+			ren->draw_tex(tex[selected], Vec2(20, 50));
 	}
 
 };

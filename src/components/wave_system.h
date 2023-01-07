@@ -9,6 +9,7 @@
 #include <components/enemy_policeman.h>
 #include <components/enemy_soldier.h>
 #include <components/enemy_fatass.h>
+#include <components/effects.h>
 
 
 class Wave : public Component
@@ -18,6 +19,9 @@ public:
 
 	int waveID, frames;
 	static unsigned int round_time;
+
+	//Effects;
+	Entity* fog;
 
 	// Maintenance
 	Wave() = default;

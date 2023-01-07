@@ -1,9 +1,11 @@
+
 #include "player.h"
 
 #include <render/Renderer.h>
 #include <string>
 #include <core/log.h>
 #include <lib/imgui/imgui.h>
+#include <core/input.h>
 
 
 Player::Player()
@@ -14,8 +16,11 @@ Player::Player()
 	damage_melee = 10;
 	money = 0;
 	health_decay = 0.05f;
-
+	selected_weapon = 0;
+	// in reversed order tho { BROOM, SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW }
+	available_weapons = 0b0000;
 }
+
 
 void Player::init()
 {
@@ -28,7 +33,18 @@ void Player::update()
 		health -= health_decay;
 
 	pos_sprite_center = Vec2(entity->position.x, entity->position.y) + player_offset;
+
+	if (Input::key_down(SDL_SCANCODE_1))// && (0b0001 & available_weapons))
+		selected_weapon = 0;
+	else if (Input::key_down(SDL_SCANCODE_2))// && (0b0010 & available_weapons))
+		selected_weapon = 1;
+	else if (Input::key_down(SDL_SCANCODE_3))// && (0b0100 & available_weapons))
+		selected_weapon = 2;
+	else if (Input::key_down(SDL_SCANCODE_4))// && (0b1000 & available_weapons))
+		selected_weapon = 3;
+
 }
+
 
 void Player::render(Renderer* ren)
 {
@@ -40,6 +56,7 @@ void Player::render(Renderer* ren)
 		ImGui::Text("health: %f", this->health);
 		ImGui::Text("money: %d", this->money);
 		ImGui::Text("speed: %d", this->speed);
+		ImGui::Text("weaponn: %d", this->selected_weapon);
 		ImGui::Text("health_decay: %f", this->health_decay);
 		ImGui::Text("god_mode: %d", this->god_mode);
 

@@ -11,7 +11,7 @@
 
 enum PLAYER_STATES
 {
-	IDLE, RUN, ATTACK1, ATTACK2, ATTACK3, BROOM
+	IDLE, RUN, ATTACK1, ATTACK2, ATTACK3, ON_BROOM
 };
 
 
@@ -48,58 +48,58 @@ void PlayerMovement::update()
 		combo_step = 1;
 
 
-	if (!is_on_broom)
+
+	if ((Input::mouse_down(0) || Input::key_down(SDL_SCANCODE_SPACE)) && in_combo == false)
 	{
-		if ((Input::mouse_down(0) || Input::key_down(SDL_SCANCODE_SPACE)) && in_combo == false)
+		is_on_broom = false;
+		counter = 60;
+
+		is_attacking = true;
+		speed = speed_when_attacking;
+
+		for (auto& i: entity->get<Collider>()->check_sphere_list(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy))
 		{
-			counter = 60;
 
-			is_attacking = true;
-			speed = speed_when_attacking;
+			i->entity->get<Enemy>()->take_damage(melee_damage, knockback_rate);
+		}
 
-			for (auto& i: entity->get<Collider>()->check_sphere_list(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy))
-			{
+		switch (combo_step)
+		{
+		case 1:
 
-				i->entity->get<Enemy>()->take_damage(melee_damage, knockback_rate);
-			}
+			in_combo = true;
+			combo_step = 2;
 
-			switch (combo_step)
-			{
-			case 1:
-
-				in_combo = true;
-				combo_step = 2;
-
-				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK1], [this]() {
-					is_attacking = false;
-					speed = speed_base;
-					in_combo = false;
-					}, 1.5f);
-				break;
-			case 2:
-
-				combo_step = 3;
-
-				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK2], [this]() {
-					is_attacking = false;
+			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK1], [this]() {
+				is_attacking = false;
 				speed = speed_base;
 				in_combo = false;
-					}, 1.5f);
-				break;
-			case 3:
+				}, 1.5f);
+			break;
+		case 2:
 
-				combo_step = 1;
+			combo_step = 3;
 
-				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK3], [this]() {
-					is_attacking = false;
-					speed = speed_base;
-					in_combo = false;
-					}, 1.5f);
-				break;
-			}
+			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK2], [this]() {
+				is_attacking = false;
+			speed = speed_base;
+			in_combo = false;
+				}, 1.5f);
+			break;
+		case 3:
 
+			combo_step = 1;
 
+			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK3], [this]() {
+				is_attacking = false;
+				speed = speed_base;
+				in_combo = false;
+				}, 1.5f);
+			break;
 		}
+
+
+		
 	}
 
 	is_running = false;
@@ -169,7 +169,7 @@ void PlayerMovement::update()
 			};
 
 			entity->get<ParticleSystem>()->emit(pp);
-			this->entity->get<Animator>()->play_anim(player_anim[BROOM]);
+			this->entity->get<Animator>()->play_anim(player_anim[ON_BROOM]);
 		}
 	}
 	else if (is_attacking == false && !is_on_broom)
@@ -180,7 +180,7 @@ void PlayerMovement::update()
 	{
 
 
-		this->entity->get<Animator>()->play_anim(player_anim[BROOM]);
+		this->entity->get<Animator>()->play_anim(player_anim[ON_BROOM]);
 	}
 };
 

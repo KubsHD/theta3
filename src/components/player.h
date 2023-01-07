@@ -18,6 +18,8 @@ public:
 	Vec2 player_offset;
 	bool god_mode;
 	float health_decay;
+	int selected_weapon;
+	int available_weapons;
 
 	Player();
 

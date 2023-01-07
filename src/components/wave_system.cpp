@@ -14,6 +14,15 @@ void Wave::init()
 	waveID = 0;
 	round_time = 0;
 	frames = 0;
+
+
+	// Effect fog;
+	fog = this->entity->world->create("fog");
+	auto animator_fog = fog->add(Animator());
+	animator_fog->add_animation("anim/effects_fog");
+	fog->add(Effect(player, "effects_fog"));
+
+
 }
 
 void Wave::update()
@@ -22,7 +31,7 @@ void Wave::update()
 	{
 		round_time++;
 		frames = 0;
-		if (round_time == 1 )
+		if (round_time == 4 || round_time % 20 == 0)
 		{
 			waveID++;
 			wave_spawn();
@@ -45,6 +54,8 @@ void Wave::render(Renderer* ren)
 
 void Wave::wave_spawn()
 {
+	
+	fog->get<Effect>()->play_once();
 
 	for (int i = 0; i < 10; i++)
 	{

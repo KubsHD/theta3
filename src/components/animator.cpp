@@ -89,7 +89,8 @@ void Animator::update()
 		{
 			m_currentAnim->currentFrame = 0;
 			m_oneShotInProgress = false;
-			m_animInProgress = true;
+			if (m_currentLoopingAnim != nullptr)
+				m_animInProgress = true;
 			m_finish_anim_cb();
 		}
 	}

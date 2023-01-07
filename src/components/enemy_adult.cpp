@@ -34,7 +34,7 @@ void Adult::on_death()
 
 		auto animator_gun = gun->add(Animator());
 		animator_gun->add_animation("anim/gun_shotgun");
-		gun->add(Gun(this->entity));
+		gun->add(Gun(this->entity, player->entity));
 		
 
 		// fucking die lmao
