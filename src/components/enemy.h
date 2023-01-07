@@ -29,6 +29,7 @@ public:
 
 	Collider* collider;
 	Vec2 death_pos, text_pos;
+	Vec2 pos_sprite_center;
 	Player* player;
 	bool is_dead = false;
 

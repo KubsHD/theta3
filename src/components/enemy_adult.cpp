@@ -5,7 +5,7 @@
 
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
-	health = 40;
+	health = 50;
 	damage = 10;
 	souls = 5;
 	money = 3;
@@ -66,9 +66,6 @@ void Adult::init()
 {
 	Enemy::init();
 
-	on_death();
-
-
 	Vec2 rand_starting_pos;
 	// 2 sides of the screen for x
 	if (rand() % 2)
@@ -118,28 +115,29 @@ void Adult::update()
 
 	on_death();
 
+	// Enemies' Sprite center coordinates
+	pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
+		entity->position.y + entity->get<Sprite>()->tex->size.y / 2);
 
 	// Standard
-	delta_x = player->entity->position.x - entity->position.x;// > 0 ? 1 : -1;
-	delta_y = player->entity->position.y - entity->position.y;// > 0 ? 1 : -1;
-	direction_x = player->entity->position.x - entity->position.x > 0 ? 1 : -1;
-	direction_y = player->entity->position.y - entity->position.y > 0 ? 1 : -1;
-
-	
+	delta_x = player->pos_sprite_center.x - pos_sprite_center.x;// > 0 ? 1 : -1;
+	delta_y = player->pos_sprite_center.y - pos_sprite_center.y;// > 0 ? 1 : -1;
+	direction_x = player->pos_sprite_center.x - pos_sprite_center.x > 0 ? 1 : -1;
+	direction_y = player->pos_sprite_center.y - pos_sprite_center.y > 0 ? 1 : -1;
 
 	facing_angle = atan2(delta_y, delta_x);
 
 	// Movement 
 	if (can_walk)
 	{
-		if (collider->check_sphere(Vec2(entity->position.x + collider->size.x / 8 * 3 + cos(facing_angle) * collider->size.x / 8 * 3,
-			entity->position.y + collider->size.y / 8 * 3 + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Enemy))
+		if (collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
+			pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Enemy))
 		{
 			// If enemy on the path - move different way
 
 		}
-		else if (!collider->check_sphere(Vec2(entity->position.x + collider->size.x / 8 * 3 + cos(facing_angle) * collider->size.x / 8 * 3,
-			entity->position.y + collider->size.y / 8 * 3 + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player))
+		else if (!collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
+			pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player))
 		{
 			// If not close enough to player - come closer
 			entity->position.x += cos(facing_angle) * speed;

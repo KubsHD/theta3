@@ -14,6 +14,7 @@ public:
 	int money;
 	float damage_melee;
 	Collider* collider;
+	Vec2 pos_sprite_center;
 	bool god_mode;
 	float health_decay;
 
