@@ -3,23 +3,25 @@
 #include <map>
 #include <components/collider.h>
 #include <lib/imgui/imgui.h>
+#include "uuid.h"
 
 Entity* Scene::create(String name)
 {
 	auto ent = new Entity();
 	ent->world = this;
 	ent->name = name;
-	ent->m_id = this->m_entities.size() + 1;
+	ent->id = ID::get_uuid();
 
-	for (auto ent : m_entities)
-		if (ent->name == name)
-			throw std::invalid_argument("Entity with this name already exists!");
+	//for (auto ent : m_entities)
+	//	if (ent->name == name)
+	//		throw std::invalid_argument("Entity with this name already exists!");
 
 	m_entities.push_back(ent);
 	
 	return ent;
 }
 
+// returns first found!!!!
 Entity* Scene::get(String name)
 {
 	for (auto ent : m_entities)
@@ -149,7 +151,7 @@ void Scene::render()
 		for (int i = 0; i < _colliders.size(); i++)
 		{
 			auto collider = _colliders[i];
-			auto name = std::to_string(collider->entity->m_id).c_str() + collider->entity->name;
+			auto name = collider->entity->id + collider->entity->name;
 			if (ImGui::CollapsingHeader(name.c_str(), true))
 			{
 				ImGui::LabelText("Position", "X: %f Y: %f", collider->position.x, collider->position.y);

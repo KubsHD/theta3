@@ -65,6 +65,8 @@ class Entity final {
 public:
 	Entity() : position(640,320) {};
 
+	String id;
+
 	String name;
 	bool flip;
 	Vec2 position;
@@ -90,10 +92,7 @@ public:
 
 	int get_component_count() {return m_components.size();}
 	Vector<Component*> get_components() { return m_components; }
-	int get_id() {return m_id;}
-
 private:
-	int m_id;
 	Vector<Component*> m_components;
 };
 

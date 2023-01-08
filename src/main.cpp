@@ -32,8 +32,12 @@
 #include <components/wave_system.h>
 
 
+#include <core/uuid.h>
+
 #if WIN
 #include <Windows.h>
+
+
 
 extern "C" {
 	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
@@ -248,7 +252,7 @@ void render()
 			for (auto ent : current_scene->get_entities())
 			{
 
-				auto str = "Entity " + (std::string)std::to_string(ent->get_id()).c_str() + ": " + ent->name;
+				auto str = "Entity " + ent->id + ": " + ent->name;
 				if (ImGui::CollapsingHeader(str.c_str(), true))
 				{
 					ImGui::Text("Position X: %f, Y: %f", ent->position.x, ent->position.y);

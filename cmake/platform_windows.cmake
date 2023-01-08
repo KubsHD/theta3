@@ -36,4 +36,4 @@ add_custom_command(
     COMMAND_EXPAND_LISTS
 )
 
-set(game_libs "glm" "fmod" "SDL2main" "SDL2-static")
+set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" "Rpcrt4")
