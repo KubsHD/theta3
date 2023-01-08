@@ -25,6 +25,8 @@ public:
 		tex.push_back(Asset::load_texture("icon_broom.png"));
 		tex.push_back(Asset::load_texture("icon_shotgun.png"));
 		tex.push_back(Asset::load_texture("icon_pistol.png"));
+		tex.push_back(Asset::load_texture("icon_crossbow.png"));
+
 
 
 	};

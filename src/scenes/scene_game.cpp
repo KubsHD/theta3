@@ -83,7 +83,7 @@ void GameScene::init()
 	animator->add_animation("anim/witch_run");
 	
 	
-	player->add(PlayerMovement(2.0f));
+	player->add(PlayerMovement(player, 2.0f));
 
 	player_ref = player;
 

@@ -57,7 +57,7 @@ void Wave::wave_spawn()
 	
 	fog->get<Effect>()->play_once();
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 17; i++)
 	{
 		Entity* adult = entity->world->create("AdultEnemyW" + std::to_string(waveID) + "E" + std::to_string(i));
 		adult->add(Sprite("spr_enemy_adult.png"));

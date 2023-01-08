@@ -4,12 +4,14 @@
 #include <core/ecs.h>
 #include <render/renderer.h>
 #include <components/animator.h>
+#include <components/player.h>
 
 class PlayerMovement : public Component {
 public:
 	bool is_running, is_attacking;
+	Player* player;
 	PlayerMovement() = default;
-	PlayerMovement(float speed);
+	PlayerMovement(Entity* player_ref, float speed);
 
 	bool is_on_broom = false;
 

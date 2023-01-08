@@ -6,7 +6,9 @@
 #include <components/collider.h>
 #include <components/enemy.h>
 #include <core/input.h>
+#include <components/gun.h>
 #include "particle_system.h"
+#include <components/bullets/bullet.h>
 
 
 enum PLAYER_STATES
@@ -26,8 +28,9 @@ Vector<String> player_anim =
 };
 
 
-PlayerMovement::PlayerMovement(float speed) : speed(speed), is_attacking(false)
+PlayerMovement::PlayerMovement(Entity* player_ref, float speed) : speed(speed), is_attacking(false)
 {
+	player = player_ref->get<Player>();
 }
 
 void PlayerMovement::init()
@@ -51,54 +54,59 @@ void PlayerMovement::update()
 
 	if ((Input::mouse_down(0) || Input::key_down(SDL_SCANCODE_SPACE)) && in_combo == false)
 	{
-		is_on_broom = false;
-		counter = 60;
-
-		is_attacking = true;
-		speed = speed_when_attacking;
-
-		for (auto& i: entity->get<Collider>()->check_sphere_list(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy))
+		if (player->selected_weapon == 0) // 0 for BROOM
 		{
+			is_on_broom = false;
+			counter = 60;
 
-			i->entity->get<Enemy>()->take_damage(melee_damage, knockback_rate);
+			is_attacking = true;
+			speed = speed_when_attacking;
+
+			for (auto& i : entity->get<Collider>()->check_sphere_list(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy))
+			{
+
+				i->entity->get<Enemy>()->take_damage(melee_damage, knockback_rate);
+			}
+
+			switch (combo_step)
+			{
+			case 1:
+
+				in_combo = true;
+				combo_step = 2;
+
+				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK1], [this]() {
+					is_attacking = false;
+					speed = speed_base;
+					in_combo = false;
+					}, 1.5f);
+				break;
+			case 2:
+
+				combo_step = 3;
+
+				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK2], [this]() {
+					is_attacking = false;
+					speed = speed_base;
+					in_combo = false;
+					}, 1.5f);
+				break;
+			case 3:
+
+				combo_step = 1;
+
+				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK3], [this]() {
+					is_attacking = false;
+					speed = speed_base;
+					in_combo = false;
+					}, 1.5f);
+				break;
+			}
 		}
-
-		switch (combo_step)
+		else
 		{
-		case 1:
-
-			in_combo = true;
-			combo_step = 2;
-
-			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK1], [this]() {
-				is_attacking = false;
-				speed = speed_base;
-				in_combo = false;
-				}, 1.5f);
-			break;
-		case 2:
-
-			combo_step = 3;
-
-			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK2], [this]() {
-				is_attacking = false;
-			speed = speed_base;
-			in_combo = false;
-				}, 1.5f);
-			break;
-		case 3:
-
-			combo_step = 1;
-
-			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK3], [this]() {
-				is_attacking = false;
-				speed = speed_base;
-				in_combo = false;
-				}, 1.5f);
-			break;
+			Factory::CreateBullet(entity->world, player);
 		}
-
-
 		
 	}
 
