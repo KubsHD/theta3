@@ -1,5 +1,6 @@
 #include "uuid.h"
 
+
 #if WIN
 
 #include <Windows.h>
@@ -18,11 +19,21 @@ String ID::get_uuid()
 	return s;
 }
 
-#elif MAC
+#elif APPLE
+
+
+#include <CoreFoundation/CoreFoundation.h>
 
 String ID::get_uuid()
 {
-	return "TODO";
+	auto uuid = CFUUIDCreate(NULL);
+	auto str = CFUUIDCreateString(NULL, uuid);
+
+	auto mut = CFStringCreateMutableCopy(NULL, 0, str);
+
+	CFStringLowercase(mut, CFLocaleCopyCurrent());
+
+	return String(CFStringGetCStringPtr(mut, kCFStringEncodingUTF8));
 }
 
 #endif

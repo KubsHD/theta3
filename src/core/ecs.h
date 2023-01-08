@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/types.h>
+#include <list>
 
 class Renderer;
 class Entity;
