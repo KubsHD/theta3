@@ -7,23 +7,35 @@
 #include <main.h>
 #include <core/asset.h>
 #include <components/particle_system.h>
+#include <string>
 
 void MenuScene::init()
 {
+	font = Asset::load_font("font/comic.fnt");
+	target = CreateRef<Target>(1280, 720);
 
-	Entity* witch = create("Player");
+
+	// -- 
+	Entity* witch = create("witch");
+	witch->position = Vec2(900, 180);
 	auto animator_witch = witch->add(Animator());
 	animator_witch->add_animation("anim/witch_run");
-	animator_witch->play_anim("witch_run");
-	witch->position = Vec2(260, 113);
+	animator_witch->play_anim_scaled("witch_run", 1.0f, 9.0f);
+
+
+	for (int i = 0; i < 4; i++)
+	{
+		Entity* adult = create("EnemyMenu" + std::to_string(i));
+		adult->position = Vec2(100+i*90, 200);
+		auto animator_adult = adult->add(Animator());
+		animator_adult->add_animation("anim/adult_enemy_run");
+		animator_adult->play_anim_scaled("adult_enemy_run", 1.0f, 11.0f);
+	}
+
+
 
 	witch->add(ParticleSystem());
 
-
-
-
-	font = Asset::load_font("font/comic.fnt");
-	target = CreateRef<Target>(1280, 720);
 
 	{
 		auto btn = create("btn_start");
@@ -74,7 +86,7 @@ void MenuScene::update()
 	Scene::update();
 
 	ParticleProps pp = {
-	.Position = get("Player")->position,
+	.Position = get("witch")->position,
 	.LifeTime = 10000,
 	.Velocity = Vec2(0, 1),
 	.Color = Vec3(0.3f,1.0f,1.0f),
@@ -83,7 +95,7 @@ void MenuScene::update()
 	};
 
 	if (Input::key_down(SDL_SCANCODE_D))
-		get("Player")->get<ParticleSystem>()->emit(pp);
+		get("witch")->get<ParticleSystem>()->emit(pp);
 
 	for (auto btn : btns)
 		btn->selected = false;

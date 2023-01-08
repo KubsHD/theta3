@@ -43,21 +43,21 @@ void Adult::on_death()
 		this->death_pos = entity->position;
 
 		if (audio_death != NULL) {
-			std::cout << entity->name << " - Zginal : " + std::to_string(entity->position.x)
-				+ " / " + std::to_string(entity->position.y) + "\n";
+			//std::cout << entity->name << " - Zginal : " + std::to_string(entity->position.x)
+				//+ " / " + std::to_string(entity->position.y) + "\n";
 
 			// play death sound
 			Audio::play_one_shot(audio_death);
-
-			// Death Loot Instantly added
-			player->health += this->souls;
-			player->money += this->money;
-
-			// skasuj przeciwnika		
-			this->entity->world->remove(this->entity);
-
-
 		}
+
+
+		player->health += this->souls;
+		player->money += this->money;
+
+		player->kill_count++;
+
+		// skasuj przeciwnika		
+		this->entity->world->remove(this->entity);
 	}
 }
 

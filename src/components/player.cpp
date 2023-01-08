@@ -15,6 +15,7 @@ Player::Player()
 	speed = 1.0f;
 	damage_melee = 10;
 	money = 0;
+	kill_count = 0;
 	health_decay = 0.05f;
 	selected_weapon = 0;
 	// in reversed order tho { BROOM, SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW }

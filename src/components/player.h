@@ -12,6 +12,7 @@ public:
 	// Custom variables
 	float health, speed;
 	int money;
+	int kill_count;
 	float damage_melee;
 	Collider* collider;
 	Vec2 pos_sprite_center;

@@ -19,6 +19,7 @@ class Animator : public Component {
 private:
 	Vector<AnimData> m_ad;
 	int timer = 0;
+	float anim_scale = 1.0f;
 	AnimData* m_currentAnim;
 	bool m_animInProgress = false;
 	bool m_oneShotInProgress = false;
@@ -35,6 +36,7 @@ public:
 	void add_animation(String path);
 	void play_one_shot(String name, std::function<void()> on_finish_anim, float speed_mul = 1.0f);
 	void play_anim(String name, float speed_mul = 1.0f);
+	void play_anim_scaled(String name, float speed_mul, float scale);
 	void update() override;
 	void render(Renderer* ren) override;
 };

@@ -74,6 +74,23 @@ void Animator::play_anim(String name, float speed_mul)
 	}
 }
 
+
+void Animator::play_anim_scaled(String name, float speed_mul, float scale)
+{
+	for (auto& anim : m_ad)
+	{
+		if (anim.name == name)
+		{
+			anim_scale = scale;
+			m_currentLoopingAnim = &anim;
+			m_currentLoopingAnim->speed_override = speed_mul;
+			m_animInProgress = true;
+			break;
+		}
+	}
+}
+
+
 void Animator::update()
 {
 	if (m_oneShotInProgress)
@@ -116,13 +133,13 @@ void Animator::render(Renderer* ren)
 
 	if (m_oneShotInProgress)
 	{
-		ren->draw_subtex(m_currentAnim->Frames[m_currentAnim->currentFrame], entity->position, 1.0f, 1.0f, flip);
+		ren->draw_subtex(m_currentAnim->Frames[m_currentAnim->currentFrame], entity->position, 1.0f, anim_scale, flip);
 		//ren->draw_box(entity->position, m_currentAnim->Frames[m_currentAnim->currentFrame]->texSize, Vec3(1, 1, 1));
 	}
 
 	if (m_animInProgress && !m_oneShotInProgress)
 	{
-		ren->draw_subtex(m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame], entity->position, 1.0f, 1.0f, flip);
+		ren->draw_subtex(m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame], entity->position, 1.0f, anim_scale, flip);
 		//ren->draw_box(entity->position, m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame]->texSize, Vec3(1, 1, 1));
 	}
 }
