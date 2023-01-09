@@ -36,6 +36,7 @@
 
 #if WIN
 #include <Windows.h>
+#include <scenes/scene_shop_test.h>
 
 
 
@@ -281,7 +282,7 @@ int main(int argc, char* argv[])
 
 	ren.init(&window);
 
-	change_scene<MenuScene>();
+	change_scene<ShopTestScene>();
 
 	while (bRunning)
 	{

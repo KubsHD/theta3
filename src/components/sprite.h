@@ -15,6 +15,9 @@ public:
 
 	Texture* tex;
 
+	// Change sprite texture
+	void change(String path);
+
 	void update() override;
 	void render(Renderer* ren) override;
 };

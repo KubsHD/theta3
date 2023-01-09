@@ -280,6 +280,10 @@ void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color, bool fill)
 	m_filledBoxShader->set_uniform_float("u_opacity", 1.0f);
 
 	m_defaultShader->set_uniform_mat4("u_mvp", mvp);
+	m_defaultShader->set_uniform_vec3("u_color", color);
+	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
+
+
 
 	
 	if (fill)
@@ -365,7 +369,7 @@ void Renderer::draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd)
 
 
 
-
+	glUseProgram(shd->get_id());
 
 	shd->set_uniform_mat4("u_mvp", mvp);
 	shd->set_uniform_float("u_time", get_time());

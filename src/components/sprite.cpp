@@ -6,6 +6,11 @@ Sprite::Sprite(String texPath)
 	tex = Asset::load_texture(texPath);
 };
 
+void Sprite::change(String path)
+{
+	tex = Asset::load_texture(path);
+}
+
 void Sprite::update()
 {
 
