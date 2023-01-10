@@ -64,6 +64,22 @@ bool Input::mouse_down(int key)
 	return false;
 }
 
+bool Input::mouse_held(int key)
+{
+	if (key == 0)
+		return mouse.LMB == true;
+	else if (key == 1)
+		return mouse.RMB == true;
+
+	return false;
+}
+
+Vec2 Input::get_mouse_pos()
+{
+	return mouse.pos;
+}
+
+
 bool Input::key_down(SDL_Scancode scanCode)
 {
 	return (key_state[scanCode] == 1 && last_key_state[scanCode] == 0);
@@ -73,6 +89,7 @@ bool Input::key_held(SDL_Scancode scanCode)
 {
 	return (key_state[scanCode] == 1 && last_key_state[scanCode] == 1);
 }
+
 
 SDL_MouseWheelEvent Input::get_wheel()
 {

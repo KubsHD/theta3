@@ -33,7 +33,7 @@ void Player::update()
 	if(god_mode == false)
 		health -= health_decay;
 
-	pos_sprite_center = Vec2(entity->position.x, entity->position.y) + player_offset;
+	pos_sprite_center = entity->position + player_offset;
 
 	if (Input::key_down(SDL_SCANCODE_1))// && (0b0001 & available_weapons))
 		selected_weapon = 0;
@@ -43,14 +43,14 @@ void Player::update()
 		selected_weapon = 2;
 	else if (Input::key_down(SDL_SCANCODE_4))// && (0b1000 & available_weapons))
 		selected_weapon = 3;
+	else if (Input::key_down(SDL_SCANCODE_5))// && (0b1000 & available_weapons))
+		selected_weapon = 4;
 
 }
 
 
 void Player::render(Renderer* ren)
 {
-
-
 	if (ImGui::Begin("Player info"))
 	{
 		ImGui::Text("name: %s", this->entity->name.c_str());
@@ -59,6 +59,8 @@ void Player::render(Renderer* ren)
 		ImGui::Text("speed: %d", this->speed);
 		ImGui::Text("weaponn: %d", this->selected_weapon);
 		ImGui::Text("health_decay: %f", this->health_decay);
+		ImGui::Text("pos_sprite_cen: %f, %f", pos_sprite_center.x, pos_sprite_center.y);
+
 		ImGui::Text("god_mode: %d", this->god_mode);
 
 		if (ImGui::Button("god mode"))

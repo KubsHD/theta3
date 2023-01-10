@@ -57,7 +57,6 @@ void GameScene::init()
 	player->add(Sprite("spr_player.png"));
 	player->get<Sprite>()->enabled = false;
 
-	player->position = Vec2(100, 100);
 
 	// Forgiving hitboxs for noobs
 	Vec2 player_size = Vec2(player->get<Sprite>()->tex->size.x, player->get<Sprite>()->tex->size.y);

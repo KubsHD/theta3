@@ -6,6 +6,9 @@
 #include <components/collider.h>
 #include <components/sprite.h>
 #include <components/player.h>
+#include <core/input.h>
+#include <lib/imgui/imgui.h>
+
 
 
 class Bullet : public Component
@@ -34,7 +37,7 @@ public:
     Bullet(Entity* player_ref)
     {
         this->player = player_ref->get<Player>();
-        destination = Vec2(0, 0);
+		destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270);
     }
 
 	~Bullet()
@@ -46,52 +49,52 @@ public:
     {
 		switch (player->selected_weapon)
 		{
-		case SHOTGUN:
+		case 1:
 		{
 			attack_cooldown = 1.4f * 60;
 			magazine_capacity = 4;
 			bullets_left = magazine_capacity;
 			damage = 21;
-			bullet_speed = 3.4f;
+			bullet_speed = 6.2f;
 			weapon_sprite = "icon_shotgun.png";
 			bullet_sprite = "bullet1.png";
 
 			break;
 		}
 
-		case PISTOL:
+		case 2:
 		{
 			attack_cooldown = 0.4f * 60;
 			magazine_capacity = 9;
 			bullets_left = magazine_capacity;
 			damage = 13;
-			bullet_speed = 3.4f;
+			bullet_speed = 6.2f;
 			weapon_sprite = "icon_pistol.png";
 			bullet_sprite = "bullet2.png";
 
 			break;
 		}
 
-		case MACHINE_GUN:
+		case 3:
 		{
 			attack_cooldown = 0.15f * 60;
 			magazine_capacity = 60;
 			bullets_left = magazine_capacity;
 			damage = 7;
-			bullet_speed = 2.4f;
+			bullet_speed = 4.6f;
 			weapon_sprite = "icon_machine_gun.png";
 			bullet_sprite = "bullet3.png";
 
 			break;
 		}
 
-		case CROSSBOW:
+		case 4:
 		{
 			attack_cooldown = 2.5f * 60;
 			magazine_capacity = 3;
 			bullets_left = magazine_capacity;
 			damage = 83;
-			bullet_speed = 6.4f;
+			bullet_speed = 8.4f;
 			weapon_sprite = "icon_crossbow.png";
 			bullet_sprite = "bullet4.png";
 
@@ -102,12 +105,11 @@ public:
 			break;
 		}
 
-        entity->position = player->entity->position;
-        
+        entity->position = player->pos_sprite_center;
         // 
 
-        delta_x = player->pos_sprite_center.x - destination.x;
-        delta_y = player->pos_sprite_center.y - destination.y;
+        delta_x = destination.x;
+        delta_y = destination.y;
 
 
         facing_angle = atan2(delta_y, delta_x);

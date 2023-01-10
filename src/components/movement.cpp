@@ -50,8 +50,12 @@ void PlayerMovement::update()
 	else
 		combo_step = 1;
 
+	if (Input::key_held(SDL_SCANCODE_SPACE) || Input::mouse_held(0))
+	{
+		if (player->selected_weapon == 3)
+			Factory::CreateBullet(entity->world, player);
 
-
+	}
 	if ((Input::mouse_down(0) || Input::key_down(SDL_SCANCODE_SPACE)) && in_combo == false)
 	{
 		if (player->selected_weapon == 0) // 0 for BROOM
