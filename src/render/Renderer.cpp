@@ -72,7 +72,7 @@ void Renderer::init(Window* win)
 	Backbuffer->id = 0;
 	Backbuffer->target_size = Vec2(win->w, win->h);
 
-	DefaultFont = Asset::load_font("font/comic.fnt");
+	DefaultFont = Asset::load_font("font/monogram.fnt");
 
 	// OpenGL - start
 	float vertices_old[] = {
