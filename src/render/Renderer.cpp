@@ -230,6 +230,44 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity, bool flip)
 	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
 }
 
+void Renderer::set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity)
+{
+	s->set_uniform_float("u_opacity", opacity);
+	s->set_uniform_mat4("u_mvp", mvp);
+	s->set_uniform_float("u_time", get_time());
+}
+
+
+void Renderer::draw_tex_s(Texture* tex, Vec2 pos, Vec2 size, Shader* custom_shader /*= nullptr*/, float opacity /*= 1.0f*/, bool flip /*= false*/)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, Vec3(pos, 0.0f));
+	//model = glm::translate(model, glm::vec3(tex->size.x,tex->size.y, 0.0f)); 
+
+	if (flip)
+	{
+		model = glm::translate(model, glm::vec3(tex->size.x, 0.0f, 0.0f));
+		model = glm::scale(model, Vec3(size, 1.0f) * Vec3(-1.0f, 1.0f, 1.0f));
+	}
+
+	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
+
+	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
+
+	glUseProgram(custom_shader->get_id());
+
+	glBindTexture(GL_TEXTURE_2D, tex->id);
+
+	set_required_uniforms(custom_shader, mvp, opacity);
+
+	glBindVertexArray(VAO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	custom_shader->set_uniform_float("u_opacity", 1.0f);
+}
+
 void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale, bool flip)
 {
 	glm::mat4 model = glm::mat4(1.0f);
@@ -247,8 +285,8 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
-	m_defaultShader->set_uniform_float("u_opacity", opacity);
-	m_defaultShader->set_uniform_mat4("u_mvp", mvp);
+	set_required_uniforms(m_defaultShader, mvp, opacity);
+
 
 	
 	glUseProgram(m_defaultShader->get_id());
@@ -284,17 +322,19 @@ void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color, bool fill)
 	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
 
 
-
 	
 	if (fill)
 	{
 		glUseProgram(m_filledBoxShader->get_id());
+		glBindTexture(GL_TEXTURE_2D, 0);
+
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 	else
 	{
 		glUseProgram(m_defaultShader->get_id());
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(boxVAO);
 		glDrawArrays(GL_LINE_LOOP, 0, 4);
 	}

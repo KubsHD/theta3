@@ -68,7 +68,7 @@ void GameScene::init()
 
 
 
-	Factory::CreateSkillSpinner(this, player);
+	//Factory::CreateSkillSpinner(this, player);
 
 	auto animator = player->add(Animator());
 

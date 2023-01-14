@@ -1,5 +1,7 @@
 #include "scene_shop_test.h"
+
 #include <components/ui/shop/ui_shop_card.h>
+#include <components/ui/ui_combo_display.h>
 
 #include <glm/glm.hpp>
 #include <core/input.h>
@@ -20,6 +22,10 @@ void ShopTestScene::init()
 	}
 
 	cards[idx]->selected = true;
+
+	auto c = create("uic");
+	c->add(UIComboDisplay());
+	c->position = Vec2(0, 600);
 }
 
 void ShopTestScene::destroy()
