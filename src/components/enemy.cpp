@@ -1,6 +1,7 @@
 #include "enemy.h"
 
 #include <iostream>
+#include "dmg_popup.h"
 
 void Enemy::flip_sprite()
 {
@@ -47,6 +48,7 @@ void Enemy::handle_collision()
 
 void Enemy::take_damage(float melee_damage, float knockback_rate)
 {
+	Factory::CreateDamagePopup(this->entity->world, entity->position, melee_damage);
 	health -= melee_damage;
 	// todo: knockback
 	Audio::play_one_shot(audio_damage_dealt);
