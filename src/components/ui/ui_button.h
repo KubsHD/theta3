@@ -30,7 +30,7 @@ public:
 	void render(Renderer* ren) override
 	{
 		if (selected)
-			ren->draw_box_s(entity->position + Vec2(0, 10), Vec2(m_text.size() * 25, 50), Vec3(0, 0, 0), button_shader);
+			ren->draw_box_s(entity->position + Vec2(-10, -4), Vec2(m_text.size() * 15, 50), Vec3(0, 0, 0), button_shader);
 		ren->draw_text(m_text, Renderer::DefaultFont, entity->position, scale, selected ? opacity : opacity * 0.5);
 	}
 

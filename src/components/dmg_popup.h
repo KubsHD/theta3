@@ -40,7 +40,7 @@ namespace Factory {
 	{
 		auto ent = scn->create("dmg");
 		auto c = ent->add(DamagePopup());
-		ent->position = pos;
+		ent->position = pos + Vec2(rand() % 10 - 5, 0);
 		c->dmg = amount;
 	}
 }
