@@ -35,7 +35,8 @@ Entity* Scene::get(String name)
 
 void Scene::remove(Entity* name)
 {
-	m_entites_marked_for_deletion.push_back(name);
+	if (std::find(m_entites_marked_for_deletion.begin(), m_entites_marked_for_deletion.end(), name) == m_entites_marked_for_deletion.end())
+		m_entites_marked_for_deletion.push_back(name);
 }
 
 bool check_aabb(Collider* col, Collider* col2)
