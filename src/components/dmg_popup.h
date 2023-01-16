@@ -26,6 +26,9 @@ public:
 		if (timer > 50)
 			opacity -= 0.01f;
 
+
+		if (opacity <= 0.0f)
+			this->entity->world->remove(this->entity);
 	
 	};
 

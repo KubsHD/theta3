@@ -23,6 +23,7 @@ public:
     Player* player;
 
 	float attack_cooldown, bullet_damage, bullet_knockback, bullet_speed;
+	float auto_destroy_timer = 0;
 	int magazine_capacity, bullets_left;
 	Sound* audio_shot;
 	Sound* audio_on_hit;
@@ -135,19 +136,25 @@ public:
 
     void update() override
     {
+		auto_destroy_timer++;
+
         entity->position.x += cos(facing_angle) * bullet_speed;
         entity->position.y += sin(facing_angle) * bullet_speed;
 
 		// TO DO: offset = w init entity->get<Sprite>()->tex->size.x / 2
 		if (entity->get<Collider>()->check_sphere(Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2, entity->position.y + entity->get<Sprite>()->tex->size.y / 2), 3.0f, CollisionTag::Enemy, entity_hit))
 		{
-			entity_hit.get<Enemy>()->take_damage(bullet_damage, bullet_knockback);
+			entity_hit.get<Enemy>()->take_damage(bullet_damage, bullet_knockback, Vec2(cos(facing_angle), sin(facing_angle)));
 			if (audio_shot != NULL) {
 				Audio::play_one_shot(audio_on_hit, 0.05f);
 			}
 
 			this->entity->world->remove(this->entity);
 		}
+
+
+		if (auto_destroy_timer > 100)
+			this->entity->world->remove(this->entity);
 
     }
 

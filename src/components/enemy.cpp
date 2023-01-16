@@ -46,11 +46,14 @@ void Enemy::handle_collision()
 
 }
 
-void Enemy::take_damage(float melee_damage, float knockback_rate)
+void Enemy::take_damage(float melee_damage, float knockback_rate, Vec2 knockback_dir)
 {
 	Factory::CreateDamagePopup(this->entity->world, entity->position, melee_damage);
 	health -= melee_damage;
 	// todo: knockback
 	Audio::play_one_shot(audio_damage_dealt);
-	entity->position += Vec2(-1 * delta_x * knockback_rate, -1 * delta_y * knockback_rate);
+
+	state = EnemyState::IN_KNOCKBACK;
+
+	target_knochback_position = entity->position + Vec2( (knockback_dir.x > 0 ? 1 : -1) * 100 * knockback_rate, 0);
 }

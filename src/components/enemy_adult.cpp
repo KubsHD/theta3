@@ -113,7 +113,11 @@ void Adult::update()
 {
 	Enemy::update();
 
+
 	on_death();
+	
+	if (state == EnemyState::IN_KNOCKBACK)
+		return;
 
 	// Enemies' Sprite center coordinates
 	pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,

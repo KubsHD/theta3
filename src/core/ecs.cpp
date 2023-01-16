@@ -74,7 +74,8 @@ void Scene::update_collider_list()
 
 void Scene::init()
 {
-
+	m_entities.reserve(1000);
+	_colliders.reserve(1000);
 }
 
 void Scene::update()

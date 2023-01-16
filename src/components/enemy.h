@@ -13,7 +13,14 @@
 #include <render/Renderer.h>
 #include <components/gun.h>
 
+#include <glm/gtx/compatibility.hpp>
+
 class Player;
+
+enum class EnemyState {
+	ATTACK,
+	IN_KNOCKBACK
+};
 
 class Enemy : public Component
 {
@@ -26,6 +33,8 @@ public:
 	Sound* audio_death;
 	Sound* audio_damage_dealt;
 	Sound* audio_damage_recived;
+
+	EnemyState state = EnemyState::ATTACK;
 
 	Collider* collider;
 	Vec2 death_pos, text_pos;
@@ -63,7 +72,18 @@ public:
 		//text_pos.y -= 0.1f;
 
 		//on_death();
+		
 		flip_sprite();
+
+		if (state == EnemyState::IN_KNOCKBACK)
+		{
+			entity->position = glm::lerp(entity->position, target_knochback_position, 0.1f);
+
+			if (glm::distance(entity->position, target_knochback_position) < 1)
+				state = EnemyState::ATTACK;
+
+			return;
+		}
 	}
 
 	void render(Renderer* ren) override
@@ -74,6 +94,8 @@ public:
 		//	//text_opacity -= 0.1f;
 		//}
 	}
-	void take_damage(float melee_damage, float knockback_rate);
+	void take_damage(float melee_damage, float knockback_rate, Vec2 knockback_dir);
+private:
+	Vec2 target_knochback_position;
 };
 
