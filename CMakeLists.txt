@@ -20,6 +20,7 @@ endif()
 
 include("cmake/common_deps.cmake")
 
+
 if (BUILD_DOCS)
     include("cmake/build_docs.cmake")
 endif()
@@ -31,6 +32,8 @@ elseif (DEFINED ENV{VITASDK})
 else()
     include("cmake/platform_windows.cmake")
 endif()
+
+include_directories(deps/cereal)
 
 if (ONLINE)
 list(APPEND game_libs "eos")
