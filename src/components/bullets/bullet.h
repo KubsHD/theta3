@@ -35,8 +35,16 @@ public:
     Bullet(Entity* player_ref)
     {
         this->player = player_ref->get<Player>();
-		destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270);
-    }
+		
+		if (player->selected_weapon == 2)
+		{
+			destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270) + Vec2(rand() % 70 - 35, rand() % 70 - 35);
+		}
+		else
+			destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270);
+
+		
+	}
 
 	~Bullet()
 	{
@@ -47,22 +55,7 @@ public:
     {
 		switch (player->selected_weapon)
 		{
-		case 1:
-		{
-			attack_cooldown = 1.4f * 60;
-			magazine_capacity = 4;
-			bullets_left = magazine_capacity;
-			bullet_damage = 21;
-			bullet_knockback = 0.09f;
-			bullet_speed = 6.2f;
-			weapon_sprite = "icon_shotgun.png";
-			bullet_sprite = "bullet1.png";
-			audio_shot = Asset::load_sound("audio/gun_pistol_shot.mp3");
-			audio_on_hit = Asset::load_sound("audio/gun_pistol_on_hit.mp3");
-			break;
-		}
-
-		case 2:
+		case PISTOL:
 		{
 			attack_cooldown = 0.4f * 60;
 			magazine_capacity = 9;
@@ -78,7 +71,22 @@ public:
 			break;
 		}
 
-		case 3:
+		case SHOTGUN:
+		{
+			attack_cooldown = 1.4f * 60;
+			magazine_capacity = 4;
+			bullets_left = magazine_capacity;
+			bullet_damage = 14;
+			bullet_knockback = 0.09f;
+			bullet_speed = 6.3f * float(rand() % 12 + 89) / 100.0f;
+			weapon_sprite = "icon_shotgun.png";
+			bullet_sprite = "bullet1.png";
+			audio_shot = Asset::load_sound("audio/gun_pistol_shot.mp3");
+			audio_on_hit = Asset::load_sound("audio/gun_pistol_on_hit.mp3");
+			break;
+		}
+
+		case MACHINE_GUN:
 		{
 			attack_cooldown = 0.15f * 60;
 			magazine_capacity = 60;
@@ -94,7 +102,7 @@ public:
 			break;
 		}
 
-		case 4:
+		case CROSSBOW:
 		{
 			attack_cooldown = 2.5f * 60;
 			magazine_capacity = 3;
@@ -168,6 +176,6 @@ public:
 
 
 namespace Factory {
-	void CreateBullet(Scene* scn, Player* pl1ayer);
-   
+	void CreateBullet(Scene* scn, Player* player);
+	void shotgunShoot(Scene* scn, Player* player);
 }

@@ -28,7 +28,7 @@ void Adult::on_death()
 	if (health <= 0 && is_dead == false)
 	{
 		// DROP GUN
-		Entity* gun =this->entity->world->create("Gun" + entity->name);
+		Entity* gun =this->entity->world->create("Gun");
 		auto gun_collider = gun->add(Collider(Vec2(24, 24), Vec2(0, 0)));
 		gun_collider->tag = CollisionTag::Gun;
 
