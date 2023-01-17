@@ -1,4 +1,4 @@
-﻿#include "main.h"
+#include "main.h"
 
 #include <iostream>
 #include <SDL.h>
@@ -27,6 +27,7 @@
 #include <scenes/scene_game.h>
 #include <scenes/scene_menu.h>
 #include <scenes/scene_title.h>
+#include <scenes/scene_shop_test.h>
 
 #include <components/player.h>
 #include <components/wave_system.h>

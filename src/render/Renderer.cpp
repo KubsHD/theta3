@@ -251,7 +251,7 @@ void Renderer::draw_tex_s(Texture* tex, Vec2 pos, Vec2 size, Shader* custom_shad
 		model = glm::scale(model, Vec3(size, 1.0f) * Vec3(-1.0f, 1.0f, 1.0f));
 	}
 
-	model = glm::scale(model, Vec3(tex->size.x, tex->size.y, 1.0f));
+	model = glm::scale(model, Vec3(size.x, size.y, 1.0f));
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 

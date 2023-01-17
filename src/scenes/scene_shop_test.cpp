@@ -25,7 +25,7 @@ void ShopTestScene::init()
 
 	auto c = create("uic");
 	c->add(UIComboDisplay());
-	c->position = Vec2(0, 600);
+	c->position = Vec2(1000, 100);
 }
 
 void ShopTestScene::destroy()
