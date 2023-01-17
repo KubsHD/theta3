@@ -18,6 +18,7 @@ Player::Player()
 	kill_count = 0;
 	health_decay = 0.05f;
 	selected_weapon = 0;
+	weapon_cooldown = 0;
 	// in reversed order tho { BROOM, SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW }
 	available_weapons = 0b0000;
 	enemies = 0;
@@ -47,6 +48,9 @@ void Player::update()
 	else if (Input::key_down(SDL_SCANCODE_5))// && (0b1000 & available_weapons))
 		selected_weapon = 4;
 
+	if (weapon_cooldown > 0)
+		weapon_cooldown--;
+
 }
 
 
@@ -58,6 +62,7 @@ void Player::render(Renderer* ren)
 		ImGui::Text("health: %f", this->health);
 		ImGui::Text("money: %d", this->money);
 		ImGui::Text("speed: %d", this->speed);
+		ImGui::Text("cooldown: %d", this->weapon_cooldown);
 		ImGui::Text("weaponn: %d", this->selected_weapon);
 		ImGui::Text("health_decay: %f", this->health_decay);
 		ImGui::Text("pos_sprite_cen: %f, %f", pos_sprite_center.x, pos_sprite_center.y);

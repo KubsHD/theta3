@@ -34,6 +34,8 @@ void Factory::CreateBullet(Scene* scn, Player* player)
 	ent->add(Collider());
 	ent->add(Bullet(player->entity));
 	//Bullet::bullet_ID++;
+
+	player->weapon_cooldown = ent->get<Bullet>()->attack_cooldown;
 }
 
 void Factory::shotgunShoot(Scene* scn, Player* player)

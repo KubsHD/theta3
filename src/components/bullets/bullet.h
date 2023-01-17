@@ -36,9 +36,13 @@ public:
     {
         this->player = player_ref->get<Player>();
 		
-		if (player->selected_weapon == 2)
+		if (player->selected_weapon == SHOTGUN)
 		{
 			destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270) + Vec2(rand() % 70 - 35, rand() % 70 - 35);
+		}
+		else if (player->selected_weapon == MACHINE_GUN)
+		{
+			destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270) + Vec2(rand() % 20 - 10, rand() % 20 - 10);
 		}
 		else
 			destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270);
@@ -57,7 +61,7 @@ public:
 		{
 		case PISTOL:
 		{
-			attack_cooldown = 0.4f * 60;
+			attack_cooldown = 0.5f * 60;
 			magazine_capacity = 9;
 			bullets_left = magazine_capacity;
 			bullet_damage = 13;
@@ -73,7 +77,7 @@ public:
 
 		case SHOTGUN:
 		{
-			attack_cooldown = 1.4f * 60;
+			attack_cooldown = 1.5f * 60;
 			magazine_capacity = 4;
 			bullets_left = magazine_capacity;
 			bullet_damage = 14;
@@ -88,7 +92,7 @@ public:
 
 		case MACHINE_GUN:
 		{
-			attack_cooldown = 0.15f * 60;
+			attack_cooldown = 0.05f * 60;
 			magazine_capacity = 60;
 			bullets_left = magazine_capacity;
 			bullet_damage = 7;
@@ -107,9 +111,9 @@ public:
 			attack_cooldown = 2.5f * 60;
 			magazine_capacity = 3;
 			bullets_left = magazine_capacity;
-			bullet_damage = 83;
+			bullet_damage = 140;
 			bullet_knockback = 0.2f;
-			bullet_speed = 8.4f;
+			bullet_speed = 9.4f;
 			weapon_sprite = "icon_crossbow.png";
 			bullet_sprite = "bullet4.png";
 			audio_shot = Asset::load_sound("audio/gun_pistol_shot.mp3");
@@ -161,9 +165,10 @@ public:
 		}
 
 
-		if (auto_destroy_timer > 100)
+		if (abs(entity->position.x - player->pos_sprite_center.x) > 483)
 			this->entity->world->remove(this->entity);
-
+		else if (abs(entity->position.y - player->pos_sprite_center.y) > 273)
+			this->entity->world->remove(this->entity);
     }
 
 
