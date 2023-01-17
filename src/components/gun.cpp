@@ -4,15 +4,15 @@ void Gun::gun_choose_type(int gun_type)
 {
 	switch (gun_type)
 	{
-	case SHOTGUN:
-	{
-		weapon_sprite = "icon_shotgun.png";
-		break;
-	}
-
 	case PISTOL:
 	{
 		weapon_sprite = "icon_pistol.png";
+		break;
+	}
+
+	case SHOTGUN:
+	{
+		weapon_sprite = "icon_shotgun.png";
 		break;
 	}
 
@@ -35,7 +35,7 @@ void Gun::gun_choose_type(int gun_type)
 
 void Gun::init()
 {
-	gun_choose_type(rand() % 4);
+	gun_choose_type(rand() % 4 + 1);
 	entity->position = enemy->position;
 	collider = this->entity->get<Collider>();
 	//this->entity->get<Animator>()->play_anim("gun_shotgun");

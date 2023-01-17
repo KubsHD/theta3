@@ -52,7 +52,7 @@ void PlayerMovement::update()
 
 	if (Input::key_held(SDL_SCANCODE_SPACE) || Input::mouse_held(0))
 	{
-		if (player->selected_weapon == 3)
+		if (player->selected_weapon == MACHINE_GUN)
 			Factory::CreateBullet(entity->world, player);
 
 	}
@@ -105,6 +105,10 @@ void PlayerMovement::update()
 					}, 1.5f);
 				break;
 			}
+		}
+		else if (player->selected_weapon == SHOTGUN)
+		{
+			Factory::shotgunShoot(entity->world, player);
 		}
 		else
 		{

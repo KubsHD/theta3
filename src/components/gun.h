@@ -16,7 +16,7 @@
 
 class Player;
 
-enum GUN_TYPE { SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW };
+enum GUN_TYPE { BROOM, PISTOL, SHOTGUN, MACHINE_GUN, CROSSBOW };
 
 class Gun : public Component
 { 
