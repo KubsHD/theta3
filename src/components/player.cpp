@@ -20,6 +20,7 @@ Player::Player()
 	selected_weapon = 0;
 	// in reversed order tho { BROOM, SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW }
 	available_weapons = 0b0000;
+	enemies = 0;
 }
 
 

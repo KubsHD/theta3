@@ -27,7 +27,7 @@ public:
 	void update() override;
 	void render(Renderer* ren) override
 	{
-		Enemy::render(ren);
+		//Enemy::render(ren);
 	};
 
 };

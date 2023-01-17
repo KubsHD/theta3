@@ -32,7 +32,7 @@ public:
 		auto money = entity->world->get("Player")->get<Player>()->money;
 		text_money = std::to_string(money);
 
-		auto kills = entity->world->get("Player")->get<Player>()->kill_count;
+		auto kills = entity->world->get("Player")->get<Player>()->enemies;
 		text_kills = std::to_string(kills);
 	}
 

@@ -21,6 +21,7 @@ public:
 	float health_decay;
 	int selected_weapon;
 	int available_weapons;
+	int enemies;
 
 	Player();
 
