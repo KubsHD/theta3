@@ -7,12 +7,12 @@
 #include <functional>
 
 
+#include <core/file/atl.h>
+
 struct AnimData {
-	String name;
-	Vector<Subtexture*> Frames;
-	int currentFrame;
-	Texture* animTex;
+	Atlas* atl;
 	float speed_override = 1.0f;
+	int currentFrame = 0;
 };
 
 class Animator : public Component {

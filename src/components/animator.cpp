@@ -9,11 +9,11 @@ Vec2 Animator::get_frame_size()
 {
 	if (this->m_currentLoopingAnim != nullptr)
 	{
-		return m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame]->texSize;
+		return m_currentLoopingAnim->atl->Frames[m_currentLoopingAnim->currentFrame]->texSize;
 	}
 	else if (this->m_currentAnim != nullptr)
 	{
-		return m_currentAnim->Frames[m_currentAnim->currentFrame]->texSize;
+		return m_currentAnim->atl->Frames[m_currentAnim->currentFrame]->texSize;
 	}
 
 	return Vec2(0, 0);
@@ -21,26 +21,9 @@ Vec2 Animator::get_frame_size()
 
 void Animator::add_animation(String path)
 {
-	m_ad.push_back(AnimData());
-	auto& ad = m_ad.back();
-
-	ad.name = Path(std::string(Asset::get_asset_path(path.c_str())) + ".json").filename().stem().string();
-
-	//log_info("Loaded anim: %s\n", ad.name);
-
-	std::ifstream ifs(std::string(Asset::get_asset_path(path.c_str())) + ".json");
-	auto data = nlohmann::json::parse(ifs);
-	ad.animTex = Asset::load_texture(path + ".png");
-
-	for (auto frame : data["frames"])
-	{
-		ad.Frames.push_back(new Subtexture
-			{ ad.animTex,
-				{ frame["frame"]["x"], frame["frame"]["y"] },
-				{ frame["frame"]["w"], frame["frame"]["h"] },
-			}
-		);
-	}
+	AnimData dat;
+	dat.atl = Asset::load_atlas(path);
+	m_ad.push_back(dat);
 }
 
 void Animator::play_one_shot(String name, std::function<void()> on_finish_anim, float speed_mul)
@@ -49,7 +32,7 @@ void Animator::play_one_shot(String name, std::function<void()> on_finish_anim, 
 
 	for (auto& anim : m_ad)
 	{
-		if (anim.name == name)
+		if (anim.atl->name == name)
 		{
 			m_currentAnim = &anim;
 			m_currentAnim->speed_override = speed_mul;
@@ -64,7 +47,7 @@ void Animator::play_anim(String name, float speed_mul)
 {
 	for (auto& anim : m_ad)
 	{
-		if (anim.name == name)
+		if (anim.atl->name == name)
 		{
 			m_currentLoopingAnim = &anim;
 			m_currentLoopingAnim->speed_override = speed_mul;
@@ -79,7 +62,7 @@ void Animator::play_anim_scaled(String name, float speed_mul, float scale)
 {
 	for (auto& anim : m_ad)
 	{
-		if (anim.name == name)
+		if (anim.atl->name == name)
 		{
 			anim_scale = scale;
 			m_currentLoopingAnim = &anim;
@@ -102,7 +85,7 @@ void Animator::update()
 			m_currentAnim->currentFrame++;
 		}
 
-		if (m_currentAnim->currentFrame >= m_currentAnim->Frames.size())
+		if (m_currentAnim->currentFrame >= m_currentAnim->atl->Frames.size())
 		{
 			m_currentAnim->currentFrame = 0;
 			m_oneShotInProgress = false;
@@ -121,7 +104,7 @@ void Animator::update()
 			m_currentLoopingAnim->currentFrame++;
 		}
 
-		if (m_currentLoopingAnim->currentFrame >= m_currentLoopingAnim->Frames.size())
+		if (m_currentLoopingAnim->currentFrame >= m_currentLoopingAnim->atl->Frames.size())
 		{
 			m_currentLoopingAnim->currentFrame = 0;
 		}
@@ -133,13 +116,13 @@ void Animator::render(Renderer* ren)
 
 	if (m_oneShotInProgress)
 	{
-		ren->draw_subtex(m_currentAnim->Frames[m_currentAnim->currentFrame], entity->position, 1.0f, anim_scale, flip);
+		ren->draw_subtex(m_currentAnim->atl->Frames[m_currentAnim->currentFrame], entity->position, 1.0f, anim_scale, flip);
 		//ren->draw_box(entity->position, m_currentAnim->Frames[m_currentAnim->currentFrame]->texSize, Vec3(1, 1, 1));
 	}
 
 	if (m_animInProgress && !m_oneShotInProgress)
 	{
-		ren->draw_subtex(m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame], entity->position, 1.0f, anim_scale, flip);
+		ren->draw_subtex(m_currentLoopingAnim->atl->Frames[m_currentLoopingAnim->currentFrame], entity->position, 1.0f, anim_scale, flip);
 		//ren->draw_box(entity->position, m_currentLoopingAnim->Frames[m_currentLoopingAnim->currentFrame]->texSize, Vec3(1, 1, 1));
 	}
 }

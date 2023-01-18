@@ -283,6 +283,21 @@ int main(int argc, char* argv[])
 
 	ren.init(&window);
 
+	if (true || argv[1] == "--compile")
+	{
+		for (auto& path : std::filesystem::recursive_directory_iterator(std::filesystem::path(ass.get_asset_path("anim/"))))
+		{
+			auto p = path.path();
+
+			if (p.extension().string() == ".json")
+			{
+				p.replace_extension();
+				AtlasData::convert_from_json(p.string());
+			}
+		}
+
+	}
+
 	change_scene<MenuScene>();
 
 	while (bRunning)

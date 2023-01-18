@@ -29,6 +29,7 @@
 #include "scene_menu.h"
 #include <components/skills/skill_spinner.h>
 #include <components/particle_system.h>
+#include <components/ui/ui_combo_display.h>
 
 void GameScene::init()
 {
@@ -108,6 +109,9 @@ void GameScene::init()
 	ui->add(UIHpBar());
 	ui->add(UICoinDisplay());
 	ui->add(UIWeaponDisplay());
+	auto combo = ui->add(UIComboDisplay());
+	combo->widget_position = Vec2(1000, 100);
+
 
 }
 

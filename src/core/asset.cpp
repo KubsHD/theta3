@@ -6,6 +6,8 @@
 
 #include <SDL_filesystem.h>
 
+#include <core/file/atl.h>
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -15,6 +17,7 @@ static const char* path_prefix;
 Map<String, Texture*> Asset::cache_texture;
 Map<String, Sound*> Asset::cache_sound;
 Map<String, Font*> Asset::cache_font;
+Map<String, Atlas*> Asset::cache_atlas;
 
 void Asset::init(Renderer* ren)
 {
@@ -90,6 +93,20 @@ Font* Asset::load_font(String path)
 	Font* fnt = new Font(get_asset_path(path.c_str()));
 	cache_font.emplace(path, fnt);
 	return fnt;
+}
+
+Atlas* Asset::load_atlas(String path)
+{
+	for (auto [k, v] : cache_atlas)
+	{
+		if (k == path)
+			return v;
+	}
+
+	Atlas* atl = new Atlas(get_asset_path(path.c_str()));
+	cache_atlas.emplace(path, atl);
+
+	return atl;
 }
 
 std::string Asset::read_file(String filePath)

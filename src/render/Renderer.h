@@ -25,9 +25,12 @@ class Window;
 class Texture
 {
 	Texture(String path);
+	Texture(std::vector<char> path);
 
+	friend struct Atlas;
 	friend class Asset;
 public:
+
 	~Texture();
 
 	unsigned int id;

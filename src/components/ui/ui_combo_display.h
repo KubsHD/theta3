@@ -15,7 +15,10 @@ class UIComboDisplay : public Component
 
 
 public:
-	// Constructors
+
+	Vec2 widget_position = Vec2(0,0);
+	
+		// Constructors
 	UIComboDisplay()
 	{
 		flame = /*Asset::load_shader()*/ new Shader("flame");
@@ -44,9 +47,9 @@ public:
 		glBindTexture(GL_TEXTURE_2D, gradient->id);
 
 		glActiveTexture(GL_TEXTURE0);
-		ren->draw_tex_s(noise, entity->position + Vec2(-5,20), Vec2(140, 70), flame);
-		ren->draw_text("COMBO", Renderer::DefaultFont, entity->position + Vec2(30, 20), 1.0f, 1.0f);
-		ren->draw_text("2x", Renderer::DefaultFont, entity->position + Vec2(0, 50), 1.0f, 1.0f);
-		ren->draw_text("000000", Renderer::DefaultFont, entity->position + Vec2(40, 60), 1.0f, 1.0f);
+		ren->draw_tex_s(noise, widget_position + Vec2(-5,20), Vec2(140, 70), flame);
+		ren->draw_text("COMBO", Renderer::DefaultFont, widget_position + Vec2(30, 20), 1.0f, 1.0f);
+		ren->draw_text("2x", Renderer::DefaultFont, widget_position + Vec2(0, 50), 1.0f, 1.0f);
+		ren->draw_text("000000", Renderer::DefaultFont, widget_position + Vec2(40, 60), 1.0f, 1.0f);
 	};
 };
