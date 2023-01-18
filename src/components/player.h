@@ -9,7 +9,7 @@
 class Player : public Component
 {
 public:
-	// Custom variables
+	// Custom variables	
 	float health, speed;
 	int money;
 	int kill_count;

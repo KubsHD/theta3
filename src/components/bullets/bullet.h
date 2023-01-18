@@ -26,7 +26,7 @@ public:
 	float auto_destroy_timer = 0;
 	int magazine_capacity, bullets_left;
 	Sound* audio_shot;
-	Sound* audio_on_hit;
+	Sound* adult_damaged;
 	String weapon_sprite;
 	String bullet_sprite;
 
@@ -61,32 +61,29 @@ public:
 		{
 		case PISTOL:
 		{
-			attack_cooldown = 0.5f * 60;
+			attack_cooldown = 0.13f * 60;
 			magazine_capacity = 9;
 			bullets_left = magazine_capacity;
 			bullet_damage = 13;
-			bullet_knockback = 0.02f;
+			bullet_knockback = 0.1f;
 			bullet_speed = 6.2f;
 			weapon_sprite = "icon_pistol.png";
 			bullet_sprite = "bullet2.png";
 			audio_shot = Asset::load_sound("audio/gun_pistol_shot.mp3");
-			audio_on_hit = Asset::load_sound("audio/gun_pistol_on_hit.mp3");
-
 			break;
 		}
 
 		case SHOTGUN:
 		{
-			attack_cooldown = 1.5f * 60;
-			magazine_capacity = 4;
+			attack_cooldown = 0.4f * 60;
+			magazine_capacity = 3;
 			bullets_left = magazine_capacity;
 			bullet_damage = 14;
-			bullet_knockback = 0.09f;
+			bullet_knockback = 0.6f;
 			bullet_speed = 6.3f * float(rand() % 12 + 89) / 100.0f;
 			weapon_sprite = "icon_shotgun.png";
 			bullet_sprite = "bullet1.png";
-			audio_shot = Asset::load_sound("audio/gun_pistol_shot.mp3");
-			audio_on_hit = Asset::load_sound("audio/gun_pistol_on_hit.mp3");
+			audio_shot = Asset::load_sound("audio/gun_shotgun_shot.mp3");
 			break;
 		}
 
@@ -95,29 +92,27 @@ public:
 			attack_cooldown = 0.05f * 60;
 			magazine_capacity = 60;
 			bullets_left = magazine_capacity;
-			bullet_damage = 7;
-			bullet_knockback = 0.01f;
+			bullet_damage = 9;
+			bullet_knockback = 0.04f;
 			bullet_speed = 4.6f;
 			weapon_sprite = "icon_machine_gun.png";
 			bullet_sprite = "bullet3.png";
-			audio_shot = Asset::load_sound("audio/gun_pistol_on_hit2.mp3");
-			audio_on_hit = Asset::load_sound("audio/gun_pistol_on_hit.mp3");
+			audio_shot = Asset::load_sound("audio/gun_machinegun_shot.mp3");
 
 			break;
 		}
 
 		case CROSSBOW:
 		{
-			attack_cooldown = 2.5f * 60;
+			attack_cooldown = 2.0f * 60;
 			magazine_capacity = 3;
 			bullets_left = magazine_capacity;
-			bullet_damage = 140;
-			bullet_knockback = 0.2f;
+			bullet_damage = 160;
+			bullet_knockback = 0.9f;
 			bullet_speed = 9.4f;
 			weapon_sprite = "icon_crossbow.png";
 			bullet_sprite = "bullet4.png";
-			audio_shot = Asset::load_sound("audio/gun_pistol_shot.mp3");
-			audio_on_hit = Asset::load_sound("audio/gun_pistol_on_hit.mp3");
+			audio_shot = Asset::load_sound("audio/gun_crossbow_shot.mp3");
 
 			break;
 		}
@@ -125,6 +120,8 @@ public:
 		default:
 			break;
 		}
+
+		adult_damaged = Asset::load_sound("audio/adultenemy_damaged.mp3");
 
         entity->position = player->pos_sprite_center;
         // 
@@ -142,7 +139,7 @@ public:
 
 
 		if (audio_shot!= NULL) {
-			Audio::play_one_shot(audio_shot, 0.05f);
+			Audio::play_one_shot(audio_shot, 0.07f);
 		}
     }
 
@@ -156,9 +153,9 @@ public:
 		// TO DO: offset = w init entity->get<Sprite>()->tex->size.x / 2
 		if (entity->get<Collider>()->check_sphere(Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2, entity->position.y + entity->get<Sprite>()->tex->size.y / 2), 3.0f, CollisionTag::Enemy, entity_hit))
 		{
-			entity_hit.get<Enemy>()->take_damage(bullet_damage, bullet_knockback, Vec2(cos(facing_angle), sin(facing_angle)));
+			entity_hit.get<Enemy>()->take_damage(bullet_damage, bullet_knockback, entity_hit.facing_angle);
 			if (audio_shot != NULL) {
-				Audio::play_one_shot(audio_on_hit, 0.05f);
+				Audio::play_one_shot(adult_damaged, 0.1f);
 			}
 
 			this->entity->world->remove(this->entity);

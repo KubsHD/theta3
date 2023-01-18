@@ -29,7 +29,7 @@ public:
 
 		for (auto& ent : entity->get<Collider>()->check_sphere_list(pos, 50.0f, CollisionTag::Enemy))
 		{
-			ent->entity->get<Enemy>()->take_damage(20.0f, .4f, Vec2(cos(get_time() * speed), sin(get_time() * speed)));
+			ent->entity->get<Enemy>()->take_damage(20.0f, .4f, ent->entity->facing_angle);
 		}
 	};
 
