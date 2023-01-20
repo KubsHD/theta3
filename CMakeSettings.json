@@ -12,9 +12,10 @@
       "variables": [
         {
           "name": "BUILD_DOCS",
-          "value": "OFF",
+          "value": "ON",
           "type": "STRING"
-        }
+        },
+
       ]
     },
     {

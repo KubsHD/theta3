@@ -56,7 +56,7 @@ Texture::Texture(String path)
 }
 
 
-Texture::Texture(std::vector<char> path)
+Texture::Texture(std::vector<char> data)
 {
 	//assert(std::filesystem::exists(path), "Texture does not exist on disk!");
 
@@ -71,20 +71,20 @@ Texture::Texture(std::vector<char> path)
 	int width, height, nrChannels;
 
 
-	stbi_uc* dat = (stbi_uc*)path.data();
+	stbi_uc* dat = (stbi_uc*)data.data();
 
 	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load_from_memory(dat, path.size(), & width, &height, &nrChannels, 0);
+	unsigned char* img_data = stbi_load_from_memory(dat, data.size(), & width, &height, &nrChannels, 0);
 
-	if (data)
+	if (img_data)
 	{
 		size.x = width;
 		size.y = height;
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
-	stbi_image_free(data);
+	stbi_image_free(img_data);
 }
 
 Texture::~Texture()
