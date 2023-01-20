@@ -94,7 +94,7 @@ public:
 		//	//text_opacity -= 0.1f;
 		//}
 	}
-	void take_damage(float melee_damage, float knockback_rate, Vec2 knockback_dir);
+	void take_damage(float melee_damage, float knockback_rate, float facing_angle);
 private:
 	Vec2 target_knochback_position;
 };

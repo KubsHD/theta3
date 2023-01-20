@@ -11,7 +11,7 @@ Adult::Adult(Player* player_ref) : Enemy(player_ref)
 	money = 3;
 
 	attack_cooldown = 3;
-	speed = 1.1f;
+	speed = 1.23f;
 	temp_pos = Vec2(0, 0);
 	temp_val = 0;
 	temp = 0;
@@ -28,13 +28,16 @@ void Adult::on_death()
 	if (health <= 0 && is_dead == false)
 	{
 		// DROP GUN
-		Entity* gun =this->entity->world->create("Gun");
-		auto gun_collider = gun->add(Collider(Vec2(24, 24), Vec2(0, 0)));
-		gun_collider->tag = CollisionTag::Gun;
+		if (rand() % 6 == 0)
+		{
+			Entity* gun = this->entity->world->create("Gun");
+			auto gun_collider = gun->add(Collider(Vec2(24, 24), Vec2(0, 0)));
+			gun_collider->tag = CollisionTag::Gun;
 
-		auto animator_gun = gun->add(Animator());
-		animator_gun->add_animation("anim/gun_shotgun");
-		gun->add(Gun(this->entity, player->entity));
+			auto animator_gun = gun->add(Animator());
+			animator_gun->add_animation("anim/gun_shotgun");
+			gun->add(Gun(this->entity, player->entity));
+		}
 		
 
 		// fucking die lmao
@@ -47,7 +50,7 @@ void Adult::on_death()
 				//+ " / " + std::to_string(entity->position.y) + "\n";
 
 			// play death sound
-			Audio::play_one_shot(audio_death);
+			//Audio::play_one_shot(audio_death);
 		}
 
 
@@ -130,6 +133,7 @@ void Adult::update()
 	direction_y = player->pos_sprite_center.y - pos_sprite_center.y > 0 ? 1 : -1;
 
 	facing_angle = atan2(delta_y, delta_x);
+	entity->facing_angle = facing_angle;
 
 	// Movement 
 	if (can_walk)

@@ -50,69 +50,74 @@ void PlayerMovement::update()
 	else
 		combo_step = 1;
 
-	if (Input::key_held(SDL_SCANCODE_SPACE) || Input::mouse_held(0))
+	// shoot on LMB hold
+	if (Input::mouse_held(0))
 	{
 		if (player->selected_weapon == MACHINE_GUN && player->weapon_cooldown == 0)
 			Factory::CreateBullet(entity->world, player);
 
 	}
-	if ((Input::mouse_down(0) || Input::key_down(SDL_SCANCODE_SPACE)) && in_combo == false)
+
+	// shoot on LMB clicked
+	if (Input::mouse_down(0))
 	{
-		if (player->selected_weapon == 0) // 0 for BROOM
-		{
-			is_on_broom = false;
-			counter = 60;
-
-			is_attacking = true;
-			speed = speed_when_attacking;
-
-			for (auto& i : entity->get<Collider>()->check_sphere_list(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy))
-			{
-				i->entity->get<Enemy>()->take_damage(melee_damage, knockback_rate, Vec2(entity->flip == true ? -1 : 1, 0));
-			}
-
-			switch (combo_step)
-			{
-			case 1:
-
-				in_combo = true;
-				combo_step = 2;
-
-				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK1], [this]() {
-					is_attacking = false;
-					speed = speed_base;
-					in_combo = false;
-					}, 1.5f);
-				break;
-			case 2:
-
-				combo_step = 3;
-
-				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK2], [this]() {
-					is_attacking = false;
-					speed = speed_base;
-					in_combo = false;
-					}, 1.5f);
-				break;
-			case 3:
-
-				combo_step = 1;
-
-				this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK3], [this]() {
-					is_attacking = false;
-					speed = speed_base;
-					in_combo = false;
-					}, 1.5f);
-				break;
-			}
-		}
-		else if (player->selected_weapon == SHOTGUN && player->weapon_cooldown == 0)
+		if (player->selected_weapon == SHOTGUN && player->weapon_cooldown == 0)
 		{
 			Factory::shotgunShoot(entity->world, player);
 		}
-		else if (player->weapon_cooldown == 0)
+		else if (player->selected_weapon != BROOM && player->weapon_cooldown == 0)
 		{
 			Factory::CreateBullet(entity->world, player);
+		}
+	}
+
+	// use broom on space
+	else if (Input::key_down(SDL_SCANCODE_SPACE) && in_combo == false)
+	{
+		is_on_broom = false;
+		counter = 60;
+
+		is_attacking = true;
+		speed = speed_when_attacking;
+
+		for (auto& i : entity->get<Collider>()->check_sphere_list(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy))
+		{
+			i->entity->get<Enemy>()->take_damage(player->damage_melee, knockback_rate, i->entity->facing_angle);
+		}
+
+		switch (combo_step)
+		{
+		case 1:
+
+			in_combo = true;
+			combo_step = 2;
+
+			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK1], [this]() {
+				is_attacking = false;
+				speed = speed_base;
+				in_combo = false;
+				}, 1.5f);
+			break;
+		case 2:
+
+			combo_step = 3;
+
+			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK2], [this]() {
+				is_attacking = false;
+				speed = speed_base;
+				in_combo = false;
+				}, 1.5f);
+			break;
+		case 3:
+
+			combo_step = 1;
+
+			this->entity->get<Animator>()->play_one_shot(player_anim[ATTACK3], [this]() {
+				is_attacking = false;
+				speed = speed_base;
+				in_combo = false;
+				}, 1.5f);
+			break;
 		}
 		
 	}

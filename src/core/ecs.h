@@ -71,6 +71,7 @@ public:
 	String name;
 	bool flip;
 	Vec2 position;
+	float facing_angle;
 	Scene* world;
 
 	template<typename T>
