@@ -1,9 +1,25 @@
+/*****************************************************************//**
+ * \file   log.h
+ * \brief  Functions responsible for logging
+ * 
+ * \date   January 2023
+ *********************************************************************/
+
+
 #pragma once
 
-/// Logs provided message with lowest severity
-/// @param str Message to print
+/// <summary>
+/// Log info to console
+/// </summary>
+/// <param name="str">String to print</param>
+/// <param name=""></param>
 void log_info(const char* str, ...);
 
-/// Logs provided message with highest severity
-/// @param str Message to print
+
+
+/// <summary>
+/// Log error to console
+/// </summary>
+/// <param name="str">Strint to print</param>
+/// <param name=""></param>
 void log_error(const char* str, ...);

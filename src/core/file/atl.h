@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   atl.h
+ * \brief  Atlas file format
+ * 
+ * \date   January 2023
+ *********************************************************************/
+
 #pragma once
 
 #include <cereal/types/unordered_map.hpp>
@@ -5,10 +12,10 @@
 #include <cereal/types/memory.hpp>
 #include <cereal/archives/binary.hpp>
 
-#include <lib/igfiledialog/ImGuiFileDialog.h>
 #include <lib/json.hpp>
 #include <cereal/archives/json.hpp>
 #include <core/asset.h>
+#include <fstream>
 #include <render/Renderer.h>
 
 namespace glm
@@ -60,14 +67,27 @@ inline std::vector<char> ReadAllBytes(std::string filename)
 	return result;
 }
 
+/// <summary>
+/// Atlas sprite data
+/// </summary>
 struct AtlasSprite {
 	AtlasSprite() : pos(0, 0), size(0, 0), sprite_name("NONE") {};
 	AtlasSprite(Vec2 p, Vec2 s) : pos(p), size(s), sprite_name("name") {};
-
+	
+	/// <summary>
+	/// Sprite name
+	/// </summary>
 	String sprite_name;
+
+	/// <summary>
+	/// Sprite position in root texture
+	/// </summary>
 	Vec2 pos;
+
+	/// <summary>
+	/// Sprite size in root texture
+	/// </summary>
 	Vec2 size;
-	// thats all
 
 	template <class Archive>
 	void serialize(Archive& ar)
@@ -76,12 +96,33 @@ struct AtlasSprite {
 	}
 };
 
+/// <summary>
+/// Atlas data
+/// </summary>
 struct AtlasData {
+	/// <summary>
+	/// Name of the atlas
+	/// </summary>
 	String name;
+
+	/// <summary>
+	/// Texture data
+	/// </summary>
 	Vector<char> tex_data;
+	
+	/// <summary>
+	/// Texture data size
+	/// </summary>
 	uint32_t tex_data_size;
 
+	/// <summary>
+	/// Sprites array
+	/// </summary>
 	Vector<AtlasSprite> sprites;
+
+	/// <summary>
+	/// Sprites count
+	/// </summary>
 	uint32_t sprites_count;
 
 	template <class Archive>
@@ -90,6 +131,10 @@ struct AtlasData {
 		ar(name, tex_data, tex_data_size, sprites, sprites_count);
 	}
 
+	/// <summary>
+	/// Convert from .json + .png to .atl
+	/// </summary>
+	/// <param name="path"></param>
 	static void convert_from_json(String path)
 	{
 		AtlasData dat;
@@ -127,9 +172,15 @@ struct AtlasData {
 	}
 };
 
-
+/// <summary>
+/// Runtime atlas class
+/// </summary>
 struct Atlas {
 
+	/// <summary>
+	/// Load atlas from .atl file
+	/// </summary>
+	/// <param name="path">Path to file</param>
 	Atlas(String path)
 	{
 		name = Path(std::string(path)).filename().stem().string();
@@ -155,8 +206,23 @@ struct Atlas {
 		}
 	}
 
+	/// <summary>
+	/// Atlas data
+	/// </summary>
 	AtlasData dat;
+
+	/// <summary>
+	/// Atlas texture
+	/// </summary>
 	Texture* atlas_tex;
+
+	/// <summary>
+	/// Atlas name
+	/// </summary>
 	String name;
+
+	/// <summary>
+	/// Frames array
+	/// </summary>
 	Vector<Subtexture*> Frames;
 };

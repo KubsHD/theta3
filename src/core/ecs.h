@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   ecs.h
+ * \brief  Entity Component System
+ * 
+ * \date   January 2023
+ *********************************************************************/
+
 #pragma once
 
 #include <core/types.h>
@@ -8,6 +15,9 @@ class Entity;
 class Collider;
 enum class CollisionTag;
 
+/// <summary>
+/// Base class for all components
+/// </summary>
 class Component {
 	friend class Scene;
 	friend class Entity;
@@ -15,41 +25,112 @@ public:
 	Component();
 	virtual ~Component() = default;
 
+	/// <summary>
+	/// Pointer to the entity this component is attached to
+	/// </summary>
 	Entity* entity;
+
+	/// <summary>
+	/// Is the component enabled
+	/// </summary>
 	bool enabled = true;
 
+	/// <summary>
+	/// Initialize the component
+	/// </summary>
 	virtual void init();
+
+	/// <summary>
+	/// Update the component
+	/// </summary>
 	virtual void update() = 0;
+
+	/// <summary>
+	/// Render the component
+	/// </summary>
+	/// <param name="ren">Renderer reference</param>
 	virtual void render(Renderer* ren) = 0;
 };
 
+/// <summary>
+/// Base class for all Scenes
+/// </summary>
 class Scene {
 public:
 	Scene();
 	virtual ~Scene();
 
-
-
+	/// <summary>
+	/// Renderer reference
+	/// </summary>
 	Renderer* ren;
 
+	/// <summary>
+	/// Create an entity
+	/// </summary>
+	/// <param name="name">Entity name</param>
+	/// <returns></returns>
 	Entity* create(String name);
 
+	/// <summary>
+	/// Get an entity by name
+	/// </summary>
+	/// <param name="name">name</param>
+	/// <returns></returns>
 	Entity* get(String name);
 
+	/// <summary>
+	/// Remove an entity
+	/// </summary>
+	/// <param name="name">Pointer to entity</param>
 	void remove(Entity* name);
 
+	/// <summary>
+	/// Get all entities
+	/// </summary>
+	/// <returns></returns>
 	Vector<Entity*> get_entities() { return m_entities; };
 
+	/// <summary>
+	/// Update all colliders
+	/// </summary>
 	void update_collider_list();
-
+	
+	/// <summary>
+	/// Initialize the scene
+	/// </summary>
 	virtual void init() = 0;
+
+	/// <summary>
+	/// Update the scene
+	/// </summary>
 	virtual void update();
+
+	/// <summary>
+	/// Render the scene
+	/// </summary>
 	virtual void render();
+
+	/// <summary>
+	/// Destroy the scene
+	/// </summary>
 	virtual void destroy() = 0;
 
 private:
+
+	/// <summary>
+	/// List of entities
+	/// </summary>
 	Vector<Entity*> m_entities; 
+	
+	/// <summary>
+	/// List of entities marked for deletion
+	/// </summary>
 	Vector<Entity*> m_entites_marked_for_deletion;
+
+	/// <summary>
+	/// List of colliders
+	/// </summary>
 	Vector<Collider*> _colliders;
 public:
 	bool collision_query_sphere(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor);
@@ -57,8 +138,9 @@ public:
 	bool collision_query_sphere_result(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor, Entity& hit);
 };
 
-
-
+/// <summary>
+/// Base class for all entities
+/// </summary>
 class Entity final {
 
 	friend class Scene;
@@ -66,17 +148,50 @@ class Entity final {
 public:
 	Entity() : position(640,320) {};
 
+	/// <summary>
+	/// Entity name
+	/// </summary>
 	String id;
 
+	/// <summary>
+	/// Entity name
+	/// </summary>
 	String name;
+
+	/// <summary>
+	/// Is the entity flipped
+	/// </summary>
 	bool flip;
+
+	/// <summary>
+	/// Entity position
+	/// </summary>
 	Vec2 position;
+
+	/// <summary>
+	/// Entity rotation
+	/// </summary>
 	float facing_angle;
+
+	/// <summary>
+	/// Reference to the scene this entity is in
+	/// </summary>
 	Scene* world;
 
+	/// <summary>
+	/// Add a component to the entity
+	/// </summary>
+	/// <typeparam name="T">Component class</typeparam>
+	/// <param name="comp">Component constructor</param>
+	/// <returns>Instance of an added component</returns>
 	template<typename T>
 	T* add(T&& comp = T());
 
+	/// <summary>
+	/// Get a component from the entity
+	/// </summary>
+	/// <typeparam name="T">Component type to return</typeparam>
+	/// <returns>Component reference</returns>
 	template<typename T>
 	T* get()
 	{
@@ -92,11 +207,16 @@ public:
 		return nullptr;
 	};
 
+	/// <summary>
+	/// How many components are attached to the entity
+	/// </summary>
+	/// <returns></returns>
 	int get_component_count() {return m_components.size();}
 	Vector<Component*> get_components() { return m_components; }
 private:
 	Vector<Component*> m_components;
 };
+
 
 template<typename T>
 T* Entity::add(T&& comp /*= T()*/)
