@@ -1,3 +1,9 @@
+/*****************************************************************//**
+ * \file   map.h
+ * \brief  this component is responsible for creating map
+ * 
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -9,7 +15,9 @@
 
 
 class Player;
-
+/// <summary>
+/// class responsible for generating map
+/// </summary>
 class MapGenerator : public Component
 {
 public:

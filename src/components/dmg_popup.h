@@ -1,8 +1,16 @@
+/*****************************************************************//**
+ * \file   dmg_popup.h
+ * \brief  this component create dmg number pop up in game
+ * 
+ * \date   January 2023
+ *********************************************************************/
 #pragma once 
 
 #include <core/types.h>
 #include <core/ecs.h>
-
+/// <summary>
+/// this class is respinsible for dmg text pop up
+/// </summary>
 class DamagePopup : public Component
 {
 

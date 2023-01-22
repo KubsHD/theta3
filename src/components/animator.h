@@ -1,3 +1,9 @@
+/*****************************************************************//**
+ * \file   animator.h
+ * \brief  component responsible for playing animations
+ * 
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -15,6 +21,9 @@ struct AnimData {
 	int currentFrame = 0;
 };
 
+/// <summary>
+/// this class manage animations
+/// </summary>
 class Animator : public Component {
 private:
 	Vector<AnimData> m_ad;
@@ -29,7 +38,6 @@ private:
 
 public:
 	
-	// zarówno entity jak i animator maj¹ pole flip, przyda³oby siê imo zunifikowaæ to
 	bool flip = false;
 
 	Vec2 get_frame_size();

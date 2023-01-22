@@ -1,3 +1,9 @@
+/*****************************************************************//**
+ * \file   particle_system.h
+ * \brief  component responsible for creating particles
+ * 
+ * \date   January 2023
+ *********************************************************************/
 #pragma once 
 
 #include <core/types.h>
@@ -8,6 +14,7 @@
 
 #include <lib/glad/glad.h>
 #include <main.h>
+
 
 enum class ParticleShape
 {
@@ -116,6 +123,10 @@ public:
 
 	};
 
+	/// <summary>
+	/// this function emit particles
+	/// </summary>
+	/// <param name="prop">it's properties of particles</param>
 	void emit(const ParticleProps& prop)
 	{
 		ParticleData& p = m_particles[m_idx];
