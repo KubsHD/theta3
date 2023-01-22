@@ -4,7 +4,6 @@
  *  managing stats of different types of bullets,
  *  playing bullets' sounds and deleting them
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 

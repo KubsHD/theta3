@@ -2,7 +2,6 @@
  * \file   wave_system.h
  * \brief  component responsible for spawning enemy waves
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once

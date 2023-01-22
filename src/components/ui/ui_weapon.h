@@ -2,7 +2,6 @@
  * \file   ui_weapon.h
  * \brief  displays selected weapon
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once

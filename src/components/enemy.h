@@ -2,7 +2,6 @@
  * \file   enemy.h
  * \brief  component that makes base for all the types of enemies
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once

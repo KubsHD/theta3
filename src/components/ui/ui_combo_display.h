@@ -2,7 +2,6 @@
  * \file   ui_combo_display.h
  * \brief  displays number of points, animated background under it, and multiplier
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once 

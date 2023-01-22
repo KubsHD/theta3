@@ -2,7 +2,6 @@
  * \file   ui_button.h
  * \brief  draws rectangle as moving background for menu options
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once

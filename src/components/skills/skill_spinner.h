@@ -3,7 +3,6 @@
  * \brief  component responsible for passive spell: spinner 
  * that will rotate around the player and deal damage to enenies knocking them back
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once

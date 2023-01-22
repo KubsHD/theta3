@@ -2,7 +2,6 @@
  * \file   ui_coin_display.h
  * \brief  displays game time, money gathered, and number of enemies killed
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once

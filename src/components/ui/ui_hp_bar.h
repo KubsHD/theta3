@@ -2,7 +2,6 @@
  * \file   ui_hp_bar.h
  * \brief  displays health bar at the bottom of the screen
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once

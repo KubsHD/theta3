@@ -2,7 +2,6 @@
  * \file   gun.h
  * \brief  component responsible for creating a gun that can be collected by stepping on it
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once

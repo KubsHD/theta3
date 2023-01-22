@@ -2,7 +2,6 @@
  * \file   effects.h
  * \brief  component for creating visual effects 
  * 
- * \author staniekk
  * \date   January 2023
  *********************************************************************/
 #pragma once
