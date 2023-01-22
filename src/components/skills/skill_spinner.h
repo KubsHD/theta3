@@ -53,7 +53,7 @@ public:
 
 
 /// <summary>
-/// Helps with creating spells in consise way
+/// Helps with creating spells in a consise way
 /// </summary>
 namespace Factory {
 	/// <summary>

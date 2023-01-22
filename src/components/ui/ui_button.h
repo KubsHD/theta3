@@ -17,6 +17,10 @@
 /// Creates a UI button
 /// </summary>
 class UIButton : public Component {
+
+	/// <summary>
+	/// Text of the button
+	/// </summary>
 	String m_text;
 public:
 	UIButton() = default;
@@ -24,12 +28,30 @@ public:
 		button_shader = new Shader("button");
 	};
 
+	
+	/// <summary>
+	/// Called when the button is clicked
+	/// </summary>
 	std::function<void()> on_clicked;
 
+	/// <summary>
+	/// Opacity of the button
+	/// </summary>
 	float opacity = 1.0f;
+
+	/// <summary>
+	/// Scale of the button
+	/// </summary>
 	float scale = 1.0f;
+
+	/// <summary>
+	/// Is the button selected
+	/// </summary>
 	bool selected;
 
+	/// <summary>
+	/// Shader used to draw the button
+	/// </summary>
 	Shader* button_shader;
 
 	void update() override
