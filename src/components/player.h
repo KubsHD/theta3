@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   player.h
+ * \brief  player component with many necessary attributes like health, selected weapon etc.
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once 
 
 #include <core/types.h>
@@ -6,6 +13,10 @@
 #include <iostream>
 
 
+
+/// <summary>
+/// class holding all the player attributes
+/// </summary>
 class Player : public Component
 {
 public:

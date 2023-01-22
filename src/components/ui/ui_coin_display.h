@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   ui_coin_display.h
+ * \brief  displays game time, money gathered, and number of enemies killed
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -5,6 +12,9 @@
 #include <components/wave_system.h>
 
 
+/// <summary>
+/// UI elemts: game time, money gathered, and number of enemies killed
+/// </summary>
 class UICoinDisplay : public Component
 {
 public:
@@ -32,7 +42,7 @@ public:
 		auto money = entity->world->get("Player")->get<Player>()->money;
 		text_money = std::to_string(money);
 
-		auto kills = entity->world->get("Player")->get<Player>()->enemies;
+		auto kills = entity->world->get("Player")->get<Player>()->kill_count;
 		text_kills = std::to_string(kills);
 	}
 
@@ -49,10 +59,6 @@ public:
 	
 		// Game time
 		ren->draw_text(text_game_time, Renderer::DefaultFont, Vec2(640, 20));
-
-
-
-
 	}
 
 };

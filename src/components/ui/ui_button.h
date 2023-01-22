@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   ui_button.h
+ * \brief  draws rectangle as moving background for menu options
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -5,6 +12,10 @@
 #include <render/Renderer.h>
 #include <functional>
 
+
+/// <summary>
+/// Creates a UI button
+/// </summary>
 class UIButton : public Component {
 	String m_text;
 public:

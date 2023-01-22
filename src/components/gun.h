@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   gun.h
+ * \brief  component responsible for creating a gun that can be collected by stepping on it
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -18,6 +25,10 @@ class Player;
 
 enum GUN_TYPE { BROOM, PISTOL, SHOTGUN, MACHINE_GUN, CROSSBOW };
 
+
+/// <summary>
+/// creating a gun that can be collected by stepping on it
+/// </summary>
 class Gun : public Component
 { 
 public:
@@ -37,6 +48,10 @@ public:
 		last_dead_enemy_pos = Vec2(0, 0);
 	}
 
+	/// <summary>
+	/// used to choose dropped gun type
+	/// </summary>
+	/// <param name="gun_type">desired gun type</param>
 	void gun_choose_type(int gun_type);
 
 	void init() override;

@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   effects.h
+ * \brief  component for creating visual effects 
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -10,6 +17,9 @@
 
 class Player;
 
+/// <summary>
+/// creates, and displays visual effects
+/// </summary>
 class Effect : public Component
 {
 public:
@@ -24,6 +34,9 @@ public:
 	Effect() = default;
 	Effect(Entity* player_ref, String name);
 
+	/// <summary>
+	/// plays the effect once
+	/// </summary>
 	void play_once();
 
 	void init() override;

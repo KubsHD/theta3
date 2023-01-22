@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   movement.h
+ * \brief  component responsible for player movement and shooting bullets
+ * 
+ * \date   January 2023
+ *********************************************************************/
+
 #pragma once
 
 #include <core/types.h>
@@ -6,6 +13,9 @@
 #include <components/animator.h>
 #include <components/player.h>
 
+/// <summary>
+/// class responsible for player movement and shooting bullets
+/// </summary>
 class PlayerMovement : public Component {
 public:
 	bool is_running, is_attacking;
@@ -21,7 +31,7 @@ public:
 
 	float speed_base = 2.0f;
 	float speed_when_attacking = 0.2f;
-	
+
 	void init() override;
 	void update() override;
 

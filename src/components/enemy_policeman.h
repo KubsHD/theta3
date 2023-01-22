@@ -1,10 +1,19 @@
+/*****************************************************************//**
+ * \file   enemy_adult.h
+ * \brief  component resposible for enemy type: Policeman
+ *
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once 
 
 #include <core/types.h>
 #include <core/ecs.h>
 #include "enemy.h"
 
-
+ /// <summary>
+ /// class responsible for enemies stats and AI
+ /// </summary>
 class Policeman : public Enemy
 {
 public:

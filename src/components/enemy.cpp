@@ -41,10 +41,10 @@ void Enemy::flip_sprite()
 //	}
 //}
 
-void Enemy::handle_collision()
-{
-
-}
+//void Enemy::handle_collision()
+//{
+//
+//}
 
 void Enemy::take_damage(float melee_damage, float knockback_rate, float facing_angle)
 {

@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   ui_weapon.h
+ * \brief  displays selected weapon
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -7,6 +14,9 @@
 #include <vector>
 
 
+/// <summary>
+/// displays selected weapon
+/// </summary>
 class UIWeaponDisplay : public Component
 {
 public:
@@ -27,9 +37,6 @@ public:
 		tex.push_back(Asset::load_texture("icon_shotgun.png"));
 		tex.push_back(Asset::load_texture("icon_machine_gun.png"));
 		tex.push_back(Asset::load_texture("icon_crossbow.png"));
-
-
-
 	};
 
 
@@ -41,7 +48,6 @@ public:
 	void update() override
 	{
 		selected = player->selected_weapon;
-
 	}
 
 	void render(Renderer* ren) override
@@ -49,6 +55,4 @@ public:
 		if (selected < tex.size())
 			ren->draw_tex(tex[selected], Vec2(20, 50));
 	}
-
 };
-

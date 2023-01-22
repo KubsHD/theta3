@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   wave_system.h
+ * \brief  component responsible for spawning enemy waves
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -12,6 +19,9 @@
 #include <components/effects.h>
 
 
+/// <summary>
+/// spawns wave of enemies at the chosen point of game
+/// </summary>
 class Wave : public Component
 {
 public: 
@@ -27,10 +37,12 @@ public:
 	Wave() = default;
 	Wave(Entity* player);
 
-
 	void init() override;
 	void update()  override;
 	void render(Renderer* ren) override;
-
+	
+	/// <summary>
+	/// used to spawn wave of enemies consisting of desired amount of enemies
+	/// </summary>
 	void wave_spawn();
 };

@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   ui_combo_display.h
+ * \brief  displays number of points, animated background under it, and multiplier
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once 
 
 #include <core/types.h>
@@ -6,19 +13,20 @@
 
 #include <lib/glad/glad.h>
 
+
+/// <summary>
+///  displays number of points, animated background under it, and multiplier
+/// </summary>
 class UIComboDisplay : public Component
 {
-
 	Texture* noise;
 	Texture* gradient;
 	Shader* flame;
 
-
 public:
-
 	Vec2 widget_position = Vec2(0,0);
 	
-		// Constructors
+	// Constructors
 	UIComboDisplay()
 	{
 		flame = /*Asset::load_shader()*/ new Shader("flame");

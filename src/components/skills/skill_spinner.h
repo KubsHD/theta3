@@ -1,8 +1,20 @@
+/*****************************************************************//**
+ * \file   skill_spinner.h
+ * \brief  component responsible for passive spell: spinner 
+ * that will rotate around the player and deal damage to enenies knocking them back
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
 #include <render/Renderer.h>
 
+
+/// <summary>
+/// Class responsible for spinner spell, moving it and displaing
+/// </summary>
 class SkillSpinner : public Component
 {
 public:
@@ -39,7 +51,16 @@ public:
 	};
 };
 
+
+/// <summary>
+/// Helps with creating spells in consise way
+/// </summary>
 namespace Factory {
+	/// <summary>
+	/// Creates a ball rotating around the player that deals dmg to enemies
+	/// </summary>
+	/// <param name="scn">pointer to scene the bullet will be added to</param>
+	/// <param name="plr">reference to player</param>
 	void CreateSkillSpinner(Scene* scn, Entity* plr)
 	{
 		auto ent = scn->create("SkillSpinner");

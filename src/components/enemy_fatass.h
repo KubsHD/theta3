@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   enemy_adult.h
+ * \brief  component resposible for enemy type: Fatass
+ *
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once 
 
 #include <core/types.h>
@@ -5,6 +12,9 @@
 #include "enemy.h"
 
 
+ /// <summary>
+ /// class responsible for enemies stats and AI
+ /// </summary>
 class Fatass : public Enemy
 {
 public:

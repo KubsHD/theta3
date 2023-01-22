@@ -1,4 +1,12 @@
-#pragma once
+/*****************************************************************//**
+ * \file   bullet.h
+ * \brief  Component responsible for shooting bullets,
+ *  managing stats of different types of bullets,
+ *  playing bullets' sounds and deleting them
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 
 #include <core/types.h>
 #include <render/Renderer.h>
@@ -10,7 +18,9 @@
 #include <lib/imgui/imgui.h>
 
 
-
+/// <summary>
+/// Bullet class with all info
+/// </summary>
 class Bullet : public Component
 {
 public:
@@ -176,8 +186,20 @@ public:
 
 };
 
-
+/// <summary>
+/// Helps with creating bullets in concise way
+/// </summary>
 namespace Factory {
+	/// <summary>
+	/// Creates bullet shot from the player to desired destination
+	/// </summary>
+	/// <param name="scn">pointer to scene the bullet will be added to</param>
+	/// <param name="player">reference to player</param>
 	void CreateBullet(Scene* scn, Player* player);
+	/// <summary>
+	/// Creates bullet burst customized for shotgun
+	/// </summary>
+	/// <param name="scn">pointer to scene the bullet will be added to</param>
+	/// <param name="player">reference to player</param>
 	void shotgunShoot(Scene* scn, Player* player);
 }

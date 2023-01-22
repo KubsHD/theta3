@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * \file   enemy_adult.h
+ * \brief  component resposible for enemy type: Child
+ *
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once 
 
 #include <core/types.h>
@@ -6,6 +13,9 @@
 #include <SDL_stdinc.h>
 
 
+ /// <summary>
+ /// class responsible for enemies stats and AI
+ /// </summary>
 class Child : public Enemy
 {
 public:

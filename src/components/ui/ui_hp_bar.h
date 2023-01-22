@@ -1,8 +1,18 @@
+/*****************************************************************//**
+ * \file   ui_hp_bar.h
+ * \brief  displays health bar at the bottom of the screen
+ * 
+ * \author staniekk
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
 #include <core/ecs.h>
 
+/// <summary>
+///  displays health bar at the bottom of the screen
+/// </summary>
 class UIHpBar : public Component
 {
 public:
