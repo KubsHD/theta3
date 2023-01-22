@@ -25,18 +25,57 @@ class Bullet : public Component
 public:
     //static unsigned int bullet_ID;
     float facing_angle, delta_x, delta_y;
+
+	/// <summary>
+	/// Entity that was hit by the bullet
+	/// </summary>
 	Entity entity_hit;
+
+    /// <summary>
+	/// Starting position and destination of the bullet
+    /// </summary>
     Vec2 starting_pos, destination;
+	
+    /// <summary>
+	/// Collider component
+    /// </summary>
     Collider* collider;
+
+    /// <summary>
+	/// Gun component
+    /// </summary>
     Gun* gun;
+
+    /// <summary>
+	/// Player component
+    /// </summary>
     Player* player;
 
+	/// <summary>
+	/// Attack cooldown, bullet damage, bullet knockback, bullet speed
+	/// </summary>
 	float attack_cooldown, bullet_damage, bullet_knockback, bullet_speed;
 	float auto_destroy_timer = 0;
 	int magazine_capacity, bullets_left;
+	
+	/// <summary>
+	/// Sound played when bullet is shot
+	/// </summary>
 	Sound* audio_shot;
+
+	/// <summary>
+	/// Sound played when bullet hits a wall
+	/// </summary>
 	Sound* adult_damaged;
+
+	/// <summary>
+	/// Weapon sprite
+	/// </summary>
 	String weapon_sprite;
+
+	/// <summary>
+	/// Bullet sprite
+	/// </summary>
 	String bullet_sprite;
 
 
@@ -186,7 +225,7 @@ public:
 };
 
 /// <summary>
-/// Helps with creating bullets in concise way
+/// Helps with creating bullets in a concise way
 /// </summary>
 namespace Factory {
 	/// <summary>

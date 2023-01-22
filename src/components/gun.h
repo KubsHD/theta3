@@ -22,8 +22,10 @@
 
 class Player;
 
+/// <summary>
+/// enum for gun types
+/// </summary>
 enum GUN_TYPE { BROOM, PISTOL, SHOTGUN, MACHINE_GUN, CROSSBOW };
-
 
 /// <summary>
 /// creating a gun that can be collected by stepping on it
@@ -55,5 +57,5 @@ public:
 
 	void init() override;
 	void update() override;
-	void render(Renderer* ren) override;
+	void render(Renderer* ren) override;,
 };

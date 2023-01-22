@@ -1,3 +1,9 @@
+/*****************************************************************//**
+ * \file   money.h
+ * \brief  this component define currency in game world
+ * 
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>

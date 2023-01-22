@@ -22,12 +22,33 @@ class Player;
 class Effect : public Component
 {
 public:
+
+	/// <summary>
+	/// duration of the effect
+	/// </summary>
 	int duration;
+
 	bool follow, is_sprite, is_anim;
 	Entity* player_ref;
+
+	/// <summary>
+	/// animator components
+	/// </summary>
 	Animator* anim;
+
+	/// <summary>
+	/// sprite component
+	/// </summary>
 	Sprite* sprite;
+
+	/// <summary>
+	/// name of the effect
+	/// </summary>
 	String name;
+	
+	/// <summary>
+	/// offset of the effect from the player
+	/// </summary>
 	Vec2 player_offset;
 
 	Effect() = default;

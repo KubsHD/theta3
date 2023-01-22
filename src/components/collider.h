@@ -1,3 +1,9 @@
+/*****************************************************************//**
+ * \file   collider.h
+ * \brief  this component is responsible for collision in game
+ * 
+ * \date   January 2023
+ *********************************************************************/
 #pragma once
 
 #include <core/types.h>
@@ -6,7 +12,9 @@
 #include <functional>
 #include <render/Renderer.h>
 
-// Add collision types here
+/// <summary>
+/// here are collision types
+/// </summary>
 enum class CollisionTag {
 	Solid = 0,
 	Enemy = 1,
@@ -16,6 +24,9 @@ enum class CollisionTag {
 	Gun = 5
 };
 
+/// <summary>
+/// this class create collider
+/// </summary>
 class Collider : public Component {
 
 public:

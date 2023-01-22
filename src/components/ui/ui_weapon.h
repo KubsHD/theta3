@@ -20,8 +20,16 @@ class UIWeaponDisplay : public Component
 {
 public:
 
+	/// <summary>
+	/// Textures of the weapons
+	/// </summary>
 	std::vector <Texture*> tex;
+	
+	/// <summary>
+	/// Player reference
+	/// </summary>
 	Player* player;
+
 	int temp;
 	int selected;
 	float opacity;

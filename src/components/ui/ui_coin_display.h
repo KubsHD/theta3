@@ -12,14 +12,30 @@
 
 
 /// <summary>
-/// UI elemts: game time, money gathered, and number of enemies killed
+/// UI elements: game time, money gathered, and number of enemies killed
 /// </summary>
 class UICoinDisplay : public Component
 {
 public:
+	
+	/// <summary>
+	/// Text for money, game time, kills
+	/// </summary>
 	String text_money, text_game_time, text_kills;
+	
+	/// <summary>
+	/// Position of money icon, kills icon
+	/// </summary>
 	Vec2 pos_money, pos_kills;
+	
+	/// <summary>
+	/// Texture for money icon
+	/// </summary>
 	Texture* tex_money;
+	
+	/// <summary>
+	/// Texture for skull icon
+	/// </summary>
 	Texture* tex_skull;
 	
 	

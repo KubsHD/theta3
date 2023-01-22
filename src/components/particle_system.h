@@ -1,3 +1,9 @@
+/*****************************************************************//**
+ * \file   particle_system.h
+ * \brief  component responsible for creating particles
+ * 
+ * \date   January 2023
+ *********************************************************************/
 #pragma once 
 
 #include <core/types.h>
@@ -9,6 +15,10 @@
 #include <lib/glad/glad.h>
 #include <main.h>
 
+
+/// <summary>
+/// particle shape
+/// </summary>
 enum class ParticleShape
 {
 	Rectangle,
@@ -18,16 +28,46 @@ enum class ParticleShape
 	Sprite
 };
 
+
+/// <summary>
+/// particle properties
+/// </summary>
 struct ParticleProps
 {
+	/// <summary>
+	/// position of the particle
+	/// </summary>
 	Vec2 Position;
+
+	/// <summary>
+	/// Lifetime of the particle
+	/// </summary>
 	float LifeTime;
+
+	/// <summary>
+	/// velocity of the particle
+	/// </summary>
 	Vec2 Velocity;
+	
+	/// <summary>
+	/// color of the particle
+	/// </summary>
 	Vec3 Color;
+
+	/// <summary>
+	/// size of the particle
+	/// </summary>
 	Vec2 Size;
+	
+	/// <summary>
+	/// shape of the particle
+	/// </summary>
 	ParticleShape Shape;
 };
 
+/// <summary>
+/// class responsible for particle spawning
+/// </summary>
 class ParticleSystem : public Component
 {
 public:
@@ -116,6 +156,10 @@ public:
 
 	};
 
+	/// <summary>
+	/// this function emit particles
+	/// </summary>
+	/// <param name="prop">it's properties of particles</param>
 	void emit(const ParticleProps& prop)
 	{
 		ParticleData& p = m_particles[m_idx];
@@ -136,6 +180,9 @@ public:
 	}
 
 private:
+	/// <summary>
+	/// Runtime particle data
+	/// </summary>
 	struct ParticleData {
 		Vec2 Position;
 		float LifeTime;
@@ -150,8 +197,15 @@ private:
 	};
 
 	GLuint m_particle_vao = 0;
+
+	/// <summary>
+	/// particle data array
+	/// </summary>
 	Vector<ParticleData> m_particles;
 	uint32_t m_idx = 999;
 
+	/// <summary>
+	/// shader for particle
+	/// </summary>
 	Shader* m_ptl_shader;
 };
