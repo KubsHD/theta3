@@ -23,7 +23,14 @@ class MapGenerator : public Component
 public:
 	Entity* player_ref;
 
+	/// <summary>
+	/// textures of the map
+	/// </summary>
 	Vector<Texture*> map_textures;
+
+	/// <summary>
+	/// map of positions to draw map at
+	/// </summary>
 	UnorderedMap<Vec2, int> positions_to_draw_map_at;
 
 	Vec2 player_pos_during_last_map_update = Vec2(100000, 10000);

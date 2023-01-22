@@ -24,6 +24,10 @@
 
 class Player;
 
+
+/// <summary>
+/// enum containing all the possible states of the enemy
+/// </summary>
 enum class EnemyState {
 	ATTACK,
 	IN_KNOCKBACK
