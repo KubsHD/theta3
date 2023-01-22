@@ -57,5 +57,5 @@ public:
 
 	void init() override;
 	void update() override;
-	void render(Renderer* ren) override;,
+	void render(Renderer* ren) override;
 };

@@ -109,8 +109,8 @@ void GameScene::init()
 	ui->add(UIHpBar());
 	ui->add(UICoinDisplay());
 	ui->add(UIWeaponDisplay());
-	auto combo = ui->add(UIComboDisplay());
-	combo->widget_position = Vec2(1000, 100);
+	//auto combo = ui->add(UIComboDisplay());
+	//combo->widget_position = Vec2(1000, 100);
 
 
 }

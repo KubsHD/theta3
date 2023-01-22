@@ -50,27 +50,27 @@ void MenuScene::init()
 		btns.push_back(uib);
 	}
 
-	{
-		auto btn = create("btn_settings");
-		auto uib = btn->add(UIButton("Ustawienia"));
+	//{
+	//	auto btn = create("btn_settings");
+	//	auto uib = btn->add(UIButton("Ustawienia"));
 
-		btn->position = Vec2(100, 550);
-		uib->selected = false;
+	//	btn->position = Vec2(100, 550);
+	//	uib->selected = false;
 
-		btns.push_back(uib);
-	}
+	//	btns.push_back(uib);
+	//}
 
-	{
-		auto btn = create("btn_quit");
-		auto uib = btn->add(UIButton("Wyjscie"));
+	//{
+	//	auto btn = create("btn_quit");
+	//	auto uib = btn->add(UIButton("Wyjscie"));
 
-		btn->position = Vec2(100, 600);
-		uib->selected = false;
-		uib->on_clicked = [this]() {
-		};
+	//	btn->position = Vec2(100, 600);
+	//	uib->selected = false;
+	//	uib->on_clicked = [this]() {
+	//	};
 
-		btns.push_back(uib);
-	}
+	//	btns.push_back(uib);
+	//}
 
 	aud = Asset::load_sound("ui_1.wav");
 
