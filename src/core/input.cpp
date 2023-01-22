@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <iostream>
 #include "types.h"
+#include <cstring>
 
 bool quit;
 

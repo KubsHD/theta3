@@ -9,10 +9,9 @@
 
 #include <core/types.h>
 
-namespace FMOD {
-	class Sound;
-	class Channel;
-};
+
+struct FMOD_SOUND;
+struct FMOD_CHANNEL;
 
 /// <summary>
 /// Wrapper for the internal fmod data structures
@@ -21,12 +20,12 @@ struct Sound {
 	/// <summary>
 	/// Pointer to the internal fmod sound
 	/// </summary>
-	FMOD::Sound* ptr;
+	FMOD_SOUND* ptr;
 	
 	/// <summary>
 	/// Pointer to the internal fmod channel
 	/// </summary>
-	FMOD::Channel* chnl;
+	FMOD_CHANNEL* chnl;
 
 	/// <summary>
 	/// Path to the sound file
