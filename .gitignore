@@ -17,3 +17,5 @@ out/
 
 !deps/fmod/**
 !deps/eos/**
+submission
+*.zip
