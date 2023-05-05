@@ -19,3 +19,5 @@ out/
 !deps/eos/**
 submission
 *.zip
+deps/fmod
+!deps/fmod/CMakeLists.txt
