@@ -1,4 +1,4 @@
-# Theta2
+# theta3
 Work in progress bullet hell wave shooter
 
 ## Prerequisites
@@ -6,7 +6,7 @@ Work in progress bullet hell wave shooter
 - FMOD Core API installed for the target platform
 
 ## How to build
-1. Clone the repository `git clone --recurse-submodules https://github.com/KubsHD/theta2`
+1. Clone the repository `git clone --recurse-submodules https://github.com/KubsHD/theta3`
 
 #### Automatic build
 2. Open cloned directory with Visual Studio

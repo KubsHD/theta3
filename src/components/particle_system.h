@@ -13,8 +13,7 @@
 #include <core/log.h>
 
 #include <lib/glad/glad.h>
-#include <main.h>
-
+#include <core/game.h>
 
 /// <summary>
 /// particle shape
@@ -88,7 +87,7 @@ public:
 				continue;
 			}
 
-			p.RemainingLifeTime -= get_delta();
+			p.RemainingLifeTime -= Game::get_delta();
 
 			p.Position += p.Velocity;
 			// rot maybe
@@ -143,7 +142,7 @@ public:
 
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, Vec3(p.Position, 0.0f));
-			model = glm::rotate(model, get_time(), Vec3(0, 0, 1));
+			model = glm::rotate(model, Game::get_time(), Vec3(0, 0, 1));
 			model = glm::scale(model, Vec3(p.Size, 1.0f));
 
 

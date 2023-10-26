@@ -17,24 +17,24 @@ file(GLOB_RECURSE game_SRC ${game_src_paths})
 
 # don't show console in release build
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_executable(theta2 
+    add_executable(theta3 
         ${game_SRC}
         ${APP_ICON_RESOURCE_WINDOWS}
     )
 else()
-    add_executable(theta2 WIN32
+    add_executable(theta3 WIN32
         ${game_SRC}
         ${APP_ICON_RESOURCE_WINDOWS}
     )
 endif()
 
-target_compile_definitions(theta2 PRIVATE APPLE=1)
-target_include_directories(theta2 PUBLIC "${PROJECT_SOURCE_DIR}/src")
+target_compile_definitions(theta3 PRIVATE APPLE=1)
+target_include_directories(theta3 PUBLIC "${PROJECT_SOURCE_DIR}/src")
 
 # copy dlls
 # add_custom_command(
-#     TARGET theta2 POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:theta2> $<TARGET_FILE_DIR:theta2>
+#     TARGET theta3 POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:theta3> $<TARGET_FILE_DIR:theta3>
 #     COMMAND_EXPAND_LISTS
 # )
 

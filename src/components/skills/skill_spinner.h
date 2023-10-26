@@ -35,8 +35,8 @@ public:
 
 	void update() override 
 	{
-		pos.y = plr_ref->position.y + dist * sin(get_time() * speed);
-		pos.x = plr_ref->position.x + dist * cos(get_time() * speed);
+		pos.y = plr_ref->position.y + dist * sin(Game::get_time() * speed);
+		pos.x = plr_ref->position.x + dist * cos(Game::get_time() * speed);
 
 		for (auto& ent : entity->get<Collider>()->check_sphere_list(pos, 50.0f, CollisionTag::Enemy))
 		{

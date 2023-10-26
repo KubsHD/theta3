@@ -25,7 +25,7 @@
 
 #include "render/renderer.h"
 #include <components/ui/ui_coin_display.h>
-#include "main.h"
+#include <core/game.h>
 #include "scene_menu.h"
 #include <components/skills/skill_spinner.h>
 #include <components/particle_system.h>
@@ -141,7 +141,7 @@ void GameScene::update()
 	if (player_ref->get<Player>()->health < 0)
 	{
 		// game over
-		change_scene<MenuScene>();
+		Game::change_scene<MenuScene>();
 		return;
 	}
 

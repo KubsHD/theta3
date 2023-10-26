@@ -9,7 +9,7 @@
 
 #include <core/window.h>
 
-#include <main.h>
+#include <core/game.h>
 
 
 
@@ -266,7 +266,7 @@ void Renderer::set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity)
 {
 	s->set_uniform_float("u_opacity", opacity);
 	s->set_uniform_mat4("u_mvp", mvp);
-	s->set_uniform_float("u_time", get_time());
+	s->set_uniform_float("u_time", Game::get_time());
 }
 
 
@@ -444,7 +444,7 @@ void Renderer::draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd)
 	glUseProgram(shd->get_id());
 
 	shd->set_uniform_mat4("u_mvp", mvp);
-	shd->set_uniform_float("u_time", get_time());
+	shd->set_uniform_float("u_time", Game::get_time());
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

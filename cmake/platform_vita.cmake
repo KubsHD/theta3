@@ -1,6 +1,6 @@
 
-set(VITA_APP_NAME "Theta2")
-set(VITA_TITLEID  "PIWO00002")
+set(VITA_APP_NAME "theta3")
+set(VITA_TITLEID  "PIWO00003")
 set(VITA_VERSION  "01.00")
 
 
@@ -40,7 +40,7 @@ list(APPEND game_libs
     m
 )   # don't link SDL2main on xbox since it uses a c++ entrypoint
 
-target_compile_definitions(theta2 PRIVATE VITA=1)
+target_compile_definitions(theta3 PRIVATE VITA=1)
 
 
 include("${VITASDK}/share/vita.cmake" REQUIRED)

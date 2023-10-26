@@ -13,7 +13,7 @@ Window::Window()
 void Window::create()
 {
 	// Create window and get its surface
-	pWindow = SDL_CreateWindow("Theta2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	pWindow = SDL_CreateWindow("theta3", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	if (pWindow == NULL)
@@ -25,11 +25,7 @@ void Window::create()
 void Window::close()
 {
 	// Clear surface and window pointers, close SDL.
-	SDL_FreeSurface(pSurface);
-	pSurface = NULL;
 	SDL_DestroyWindow(pWindow);
-	pWindow = NULL;
-	SDL_Quit();
 }
 
 void Window::getCurrentSize()

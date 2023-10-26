@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(theta2 C CXX)
+project(theta3 C CXX)
 
 include(FetchContent)
 
@@ -39,14 +39,14 @@ if (ONLINE)
 list(APPEND game_libs "eos")
 endif()
 
-target_link_libraries(theta2 PRIVATE ${game_libs})
-target_compile_definitions(theta2 PRIVATE _CRT_SECURE_NO_WARNINGS=1)
+target_link_libraries(theta3 PRIVATE ${game_libs})
+target_compile_definitions(theta3 PRIVATE _CRT_SECURE_NO_WARNINGS=1)
 
 # copy game data only in release
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  target_compile_definitions(theta2 PRIVATE DEBUG=1)
+  target_compile_definitions(theta3 PRIVATE DEBUG=1)
 else()
 endif()
-    add_custom_command(TARGET theta2 POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:theta2>/data
+    add_custom_command(TARGET theta3 POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:theta3>/data
     COMMENT "Copying assets")

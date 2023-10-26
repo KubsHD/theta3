@@ -4,7 +4,7 @@
 #include <core/input.h>
 #include <core/audio.h>
 #include "scene_game.h"
-#include <main.h>
+#include <core/game.h>
 #include <core/asset.h>
 #include <components/particle_system.h>
 #include <string>
@@ -44,7 +44,7 @@ void MenuScene::init()
 		btn->position = Vec2(100, 500);
 		uib->selected = false;
 		uib->on_clicked = [this]() {
-			change_scene<GameScene>();
+			Game::change_scene<GameScene>();
 		};
 
 		btns.push_back(uib);
@@ -131,7 +131,7 @@ void MenuScene::render()
 { 
 	ren->set_target(target.get());
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
-	ren->draw_text("Theta2", font, Vec2(100, 100));
+	ren->draw_text("theta3", font, Vec2(100, 100));
 
 	//ren->draw_box(Vec2(0, 0), Vec2(100, 100), Vec3(1, 0, 1), true);
 
