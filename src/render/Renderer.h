@@ -185,6 +185,7 @@ class Renderer {
 
 public:
 	static Target* Backbuffer;
+	static Target* Viewport;
 	static Font* DefaultFont;
 
 	/// <summary>

@@ -104,6 +104,8 @@ void Renderer::init(Window* win)
 	Backbuffer->id = 0;
 	Backbuffer->target_size = Vec2(win->w, win->h);
 
+	Viewport = new Target(1280, 720);
+
 	DefaultFont = Asset::load_font("font/monogram.fnt");
 
 	// OpenGL - start
@@ -474,6 +476,7 @@ void Renderer::draw_vao(GLuint vao, Shader* shd, glm::mat4 model)
 }
 
 Target* Renderer::Backbuffer;
+Target* Renderer::Viewport;
 Font* Renderer::DefaultFont;
 
 Target::Target(int w, int h, TargetScalingType type)

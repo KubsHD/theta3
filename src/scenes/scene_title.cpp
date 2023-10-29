@@ -128,7 +128,7 @@ void TitleScene::render()
 	
 	Scene::render();
 
-	ren->set_target(Renderer::Backbuffer);
+	ren->set_target(Renderer::Viewport);
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 
 	ren->draw_target(target.get());

@@ -174,7 +174,7 @@ void GameScene::render()
 	}
 
 
-	ren->set_target(Renderer::Backbuffer);
+	ren->set_target(Renderer::Viewport);
 	ren->clear(Vec3(0, 0, 0));
 
 	ren->draw_target(game_view.get());

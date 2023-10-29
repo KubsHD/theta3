@@ -20,6 +20,7 @@
 
 #include <tools/tool.h>
 #include <tools/tool_anim.h>
+#include <tools/viewport.h>
 
 
 #include <render/renderer.h>
@@ -123,6 +124,7 @@ void Game::init()
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+	io.ConfigWindowsMoveFromTitleBarOnly = true;
 	//io.ConfigViewportsNoAutoMerge = true;
 //io.ConfigViewportsNoTaskBarIcon = true;
 
@@ -147,6 +149,7 @@ void Game::init()
 #pragma endregion
 
 	tools.push_back(new AnimationTool());
+	tools.push_back(new Viewport());
 
 
 	for (auto& tool : tools)
@@ -169,6 +172,8 @@ void Game::render()
 	if (current_scene != nullptr)
 		current_scene->render();
 
+	ren.set_target(Renderer::Backbuffer);
+	ren.clear(Vec3(0, 0, 0));
 
 	{
 		for (auto& tool : tools)
