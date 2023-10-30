@@ -4,8 +4,20 @@ FetchContent_Declare(
     GIT_TAG release-2.24.1
 )
 
-FetchContent_MakeAvailable(SDL)
+FetchContent_Declare(
+    tracy
+    GIT_REPOSITORY https://github.com/wolfpld/tracy
+    GIT_TAG v0.9.1
+)
 
+FetchContent_MakeAvailable(SDL)
+FetchContent_MakeAvailable(tracy)
+
+option( TRACY_ENABLE "" ON)
+option( TRACY_ON_DEMAND "" ON)
+option( TRACY_STATIC "" ON)
+
+add_compile_definitions(TRACY_ENABLE=1 NOMINMAX=1)
 set(game_src_paths "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/src/*.c" "${PROJECT_SOURCE_DIR}/src/*.h" "${PROJECT_SOURCE_DIR}/src/*.rc" "${PROJECT_SOURCE_DIR}/src/*.cur")
 file(GLOB_RECURSE game_SRC ${game_src_paths})
 
@@ -36,4 +48,4 @@ add_custom_command(
     COMMAND_EXPAND_LISTS
 )
 
-set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" "Rpcrt4")
+set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" "Rpcrt4" Tracy::TracyClient)

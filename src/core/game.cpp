@@ -35,6 +35,8 @@
 
 #include <core/uuid.h>
 
+#include <utils/profiler.h>
+
 #if WIN
 #include <Windows.h>
 #include <scenes/scene_shop_test.h>
@@ -105,8 +107,8 @@ void Game::init()
 	ass.init(&ren);
 
 
-
 	maincontext = SDL_GL_CreateContext(window.pWindow);
+
 	if (maincontext == NULL)
 		log_error("Failed to create OpenGL context");
 
@@ -115,6 +117,8 @@ void Game::init()
 	{
 		std::cout << "Failed to initialize GLAD. " << std::endl;
 	}
+
+	TracyGpuContext;
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -350,7 +354,7 @@ void Game::loop()
 		}
 
 		SDL_GL_SwapWindow(window.pWindow);
-
+		TracyGpuCollect;
 
 		input.update(evt);
 		audio.update();

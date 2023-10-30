@@ -17,6 +17,9 @@
 #include <core/asset.h>
 #include <fstream>
 #include <render/Renderer.h>
+#include <core/asset.h>
+
+#include <utils/file.h>
 
 namespace glm
 {
@@ -46,26 +49,7 @@ namespace glm
 
 }
 
-inline std::string removeSpaces(std::string s) {
-	std::string tmp(s);
-	tmp.erase(std::remove(tmp.begin(), tmp.end(), ' '), tmp.end());
-	return tmp;
-}
 
-inline std::vector<char> ReadAllBytes(std::string filename)
-{
-	std::ifstream ifs(removeSpaces(filename), std::ios::binary | std::ios::ate);
-	std::ifstream::pos_type pos = ifs.tellg();
-
-	std::vector<char>  result(pos);
-
-	ifs.seekg(0, std::ios::beg);
-	ifs.read(&result[0], pos);
-
-	ifs.close();
-
-	return result;
-}
 
 /// <summary>
 /// Atlas sprite data
@@ -158,7 +142,7 @@ struct AtlasData {
 		dat.sprites_count = dat.sprites.size();
 
 
-		dat.tex_data = ReadAllBytes(std::string(path + ".png"));
+		dat.tex_data = utils::file::ReadAllBytes(std::string(path + ".png"));
 
 		std::ofstream os(path + ".atl", std::ios::binary);
 		cereal::BinaryOutputArchive archive(os);
@@ -192,7 +176,7 @@ struct Atlas {
 
 		archive(dat);
 
-		atlas_tex = new Texture(dat.tex_data);
+		atlas_tex = Asset::load_texture(dat.tex_data);
 
 		for (auto frame : dat.sprites)
 		{

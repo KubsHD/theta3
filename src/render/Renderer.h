@@ -8,68 +8,19 @@
 
 #pragma once
 
-
-
-
 #include <core/types.h>
 #include <glm/ext/matrix_transform.hpp>
 #include <render/Shader.h>
 #include <lib/glad/glad.h>
+#include <render/texture.h>
+#include <render/font.h>
+#include <render/Camera.h>
+#include <render/target.h>
 
-/// <summary>
-/// Scene Camera
-/// </summary>
-class Camera {
-	glm::mat4 m_viewMatrix;
-public:
-
-	/// <summary>
-	/// Create a camera
-	/// </summary>
-	Camera() : position(0,0) {
-		m_viewMatrix = glm::mat4(1.0f);
-	};
-
-	/// <summary>
-	/// Get camera's view matrix
-	/// </summary>
-	/// <returns></returns>
-	inline glm::mat4 get_matrix() {
-		return glm::translate(m_viewMatrix, Vec3(-position, 0.0));
-	}
-
-	Vec2 position;
-	float zoom = 1.0f;
-};
-
+class Texture;
 class Window;
+class Target;
 
-/// <summary>
-/// Texture class
-/// </summary>
-class Texture
-{
-	/// <summary>
-	/// Create a texture from file
-	/// </summary>
-	/// <param name="path">Path to texture</param>
-	Texture(String path);
-
-	/// <summary>
-	/// Create a texture from raw bytes
-	/// </summary>
-	/// <param name="data">Raw bytes</param>
-	Texture(std::vector<char> data);
-
-	friend struct Atlas;
-	friend class Asset;
-public:
-
-	~Texture();
-
-	unsigned int id;
-	Vec2 size;
-};
 
 /// <summary>
 /// Texture inside of another texture
@@ -92,82 +43,6 @@ public:
 	unsigned int vaoId;
 };
 
-/// <summary>
-/// Describes scaling type of a given texture
-/// </summary>
-enum TargetScalingType {
-	Nearest,
-	Linear
-};
-
-/// <summary>
-/// A texture that things can be rendered into
-/// </summary>
-class Target
-{
-public:
-
-	/// <summary>
-	/// Create a target
-	/// </summary>
-	/// <param name="w">Target width</param>
-	/// <param name="h">Target height</param>
-	/// <param name="type">Target scaling type</param>
-	Target(int w, int h, TargetScalingType type = TargetScalingType::Nearest);
-	~Target();
-
-	/// <summary>
-	/// Bind the target for rendering
-	/// </summary>
-	void bind();
-
-	unsigned int id;
-	unsigned int texId;
-
-	Vec2 target_size;
-};
-
-/// <summary>
-/// Describes a letter in a font file
-/// </summary>
-struct Glyph
-{
-	int id;
-	int x;
-	int y;
-	int w;
-	int h;
-	int xoff;
-	int yoff;
-	int xadv;
-	// not used
-
-	int page;
-	int chnl;
-
-	Ref<Subtexture> subTex;
-
-	/* data */
-};
-
-/// <summary>
-/// Font class
-/// </summary>
-class Font {
-private:
-	friend class Asset;
-	
-	/// <summary>
-	/// Create a font from a .fnt file
-	/// </summary>
-	/// <param name="path">Path to file</param>
-	Font(String path);
-public:
-
-	String name;
-	Texture* atlas;
-	Glyph glyphs[200];
-};
 
 /// <summary>
 /// Main renderer

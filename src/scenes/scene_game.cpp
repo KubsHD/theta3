@@ -30,12 +30,13 @@
 #include <components/skills/skill_spinner.h>
 #include <components/particle_system.h>
 #include <components/ui/ui_combo_display.h>
+#include <render/device.h>
 
 void GameScene::init()
 {
 	// zmiana rozmiaru wymaga zmiany w spawnowaniu przeciwnikow [enemy]::init
-	game_view = CreateRef<Target>(960, 540);
-	menu_view = CreateRef<Target>(1280, 720, TargetScalingType::Linear);
+	game_view = gpu::device->create_target({ 960, 540, TargetScalingType::Nearest });
+	menu_view = gpu::device->create_target({ 1280, 720, TargetScalingType::Linear });
 
 	game_camera = CreateRef<Camera>();
 
@@ -156,14 +157,14 @@ void GameScene::update()
 void GameScene::render()
 {
 	ren->set_camera(game_camera.get());
-	ren->set_target(game_view.get());
+	ren->set_target(game_view);
 	ren->clear(Vec3(0.03f, 0.4f, 0.03f));
 
 	Scene::render();
 
 
 	ren->set_camera(nullptr);
-	ren->set_target(menu_view.get());
+	ren->set_target(menu_view);
 
 	ren->clear(Vec3(0, 0, 0));
 
@@ -177,8 +178,8 @@ void GameScene::render()
 	ren->set_target(Renderer::Viewport);
 	ren->clear(Vec3(0, 0, 0));
 
-	ren->draw_target(game_view.get());
-	ren->draw_target(menu_view.get());
+	ren->draw_target(game_view);
+	ren->draw_target(menu_view);
 
 }
 

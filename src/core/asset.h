@@ -9,6 +9,8 @@
 
 #include <core/types.h>
 
+#include <fstream>
+
 class Renderer;
 class Texture;
 class Font;
@@ -47,6 +49,9 @@ private:
 	/// </summary>
 	Renderer* renderer_ref;
 public:
+
+
+
 	/// <summary>
 	/// Initialize asset system
 	/// </summary>
@@ -59,6 +64,8 @@ public:
 	/// <param name="path">Path to texture file</param>
 	/// <returns></returns>
 	static Texture* load_texture(String path);
+	static Texture* load_texture(std::vector<char> data);
+
 
 	/// <summary>
 	/// Load a sound from a file

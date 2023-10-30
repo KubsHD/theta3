@@ -22,7 +22,7 @@ class MenuScene : public Scene {
 public:
 	MenuScene() {};
 
-	Ref<Target> target;
+	Target* target;
 
 	Font* font;
 

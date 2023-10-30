@@ -20,77 +20,11 @@
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
 #include <core/asset.h>
+#include "device.h"
 
 glm::mat4 view(1.0f);
 glm::mat4 projection(1.0f);
 
-Texture::Texture(String path)
-{
-	//assert(std::filesystem::exists(path), "Texture does not exist on disk!");
-
-	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	// load and generate the texture
-	int width, height, nrChannels;
-
-
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		size.x = width;
-		size.y = height;
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture: " << path << std::endl;
-	}
-	stbi_image_free(data);
-}
-
-
-Texture::Texture(std::vector<char> data)
-{
-	//assert(std::filesystem::exists(path), "Texture does not exist on disk!");
-
-	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
-	// set the texture wrapping/filtering options (on the currently bound texture object)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	// load and generate the texture
-	int width, height, nrChannels;
-
-
-	stbi_uc* dat = (stbi_uc*)data.data();
-
-	stbi_set_flip_vertically_on_load(true);
-	unsigned char* img_data = stbi_load_from_memory(dat, data.size(), & width, &height, &nrChannels, 0);
-
-	if (img_data)
-	{
-		size.x = width;
-		size.y = height;
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img_data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-
-	stbi_image_free(img_data);
-}
-
-Texture::~Texture()
-{
-	glDeleteTextures(1, &id);
-}
 
 unsigned int VBO;
 unsigned int VAO;
@@ -100,11 +34,11 @@ unsigned int boxVAO;
 
 void Renderer::init(Window* win)
 {
-	Backbuffer = new Target(0,0);
+	Backbuffer = new Target();
 	Backbuffer->id = 0;
 	Backbuffer->target_size = Vec2(win->w, win->h);
 
-	Viewport = new Target(1280, 720);
+	Viewport = gpu::device->create_target({ 1280, 720, TargetScalingType::Nearest });
 
 	DefaultFont = Asset::load_font("font/monogram.fnt");
 
@@ -479,48 +413,6 @@ Target* Renderer::Backbuffer;
 Target* Renderer::Viewport;
 Font* Renderer::DefaultFont;
 
-Target::Target(int w, int h, TargetScalingType type)
-{
-	if (w == 0 && h == 0)
-	{
-		id = 0;
-		return;
-	}
-
-	glGenFramebuffers(1, &id);
-	glBindFramebuffer(GL_FRAMEBUFFER, id);
-
-	glGenTextures(1, &texId);
-	glBindTexture(GL_TEXTURE_2D, texId);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, type == TargetScalingType::Nearest ? GL_NEAREST : GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, type == TargetScalingType::Nearest ? GL_NEAREST : GL_LINEAR);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, id);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-
-	target_size = Vec2(w,h);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-Target::~Target()
-{
-	glDeleteTextures(1, &texId);
-	glDeleteFramebuffers(1, &id);
-}
-
-void Target::bind()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, id);
-	glViewport(0, 0, target_size.x, target_size.y);
-}
-
 
 
 float px_to_ogl(float px, float size)
@@ -572,69 +464,3 @@ Subtexture::~Subtexture()
 	glDeleteBuffers(1, &this->vboId);
 }
 
-Font::Font(String path)
-{
-	FILE* file = fopen(/*get_asset_path*/(path).c_str(), "r");
-	if (file == NULL) {
-		log_error("Font not found");
-		assert(file == NULL);
-	}
-	char line[256];
-	char buffer[1024] = { 0 };
-
-
-	int curr_line = 0;
-
-
-
-	while (fgets(line, sizeof(line), file))
-	{
-		curr_line++;
-
-		if (curr_line == 3) {
-			int w;
-			int h;
-			char img[129] = { 0 };
-
-			sscanf(line, "page id=0 file=\"%128[^\"]\"", img);
-			//log_info("%s", img);
-
-			char path[200] = { 0 };
-
-			sprintf(path, "font/%s", img);
-
-			//log_info(path);
-
-			atlas = /*asset_load_texture*/Asset::load_texture(path + String(".png"));
-			name = path;
-			curr_line++;
-			continue;
-		}
-
-		if (curr_line > 3)
-		{
-			// parse glyph
-			int charId, charX, charY, charWidth, charHeight, charOffsetX, charOffsetY, charAdvanceX;
-
-
-			int isScanned = sscanf(line, "char id=%i x=%i y=%i width=%i height=%i xoffset=%i yoffset=%i xadvance=%i",
-											 &charId, &charX, &charY, &charWidth, &charHeight, &charOffsetX, &charOffsetY, &charAdvanceX);
-
-			if (isScanned) {
-				if (charId < 200)
-				{
-					this->glyphs[charId];
-					this->glyphs[charId].x = charX;
-					this->glyphs[charId].y = charY;
-					this->glyphs[charId].w = charWidth;
-					this->glyphs[charId].h = charHeight;
-					this->glyphs[charId].xoff = charOffsetX;
-					this->glyphs[charId].yoff = charOffsetY;
-					this->glyphs[charId].xadv = charAdvanceX;
-					this->glyphs[charId].subTex = CreateRef<Subtexture>(this->atlas, Vec2(charX, charY), Vec2(charWidth, charHeight));
-				}
-			}
-			curr_line++;
-		}
-	}
-}

@@ -8,11 +8,12 @@
 #include <core/asset.h>
 #include <components/particle_system.h>
 #include <string>
+#include <render/device.h>
 
 void MenuScene::init()
 {
 	font = Asset::load_font("font/comic.fnt");
-	target = CreateRef<Target>(1280, 720);
+	target = gpu::device->create_target({ 1280, 720, TargetScalingType::Nearest });
 
 
 	// -- 
@@ -129,7 +130,7 @@ void MenuScene::update()
 
 void MenuScene::render()
 { 
-	ren->set_target(target.get());
+	ren->set_target(target);
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 	ren->draw_text("theta3", font, Vec2(100, 100));
 
@@ -140,5 +141,5 @@ void MenuScene::render()
 	ren->set_target(Renderer::Viewport);
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 
-	ren->draw_target(target.get());
+	ren->draw_target(target);
 }

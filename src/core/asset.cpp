@@ -3,14 +3,17 @@
 #include <render/Renderer.h>
 #include <core/audio.h>
 #include <core/log.h>
+#include <lib/stb_image.h>
 
 #include <SDL_filesystem.h>
-
-#include <core/file/atl.h>
 
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <render/device.h>
+#include <utils/file.h>
+
+#include <core/file/atl.h>
 
 static const char* path_prefix;
 
@@ -56,6 +59,31 @@ void Asset::init(Renderer* ren)
 	renderer_ref = ren;
 }
 
+
+Texture* Asset::load_texture(std::vector<char> data)
+{
+	//assert(std::filesystem::exists(path), "Texture does not exist on disk!");
+
+	Texture* tex;
+
+	// load and generate the texture
+	int width, height, nrChannels;
+
+	stbi_uc* dat = (stbi_uc*)data.data();
+
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* img_data = stbi_load_from_memory(dat, data.size(), &width, &height, &nrChannels, 0);
+
+	if (img_data)
+	{
+		tex = gpu::device->create_texture({ (void*)img_data, width, height});
+	}
+
+	stbi_image_free(img_data);
+
+	return tex;
+}
+
 Texture* Asset::load_texture(String path)
 {
 	for (auto [k, v] : cache_texture)
@@ -64,7 +92,8 @@ Texture* Asset::load_texture(String path)
 			return v;
 	}
 
-	Texture* tex = new Texture(get_asset_path(path.c_str()));
+	auto tex = load_texture(utils::file::ReadAllBytes(get_asset_path(path.c_str())));
+
 	cache_texture.emplace(path, tex);
 	return tex;
 }
