@@ -34,6 +34,8 @@ unsigned int boxVAO;
 
 void Renderer::init(Window* win)
 {
+	gpu::Device::init();
+	
 	Backbuffer = new Target();
 	Backbuffer->id = 0;
 	Backbuffer->target_size = Vec2(win->w, win->h);
