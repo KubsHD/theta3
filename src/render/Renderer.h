@@ -74,6 +74,7 @@ public:
 	/// </summary>
 	/// <param name="color">Color to clear the screen with</param>
 	void clear(Vec3 color = Vec3(0.03f, 0.25f, 0.03f));
+	void clear(Vec4 color = Vec4(0.03f, 0.25f, 0.03f, 0.0f));
 
 	/// <summary>
 	/// Update rendering size
@@ -137,6 +138,10 @@ public:
 	/// <param name="opacity">Opacity to draw with</param>
 	/// <param name="flip">Should the texture be flipped?</param>
 	void draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f, float scale = 1.0f, bool flip = false);
+
+
+	void draw_subtex_s(Subtexture* subTex, Vec2 pos, Shader* shd, float opacity = 1.0f, float scale = 1.0f, bool flip = false);
+
 
 	/// <summary>
 	/// Draw a rectangle

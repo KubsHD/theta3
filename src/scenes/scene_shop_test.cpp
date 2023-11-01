@@ -58,7 +58,7 @@ void ShopTestScene::update()
 void ShopTestScene::render()
 {
 	ren->set_target(target);
-	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
+	ren->clear(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	Scene::render();
 

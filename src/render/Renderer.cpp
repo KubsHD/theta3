@@ -144,6 +144,12 @@ void Renderer::clear(Vec3 color)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void Renderer::clear(Vec4 color)
+{
+	glClearColor(color.x, color.y, color.z, color.w);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 void Renderer::update_size(int w, int h)
 {
 	Backbuffer->target_size = Vec2(w, h);
@@ -267,8 +273,6 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 	set_required_uniforms(m_defaultShader, mvp, opacity, model);
-
-
 	
 	glUseProgram(m_defaultShader->get_id());
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
@@ -280,6 +284,35 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 
 	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
 
+}
+
+void Renderer::draw_subtex_s(Subtexture* subTex, Vec2 pos, Shader* shd, float opacity /*= 1.0f*/, float scale /*= 1.0f*/, bool flip /*= false*/)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, Vec3(pos, 0.0f));
+	//model = glm::translate(model, glm::vec3(subTex->texSize.x, subTex->texSize.y, 0.0f));
+	if (flip)
+	{
+		model = glm::translate(model, glm::vec3(subTex->texSize.x, 0.0f, 0.0f));
+		model = glm::scale(model, Vec3(-1.0f, 1.0f, 1.0f));
+	}
+
+	model = glm::scale(model, Vec3(subTex->texSize.x * scale, subTex->texSize.y * scale, 1.0f));
+
+	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
+
+	set_required_uniforms(shd, mvp, opacity, model);
+
+	glUseProgram(shd->get_id());
+	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
+
+	glBindVertexArray(subTex->vaoId);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	shd->set_uniform_float("u_opacity", 1.0f);
 }
 
 void Renderer::draw_box(Vec2 pos, Vec2 size, Vec3 color, bool fill)

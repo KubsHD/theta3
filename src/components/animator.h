@@ -88,6 +88,8 @@ public:
 	/// </summary>
 	bool flip = false;
 
+	Shader* shader = nullptr;
+
 	/// <summary>
 	/// Get the size of the current frame
 	/// </summary>
