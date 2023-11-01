@@ -151,6 +151,11 @@ void Renderer::update_size(int w, int h)
 
 void Renderer::draw_target(Target* tg)
 {
+	glUseProgram(m_defaultShader->get_id());
+
+	// fix opacity not being 1.0 by default
+	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
+
 	glBindTexture(GL_TEXTURE_2D, tg->texId);
 	
 	auto size = tg->target_size;
@@ -203,10 +208,11 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity, bool flip)
 	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
 }
 
-void Renderer::set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity)
+void Renderer::set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity, glm::mat4 model)
 {
 	s->set_uniform_float("u_opacity", opacity);
 	s->set_uniform_mat4("u_mvp", mvp);
+	s->set_uniform_mat4("u_model", model);
 	s->set_uniform_float("u_time", Game::get_time());
 }
 
@@ -232,13 +238,15 @@ void Renderer::draw_tex_s(Texture* tex, Vec2 pos, Vec2 size, Shader* custom_shad
 
 	glBindTexture(GL_TEXTURE_2D, tex->id);
 
-	set_required_uniforms(custom_shader, mvp, opacity);
+	set_required_uniforms(custom_shader, mvp, opacity, model);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	custom_shader->set_uniform_float("u_opacity", 1.0f);
+
+	glUseProgram(0);
 }
 
 void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale, bool flip)
@@ -258,7 +266,7 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
-	set_required_uniforms(m_defaultShader, mvp, opacity);
+	set_required_uniforms(m_defaultShader, mvp, opacity, model);
 
 
 	

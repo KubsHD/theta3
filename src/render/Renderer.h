@@ -56,7 +56,7 @@ class Renderer {
 	Shader* m_defaultShader;
 	Shader* m_filledBoxShader;
 
-	void set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity);
+	void set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity, glm::mat4 model);
 
 public:
 	static Target* Backbuffer;
