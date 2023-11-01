@@ -30,7 +30,7 @@ public:
 
 	Texture* network_prompt;
 	Texture* test;
-	Ref<Target> target;
+	Target* target;
 	Font* font2;
 
 	Sound* aud;

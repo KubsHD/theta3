@@ -8,7 +8,7 @@
 
 class LightTestScene : public Scene {
 public:
-	LightTestScene() = default;
+	LightTestScene() {};
 	~LightTestScene() {};
 
 	void init() override;
@@ -23,4 +23,6 @@ public:
 	void render() override;
 
 	Target* target;
+	Texture* test;
+	Shader* lit_shader;
 };

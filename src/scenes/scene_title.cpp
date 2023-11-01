@@ -7,6 +7,7 @@
 #include <core/audio.h>
 #include <core/asset.h>
 #include <components/particle_system.h>
+#include <render/device.h>
 
 int title_stage = 0;
 
@@ -20,7 +21,7 @@ void TitleScene::init()
 	a->add(ParticleSystem());
 
 	font2 = Asset::load_font("font/comic.fnt");
-	target = CreateRef<Target>(1280, 720);
+	target = gpu::device->create_target({ 1280, 720 });
 	network_prompt = Asset::load_texture("ui/ui_title_network_prompt.png");
 	test = Asset::load_texture("spr_player.png");
 
@@ -121,7 +122,7 @@ void TitleScene::update()
 
 void TitleScene::render()
 {
-	ren->set_target(target.get());
+	ren->set_target(target);
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 
 	ren->draw_tex(network_prompt, Vec2(0, 0), opacity);
@@ -131,6 +132,6 @@ void TitleScene::render()
 	ren->set_target(Renderer::Viewport);
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 
-	ren->draw_target(target.get());
+	ren->draw_target(target);
 }
 

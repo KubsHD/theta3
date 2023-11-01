@@ -23,6 +23,6 @@ public:
 
 	void render() override;
 
-	Ref<Target> target;
+	Target* target;
 
 };

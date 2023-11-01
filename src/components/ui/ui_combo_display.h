@@ -12,6 +12,8 @@
 
 #include <lib/glad/glad.h>
 
+#include <render/Renderer.h>
+
 
 /// <summary>
 ///  displays number of points, animated background under it, and multiplier
@@ -29,7 +31,7 @@ public:
 	UIComboDisplay()
 	{
 		flame = Asset::load_shader("flame");
-		noise = Asset::load_texture("texture/noise/Perlin/Perlin 7 - 256x256.png");
+		noise = Asset::load_texture("texture/noise/Perlin/p7.png");
 		gradient = Asset::load_texture("texture/gradient/Basic/Horizontal_1-256x256.png");
 
 	}

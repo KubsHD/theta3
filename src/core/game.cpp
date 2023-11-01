@@ -68,9 +68,11 @@ static void Game::change_scene()
 	auto g = Game::Instance;
 
 	if (g->current_scene != NULL)
+	{
 		Game::Instance->current_scene->destroy();
-
-	delete Game::Instance->current_scene;
+		delete Game::Instance->current_scene;
+	}
+	
 	Game::Instance->current_scene = new T();
 	Game::Instance->current_scene->ren = &Game::Instance->ren;
 	Game::Instance->current_scene->init();
@@ -203,6 +205,14 @@ void Game::render()
 
 			if (ImGui::MenuItem("Title"))
 				change_scene<TitleScene>();
+
+
+			if (ImGui::MenuItem("Shop"))
+				change_scene<ShopTestScene>();
+
+
+			if (ImGui::MenuItem("Light"))
+				change_scene<LightTestScene>();
 
 			ImGui::EndMenu();
 		}

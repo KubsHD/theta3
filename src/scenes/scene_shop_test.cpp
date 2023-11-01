@@ -5,13 +5,14 @@
 
 #include <glm/glm.hpp>
 #include <core/input.h>
+#include <render/device.h>
 
 static Vector<UIShopCard*> cards;
 static int idx = 0;
 
 void ShopTestScene::init()
 {
-	target = CreateRef<Target>(1280, 720);
+	target = gpu::device->create_target({ 1280, 720 });
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -56,14 +57,14 @@ void ShopTestScene::update()
 
 void ShopTestScene::render()
 {
-	ren->set_target(target.get());
+	ren->set_target(target);
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 
 	Scene::render();
 
-	ren->set_target(Renderer::Backbuffer);
+	ren->set_target(Renderer::Viewport);
 	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
 
-	ren->draw_target(target.get());
+	ren->draw_target(target);
 }
 

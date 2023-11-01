@@ -13,6 +13,8 @@
 #include <render/device.h>
 #include <utils/file.h>
 
+#include <assert.h>
+
 #include <core/file/atl.h>
 
 static const char* path_prefix;
@@ -62,7 +64,6 @@ void Asset::init(Renderer* ren)
 
 Texture* Asset::load_texture(std::vector<char> data)
 {
-	//assert(std::filesystem::exists(path), "Texture does not exist on disk!");
 
 	Texture* tex;
 
@@ -86,6 +87,8 @@ Texture* Asset::load_texture(std::vector<char> data)
 
 Texture* Asset::load_texture(String path)
 {
+	assert(std::filesystem::exists(get_asset_path(path.c_str())), "Texture does not exist on disk!");
+
 	for (auto [k, v] : cache_texture)
 	{
 		if (k == path)
