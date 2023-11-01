@@ -28,7 +28,7 @@ public:
 	// Constructors
 	UIComboDisplay()
 	{
-		flame = /*Asset::load_shader()*/ new Shader("flame");
+		flame = Asset::load_shader("flame");
 		noise = Asset::load_texture("texture/noise/Perlin/Perlin 7 - 256x256.png");
 		gradient = Asset::load_texture("texture/gradient/Basic/Horizontal_1-256x256.png");
 

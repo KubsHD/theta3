@@ -126,7 +126,7 @@ public:
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 			glEnableVertexAttribArray(0);
 
-			m_ptl_shader = new Shader("particle");
+			m_ptl_shader = Asset::load_shader("particle");
 		}
 
 		// draw particle

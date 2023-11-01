@@ -41,6 +41,7 @@
 #include <Windows.h>
 #include <scenes/scene_shop_test.h>
 #endif
+#include <scenes/scene_light_test.h>
 
 bool bRunning = true;
 bool b_show_inspector;
@@ -78,6 +79,8 @@ static void Game::change_scene()
 
 void Game::init()
 {
+	THETA_PROFILE;
+
 	Game::Instance = this;
 	
 #pragma region EngineInit
@@ -276,7 +279,7 @@ void Game::loop()
 	double lag = 0.0;
 	double current = 0;
 
-	change_scene<MenuScene>();
+	change_scene<LightTestScene>();
 
 	while (bRunning)
 	{

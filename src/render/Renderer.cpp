@@ -21,6 +21,7 @@
 #endif
 #include <core/asset.h>
 #include "device.h"
+#include <utils/profiler.h>
 
 glm::mat4 view(1.0f);
 glm::mat4 projection(1.0f);
@@ -34,6 +35,8 @@ unsigned int boxVAO;
 
 void Renderer::init(Window* win)
 {
+	THETA_PROFILE;
+
 	gpu::Device::init();
 	
 	Backbuffer = new Target();
@@ -117,9 +120,9 @@ void Renderer::init(Window* win)
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	m_circleShader = new Shader("circle");
-	m_defaultShader = new Shader("default");
-	m_filledBoxShader = new Shader("box");
+	m_circleShader = Asset::load_shader("circle");
+	m_defaultShader = Asset::load_shader("default");
+	m_filledBoxShader = Asset::load_shader("box");
 }
 
 Vec2 current_size;

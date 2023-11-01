@@ -138,6 +138,22 @@ Atlas* Asset::load_atlas(String path)
 	return atl;
 }
 
+Shader* Asset::load_shader(String shader_name)
+{
+	String vertexShaderSource = Asset::read_file("shader/" + shader_name + ".vs");
+	String fragmentShaderSource = Asset::read_file("shader/" + shader_name + ".fs");
+	const char* dataVs;
+	const char* dataPs;
+
+	dataVs = vertexShaderSource.c_str();
+	dataPs = fragmentShaderSource.c_str();
+
+	return gpu::device->create_shader({
+		.vs = (char*)dataVs,
+		.ps = (char*)dataPs
+		});
+}
+
 std::string Asset::read_file(String filePath)
 {
 	std::string content;

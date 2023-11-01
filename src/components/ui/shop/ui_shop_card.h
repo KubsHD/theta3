@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
 #include <glm/gtx/compatibility.hpp>
+#include <core/asset.h>
 
 
 class UIShopCard : public Component {
@@ -15,7 +16,7 @@ class UIShopCard : public Component {
 public:
 	UIShopCard() = default;
 	UIShopCard(String text) : m_text(text) {
-		button_shader = new Shader("button");
+		button_shader = Asset::load_shader("button");
 	};
 
 	bool selected;

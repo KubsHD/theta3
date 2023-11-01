@@ -3,10 +3,25 @@
  * \brief  Shader class
  * 
  * \date   January 2023
- *********************************************************************/
+ **********************************************8***********************/
 #pragma once
 
 #include <core/types.h>
+
+
+struct ShaderLayoutElement {
+};
+
+struct ShaderLayout {
+
+};
+
+struct ShaderDesc {
+	char* vs;
+	char* ps;
+	ShaderLayout layout;
+};
+
 
 /// <summary>
 /// Responsible for managing a shader object and communication with it
@@ -14,11 +29,7 @@
 class Shader {
 public:
 
-	/// <summary>
-	/// Create a shader program (vertex + fragment shaders) from a pair of files with .vs and .fs extension
-	/// </summary>
-	/// <param name="shaderName">Shader name</param>
-	Shader(String shaderName);
+	Shader(int id) : id(id) {};
 
 	/// <summary>
 	/// Return shader program object id

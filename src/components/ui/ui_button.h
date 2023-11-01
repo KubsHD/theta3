@@ -10,6 +10,7 @@
 #include <core/ecs.h>
 #include <render/Renderer.h>
 #include <functional>
+#include <core/asset.h>
 
 
 /// <summary>
@@ -24,7 +25,7 @@ class UIButton : public Component {
 public:
 	UIButton() = default;
 	UIButton(String text) : m_text(text) {
-		button_shader = new Shader("button");
+		button_shader = Asset::load_shader("button");
 	};
 
 	

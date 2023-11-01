@@ -16,7 +16,7 @@ class Texture;
 class Font;
 class Sound;
 class Atlas;
-
+class Shader;
 
 /// <summary>
 /// Class responsible for asset handling
@@ -87,6 +87,8 @@ public:
 	/// <param name="path">Atlas file</param>
 	/// <returns></returns>
 	static Atlas* load_atlas(String path);
+
+	static Shader* load_shader(String shader_name);
 
 	/// <summary>
 	/// Get real path from a virtual one (inside of data folder)

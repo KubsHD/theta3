@@ -1,20 +1,22 @@
 #include "device.h"
 
 #include <core/types.h>
-
-#include <render/texture.h>
 #include <lib/glad/glad.h>
 
+#include <render/texture.h>
+#include <render/Shader.h>
 #include <render/target.h>
+#include <render/buffer.h>
+
 #include <core/log.h>
 
 namespace gpu {
 
-	Device* device;
+	Device* device = nullptr;
 	
 	void Device::init()
 	{
-		assert(device != nullptr, "Device already initialized");
+		assert(device == nullptr, "Device already initialized");
 		device = new Device();
 	}
 
@@ -39,6 +41,70 @@ namespace gpu {
 		assert(tex != nullptr);
 
 		return tex;
+	}
+
+	Shader* Device::create_shader(const ShaderDesc& desc)
+	{
+
+		// compiling vertex shader
+		unsigned int vertexShader;
+		vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertexShader, 1, &desc.vs, NULL);
+		glCompileShader(vertexShader);
+
+		// compile vertex shader - info
+		int success;
+		char infoLog[512];
+		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+		if (!success)
+		{
+			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+			log_error("ERROR::Vertex Shader Compilation Failed!!!\n %s\n", infoLog);
+		}
+
+
+		// Fragment shader source - color
+
+		// compiling fragment shader 
+		unsigned int fragmentShader;
+		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragmentShader, 1, &desc.ps, NULL);
+		glCompileShader(fragmentShader);
+
+		// compiling fragment shader - info
+		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+		if (!success)
+		{
+			glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+			log_error("ERROR::Fragment Shader Compilation Failed!!!\n %s\n", infoLog);
+		}
+
+
+		// creating program object
+		auto id = glCreateProgram();
+		Shader* s = new Shader(id);
+
+
+		glAttachShader(id, vertexShader);
+		glAttachShader(id, fragmentShader);
+		glLinkProgram(id);
+
+		// creating program object - info
+		glGetProgramiv(id, GL_LINK_STATUS, &success);
+		if (!success)
+		{
+			glGetProgramInfoLog(id, 512, NULL, infoLog);
+			log_error("ERROR::Program Object Linking Failed!!!\n %s\n", infoLog);
+		}
+
+
+		glUseProgram(id);
+
+		// Deleting shaders from memory after we compiled them
+		glDeleteShader(vertexShader);
+		glDeleteShader(fragmentShader);
+
+		return s;
 	}
 
 	Target* Device::create_target(const TargetDesc& desc)
@@ -76,6 +142,11 @@ namespace gpu {
 	}
 
 
+	gpu::Buffer* Device::create_buffer(const gpu::BufferDesc& desc)
+	{
+		return nullptr;
+	}
+
 	/*Target::~Target()
 	{
 		glDeleteTextures(1, &texId);
@@ -84,4 +155,4 @@ namespace gpu {
 
 	*/
 
-}
+} 
