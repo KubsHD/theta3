@@ -3,6 +3,7 @@
 #ifdef WIN
 #define TRACY_ENABLE
 #include <tracy/Tracy.hpp>
+#include <lib/glad/glad.h>
 #include <tracy/TracyOpenGL.hpp>
 
 #define THETA_PROFILE ZoneScoped

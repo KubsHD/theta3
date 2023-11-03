@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 	Game game;
 	game.init();
 
-	if (true || argv[1] == "--compile")
+	if (argv[1] == "--compile")
 	{
 		for (auto& path : std::filesystem::recursive_directory_iterator(std::filesystem::path(game.ass.get_asset_path("anim/"))))
 		{

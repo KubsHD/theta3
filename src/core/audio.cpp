@@ -3,6 +3,7 @@
 #include <fmod_errors.h>
 #include <fmod.h>
 #include <core/log.h>
+#include <utils/profiler.h>
 
 static FMOD_SYSTEM* sys;
 
@@ -19,6 +20,8 @@ void fmod_check_for_error(FMOD_RESULT result)
 
 void Audio::init()
 {
+	THETA_PROFILE;
+
 	result = FMOD_System_Create(&sys, FMOD_VERSION);
 	fmod_check_for_error(result);
 

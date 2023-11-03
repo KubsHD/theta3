@@ -1,4 +1,5 @@
 ﻿#include "window.h"
+#include <utils/profiler.h>
 
 Window::Window()
 {
@@ -12,6 +13,8 @@ Window::Window()
 
 void Window::create()
 {
+	THETA_PROFILE;
+
 	// Create window and get its surface
 	pWindow = SDL_CreateWindow("theta3", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);

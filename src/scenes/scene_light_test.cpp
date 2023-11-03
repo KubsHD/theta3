@@ -8,14 +8,16 @@
 
 #include <components/player.h>
 #include <components/movement.h>
+#include <lib/imgui/imgui.h>
+#include <glm/gtc/type_ptr.hpp>
 
-static int x = 300;
+static Vec2 pos = Vec2(294, 159.0f);
 
 void LightTestScene::init()
 {
 	target = gpu::device->create_target({ 640, 360, TargetScalingType::Nearest});
 	lit_shader = Asset::load_shader("lit");
-	test = Asset::load_texture("coin.png");
+	test = Asset::load_texture("lamp.png");
 
 	// Player initialization
 	auto player = create("Player");
@@ -46,7 +48,9 @@ void LightTestScene::init()
 	animator->add_animation("anim/witch_run");
 
 
-	player->add(PlayerMovement(player, 2.0f));
+	auto mvm = player->add(PlayerMovement(player, 2.0f));
+	player->position = Vec2(420, 260);
+	
 }
 
 void LightTestScene::destroy()
@@ -58,11 +62,13 @@ void LightTestScene::update()
 {
 	Scene::update();
 
-	lit_shader->set_uniform_vec2("u_lightPos", Vec2(x, 200.0f));
+	lit_shader->set_uniform_vec2("u_lightPos", pos);
+	lit_shader->set_uniform_vec2("u_lightDirection", Vec2(0.0f, -100.0f));
+	lit_shader->set_uniform_float("u_lightAngle", 70.0f);
 
-	x += 1;
-	if (x > 400)
-		x = 150;
+	//x += 1;
+	//if (x > 400)
+	//	x = 150;
 }
 
 void LightTestScene::render()
@@ -75,6 +81,12 @@ void LightTestScene::render()
 
 	Scene::render();
 
+	if (ImGui::Begin("Light"))
+	{
+		ImGui::DragFloat2("light pos", glm::value_ptr(pos));
+
+		ImGui::End();
+	}
 
 	ren->set_target(Renderer::Viewport);
 	ren->clear(Vec4(0.0f, 0.0f, 0.0f, 1.0f));

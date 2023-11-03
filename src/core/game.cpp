@@ -111,7 +111,6 @@ void Game::init()
 
 	ass.init(&ren);
 
-
 	maincontext = SDL_GL_CreateContext(window.pWindow);
 
 	if (maincontext == NULL)
@@ -172,12 +171,16 @@ void Game::init()
 
 void Game::update(float dt)
 {
+	THETA_PROFILE;
+
 	if (current_scene != nullptr)
 		current_scene->update();
 }
 
 void Game::render()
 {
+	THETA_PROFILE;
+
 	if (current_scene != nullptr)
 		current_scene->render();
 
@@ -297,6 +300,8 @@ void Game::loop()
 
 		while (SDL_PollEvent(&evt) != 0)
 		{
+			THETA_PROFILE_SECTION("Frame");
+
 			ImGui_ImplSDL2_ProcessEvent(&evt);
 
 			switch (evt.type)
@@ -332,6 +337,7 @@ void Game::loop()
 
 		while (lag < MS)
 		{
+			THETA_PROFILE_SECTION("Wait for next frame");
 			int milliseconds = (int)(MS - lag);
 			SDL_Delay(milliseconds);
 
@@ -371,6 +377,8 @@ void Game::loop()
 
 		input.update(evt);
 		audio.update();
+
+		THETA_PROFILE_FRAME();
 	}
 
 

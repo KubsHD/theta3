@@ -16,6 +16,7 @@
 #include <assert.h>
 
 #include <core/file/atl.h>
+#include <utils/profiler.h>
 
 static const char* path_prefix;
 
@@ -26,6 +27,8 @@ Map<String, Atlas*> Asset::cache_atlas;
 
 void Asset::init(Renderer* ren)
 {
+	THETA_PROFILE;
+
 #if DEBUG
 	log_info("asset: running debug build!");
 #if APPLE
@@ -64,6 +67,7 @@ void Asset::init(Renderer* ren)
 
 Texture* Asset::load_texture(std::vector<char> data)
 {
+	THETA_PROFILE;
 
 	Texture* tex;
 
@@ -87,6 +91,10 @@ Texture* Asset::load_texture(std::vector<char> data)
 
 Texture* Asset::load_texture(String path)
 {
+	THETA_PROFILE;
+	THETA_PROFILE_TAG("Texture path", path.c_str());
+
+
 	assert(std::filesystem::exists(get_asset_path(path.c_str())), "Texture does not exist on disk!");
 
 	for (auto [k, v] : cache_texture)
@@ -103,6 +111,8 @@ Texture* Asset::load_texture(String path)
 
 Sound* Asset::load_sound(String path)
 {
+	THETA_PROFILE;
+
 	for (auto [k, v] : cache_sound)
 	{
 		if (k == path)
@@ -116,6 +126,8 @@ Sound* Asset::load_sound(String path)
 
 Font* Asset::load_font(String path)
 {
+	THETA_PROFILE;
+
 	for (auto [k, v] : cache_font)
 	{
 		if (k == path)
@@ -129,6 +141,8 @@ Font* Asset::load_font(String path)
 
 Atlas* Asset::load_atlas(String path)
 {
+	THETA_PROFILE;
+
 	for (auto [k, v] : cache_atlas)
 	{
 		if (k == path)
@@ -143,6 +157,8 @@ Atlas* Asset::load_atlas(String path)
 
 Shader* Asset::load_shader(String shader_name)
 {
+	THETA_PROFILE;
+
 	String vertexShaderSource = Asset::read_file("shader/" + shader_name + ".vs");
 	String fragmentShaderSource = Asset::read_file("shader/" + shader_name + ".fs");
 	const char* dataVs;
@@ -159,6 +175,8 @@ Shader* Asset::load_shader(String shader_name)
 
 std::string Asset::read_file(String filePath)
 {
+	THETA_PROFILE;
+
 	std::string content;
 
 	auto realFilePath = get_asset_path(filePath.c_str());
@@ -182,6 +200,8 @@ std::string Asset::read_file(String filePath)
 
 const char* Asset::get_asset_path(const char* virtualPath)
 {
+	THETA_PROFILE;
+
 	size_t needed = snprintf(NULL, 0, "%s%s", path_prefix, virtualPath) + 1;
 
 	char* tmp = (char*)calloc(needed, 1);
