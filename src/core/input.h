@@ -6,7 +6,6 @@
  *********************************************************************/
 
 #pragma once
-#include <SDL.h>
 
 #include <glm/fwd.hpp>
 #include <core/types.h>

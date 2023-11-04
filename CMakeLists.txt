@@ -46,7 +46,7 @@ target_compile_definitions(theta3 PRIVATE _CRT_SECURE_NO_WARNINGS=1)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   target_compile_definitions(theta3 PRIVATE DEBUG=1)
 else()
-endif()
     add_custom_command(TARGET theta3 POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:theta3>/data
     COMMENT "Copying assets")
+endif()

@@ -1,21 +1,30 @@
 #include "scene_light_test.h"
 
-#include <glm/glm.hpp>
+#include <core/types.h>
+
 #include <core/input.h>
+
 #include <render/device.h>
 #include <core/asset.h>
 #include <core/game.h>
 
 #include <components/player.h>
 #include <components/movement.h>
-#include <lib/imgui/imgui.h>
-#include <glm/gtc/type_ptr.hpp>
+
 
 static Vec2 pos = Vec2(294, 159.0f);
+
+static Target* occluder_map;
+static Target* light_map;
+
+static Camera cam;
 
 void LightTestScene::init()
 {
 	target = gpu::device->create_target({ 640, 360, TargetScalingType::Nearest});
+	occluder_map = gpu::device->create_target({ 1024,1024, TargetScalingType::Nearest });
+	light_map = gpu::device->create_target({ 256,1, TargetScalingType::Nearest });
+
 	lit_shader = Asset::load_shader("lit");
 	test = Asset::load_texture("lamp.png");
 
@@ -24,6 +33,7 @@ void LightTestScene::init()
 	player->add(Sprite("spr_player.png"));
 	player->get<Sprite>()->enabled = false;
 
+	
 
 	// Forgiving hitboxs for noobs
 	Vec2 player_size = Vec2(player->get<Sprite>()->tex->size.x, player->get<Sprite>()->tex->size.y);
@@ -73,17 +83,50 @@ void LightTestScene::update()
 
 void LightTestScene::render()
 {
-	ren->set_target(target);
-	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
+	{
+		// draw world from light perspective to occluder map
+		ren->set_target(occluder_map);
+		ren->clear({ 0.0f, 0.0f, 0.0f, 1.0f });
 
-	ren->draw_tex_s(test, Vec2(250.0f, 150.0f), Vec2(100.0f, 100.0f), lit_shader);
-	//ren->draw_tex(test, Vec2(x, 200.0f));
+		cam.position = Vec2(pos.x - occluder_map->target_size.x / 2 + 16,
+			pos.y - occluder_map->target_size.y / 2 + 16);
+
+		ren->set_camera(&cam);
+
+		ren->draw_tex_s(test, Vec2(250.0f, 150.0f), Vec2(100.0f, 100.0f), lit_shader);
+		//ren->draw_tex(test, Vec2(x, 200.0f));
+	}
+
+	{
+		ren->set_target(light_map);
+		ren->clear({ 0.0f, 0.0f, 0.0f, 0.0f });
+
+		cam.position = Vec2(pos.x - occluder_map->target_size.x / 2 + 16,
+			pos.y - occluder_map->target_size.y / 2 + 16);
+
+		ren->set_camera(&cam);
+		
+	}
+
+
+	{
+		// draw final image
+		ren->set_target(target);
+		ren->clear(Vec3(0.0f, 0.0f, 0.0f));
+		ren->set_camera(nullptr);
+
+		ren->draw_tex_s(test, Vec2(250.0f, 150.0f), Vec2(100.0f, 100.0f), lit_shader);
+		//ren->draw_tex(test, Vec2(x, 200.0f));
+	}
+
 
 	Scene::render();
 
 	if (ImGui::Begin("Light"))
 	{
+		
 		ImGui::DragFloat2("light pos", glm::value_ptr(pos));
+		ImGui::Image((void*)occluder_map->texId, ImVec2(256, 256));
 
 		ImGui::End();
 	}

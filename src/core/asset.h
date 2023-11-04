@@ -9,7 +9,6 @@
 
 #include <core/types.h>
 
-#include <fstream>
 
 class Renderer;
 class Texture;

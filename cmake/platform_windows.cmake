@@ -40,6 +40,7 @@ endif()
 
 target_compile_definitions(theta3 PRIVATE WIN=1)
 target_include_directories(theta3 PUBLIC "${PROJECT_SOURCE_DIR}/src")
+target_precompile_headers(theta3 PRIVATE "$<$<COMPILE_LANGUAGE:CXX>:${PROJECT_SOURCE_DIR}/src/core/types.h>")
 
 # copy dlls
 add_custom_command(

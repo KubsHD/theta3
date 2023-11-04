@@ -9,8 +9,7 @@
 #include <core/types.h>
 #include <core/ecs.h>
 #include <render/renderer.h>
-#include <fstream>
-#include <functional>
+
 
 
 #include <core/file/atl.h>
