@@ -8,11 +8,9 @@
 
 #include <core/types.h>
 #include <core/ecs.h>
-#include <render/renderer.h>
 
-
-
-#include <core/file/atl.h>
+class Shader;
+struct Atlas;
 
 /// <summary>
 /// This struct holds data about animation

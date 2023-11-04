@@ -8,9 +8,11 @@
 #include <core/asset.h>
 #include <core/game.h>
 
+#include <components/sprite.h>
 #include <components/player.h>
 #include <components/movement.h>
-
+#include <components/collider.h>
+#include <components/animator.h>
 
 static Vec2 pos = Vec2(294, 159.0f);
 
@@ -35,14 +37,12 @@ void LightTestScene::init()
 
 	
 
-	// Forgiving hitboxs for noobs
 	Vec2 player_size = Vec2(player->get<Sprite>()->tex->size.x, player->get<Sprite>()->tex->size.y);
 	Vec2 player_hitbox = Vec2(player_size.x * 5 / 7, player_size.y * 5 / 7);
 	Vec2 player_hitbox_offset = Vec2((player_size.x - player_hitbox.x) / 2, (player_size.y - player_hitbox.y) / 2);
 	player->add(Collider(player_hitbox, player_hitbox_offset))->tag = CollisionTag::Player;
 	player->add(Player());
 
-	//Factory::CreateSkillSpinner(this, player);
 
 	auto animator = player->add(Animator());
 
@@ -126,12 +126,17 @@ void LightTestScene::render()
 	{
 		
 		ImGui::DragFloat2("light pos", glm::value_ptr(pos));
+		
+		ImGui::Text("Light view");
 		ImGui::Image((void*)occluder_map->texId, ImVec2(256, 256));
 
+		
 		ImGui::End();
 	}
 
 	ren->set_target(Renderer::Viewport);
+
+	
 	ren->clear(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	ren->draw_target(target);

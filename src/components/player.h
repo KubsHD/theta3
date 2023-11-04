@@ -8,7 +8,6 @@
 
 #include <core/types.h>
 #include <core/ecs.h>
-#include "enemy.h"
 
 
 

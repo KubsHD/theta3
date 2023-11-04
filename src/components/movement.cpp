@@ -9,7 +9,9 @@
 #include <components/gun.h>
 #include "particle_system.h"
 #include <components/bullets/bullet.h>
-
+#include <render/renderer.h>
+#include <components/animator.h>
+#include <components/player.h>
 
 enum PLAYER_STATES
 {

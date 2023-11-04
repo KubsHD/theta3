@@ -1,5 +1,7 @@
 #include "bullet.h"
 
+#include <components/gun.h>
+
 void Factory::CreateBullet(Scene* scn, Player* player)
 {
 	String bullet_sprite;

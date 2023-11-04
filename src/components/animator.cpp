@@ -3,7 +3,8 @@
 #include <lib/json.hpp>
 #include <core/asset.h>
 #include <iostream>
-
+#include <render/renderer.h>
+#include <core/file/atl.h>
 
 Vec2 Animator::get_frame_size()
 {

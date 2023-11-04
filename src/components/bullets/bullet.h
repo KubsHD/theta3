@@ -15,7 +15,9 @@
 #include <components/player.h>
 #include <core/input.h>
 #include <lib/imgui/imgui.h>
+#include <components/gun.h>
 
+#include <components/enemy.h>
 
 /// <summary>
 /// Bullet class with all info

@@ -9,9 +9,8 @@
 
 #include <core/types.h>
 #include <core/ecs.h>
-#include <render/renderer.h>
-#include <components/animator.h>
-#include <components/player.h>
+
+class Player;
 
 /// <summary>
 /// class responsible for player movement and shooting bullets
