@@ -8,7 +8,6 @@
 #pragma once
 
 #include <core/types.h>
-#include <list>
 
 class Renderer;
 class Entity;
@@ -49,7 +48,7 @@ public:
 	/// Render the component
 	/// </summary>
 	/// <param name="ren">Renderer reference</param>
-	virtual void render(Renderer* ren) = 0;
+	virtual void render(Renderer* ren);
 };
 
 /// <summary>

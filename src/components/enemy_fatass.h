@@ -27,8 +27,4 @@ public:
 
 	// Maintenance
 	void update() override;
-	void render(Renderer* ren) override
-	{
-		Enemy::render(ren);
-	};
 };

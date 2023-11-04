@@ -253,3 +253,8 @@ void Component::init()
 {
 
 }
+
+void Component::render(Renderer* ren)
+{
+
+}

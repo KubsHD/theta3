@@ -11,8 +11,6 @@ struct Texture
 	friend class Asset;
 public:
 
-	~Texture();
-
 	unsigned int id;
 	Vec2 size;
 };

@@ -204,9 +204,3 @@ void PlayerMovement::update()
 	}
 };
 
-
-void PlayerMovement::render(Renderer* ren)
-{
-
-}
-

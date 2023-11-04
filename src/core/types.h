@@ -16,6 +16,7 @@
 #include <fstream>
 #include <iostream>
 #include <functional>
+#include <list>
 
 #include <SDL.h>
 #include <glm/glm.hpp>

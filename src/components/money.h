@@ -31,10 +31,6 @@ public:
 
 	void update() override
 	{
-	}
-
-	void render(Renderer* ren) override
-	{
 		this->entity->get<Animator>()->play_anim("coin");
 	}
 };
