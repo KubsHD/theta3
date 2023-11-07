@@ -5,11 +5,18 @@
 /// <summary>
 /// Describes scaling type of a given texture
 /// </summary>
-enum TargetScalingType {
+enum class TargetScalingType {
 	Nearest,
 	Linear
 };
 
+namespace gpu {
+
+struct TargetDesc {
+		int w; int h; TargetScalingType type;
+};
+
+}
 /// <summary>
 /// A texture that things can be rendered into
 /// </summary>

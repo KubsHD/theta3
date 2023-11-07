@@ -6,8 +6,8 @@ class Texture;
 class Shader;
 class Target;
 
-enum BindFlags;
-enum TargetScalingType;
+enum class BindFlags;
+enum class TargetScalingType;
 
 struct ShaderDesc;
 
@@ -15,6 +15,7 @@ namespace gpu
 {
 	struct BufferDesc;
 	struct Buffer;
+	struct TargetDesc;
 
 	struct TextureDesc {
 		void* data;
@@ -23,9 +24,7 @@ namespace gpu
 		//int channels;
 	};
 
-	struct TargetDesc {
-		int w; int h; TargetScalingType type;
-	};
+	
 	
 
 	class Device {

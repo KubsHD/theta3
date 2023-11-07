@@ -60,7 +60,7 @@ Game* Game::Instance = nullptr;
 
 
 template<typename T>
-static void Game::change_scene()
+void Game::change_scene()
 {
 	// reset camera when changing scene, otherwise it remembers the last one
 	Game::Instance->ren.set_camera(nullptr);
@@ -122,7 +122,7 @@ void Game::init()
 		std::cout << "Failed to initialize GLAD. " << std::endl;
 	}
 
-	TracyGpuContext;
+	THETA_MARK_GPU_CONTEXT;
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -375,7 +375,7 @@ void Game::loop()
 		}
 
 		SDL_GL_SwapWindow(window.pWindow);
-		TracyGpuCollect;
+		THETA_GPU_COLLECT;
 
 		input.update(evt);
 		audio.update();

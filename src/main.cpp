@@ -2,11 +2,11 @@
 #include <SDL.h>
 
 #include <core/game.h>
+#include <core/file/atl.h>
 
 #if WIN
 #include <Windows.h>
 #include <scenes/scene_shop_test.h>
-#include <core/file/atl.h>
 
 extern "C" {
 	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;

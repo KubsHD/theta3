@@ -13,7 +13,7 @@
 #include <render/device.h>
 #include <utils/file.h>
 
-#include <assert.h>
+#include <cassert>
 
 #include <core/file/atl.h>
 #include <utils/profiler.h>
@@ -95,7 +95,7 @@ Texture* Asset::load_texture(String path)
 	THETA_PROFILE_TAG("Texture path", path.c_str());
 
 
-	assert(std::filesystem::exists(get_asset_path(path.c_str())), "Texture does not exist on disk!");
+	assert(std::filesystem::exists(get_asset_path(path.c_str())));
 
 	for (auto [k, v] : cache_texture)
 	{
