@@ -2,6 +2,8 @@
 
 #include <core/types.h>
 
+struct Texture;
+
 /// <summary>
 /// Describes scaling type of a given texture
 /// </summary>
@@ -20,6 +22,8 @@ public:
 
 	unsigned int id;
 	unsigned int texId;
+
+	Texture* tex;
 
 	Vec2 target_size;
 };
