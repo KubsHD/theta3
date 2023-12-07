@@ -16,7 +16,7 @@ namespace gpu {
 	
 	void Device::init()
 	{
-		assert(device == nullptr, "Device already initialized");
+		assert(device == nullptr);
 		device = new Device();
 	}
 

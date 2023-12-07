@@ -72,7 +72,6 @@ void main()
 		float intensity = clamp((theta - u_lightAngle * 2) / epsilon, 0, 1);
 
 		d = (1.0 - smoothstep(-0.2, 140, light_dist)) * light_color;
-		d *= intensity;
 	}
 
 	vec3 final = (ambient + d) * texture(u_tex, tex).xyz;
