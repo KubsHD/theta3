@@ -15,10 +15,13 @@ namespace utils {
 
 		inline std::vector<char> ReadAllBytes(std::string filename)
 		{
-			std::ifstream ifs(removeSpaces(filename), std::ios::binary | std::ios::ate);
+			std::ifstream ifs((filename), std::ios::binary | std::ios::ate);
 			std::ifstream::pos_type pos = ifs.tellg();
 
 			std::vector<char>  result(pos);
+
+			if (result.size() == 0)
+				return result;
 
 			ifs.seekg(0, std::ios::beg);
 			ifs.read(&result[0], pos);
