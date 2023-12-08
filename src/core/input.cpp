@@ -31,7 +31,11 @@ void Input::update(SDL_Event& evt)
 
 	last_mouse = mouse;
 
-	mouse.buttons = SDL_GetMouseState(&(mouse.pos.x), &(mouse.pos.y));
+	if (m_mousePositionOverriden)
+		mouse.buttons = SDL_GetMouseState(NULL, NULL);
+	else
+		mouse.buttons = SDL_GetMouseState(&(mouse.pos.x), &(mouse.pos.y));
+
 	// log_info("[mouse] x: %4d | y: %4d\n", mouse.pos.x, mouse.pos.y);
 
 	if ((mouse.buttons & SDL_BUTTON_LMASK) != 0) {
@@ -53,6 +57,11 @@ void Input::update(SDL_Event& evt)
 void Input::update_mouse_wheel(SDL_MouseWheelEvent mevt)
 {
 	wheel = mevt;
+}
+
+void Input::update_mouse_position(Vec2 pos)
+{
+	mouse.pos = pos;
 }
 
 bool Input::mouse_down(int key)

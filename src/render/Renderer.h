@@ -55,6 +55,7 @@ class Renderer {
 	Shader* m_circleShader;
 	Shader* m_defaultShader;
 	Shader* m_filledBoxShader;
+	Shader* m_uberShader;
 
 	void set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity, glm::mat4 model);
 

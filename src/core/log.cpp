@@ -6,6 +6,7 @@
 
 #if WIN
 #include <Windows.h>
+#include <debugapi.h>
 #endif
 
 void log_info(const char* str, ...)
@@ -15,8 +16,14 @@ void log_info(const char* str, ...)
 	va_start(ap, str);
 	vsnprintf(msg, sizeof(char) * 5000, str, ap);
 	va_end(ap);
-
+	
+	
+	// only useful when working with visual studio
+#if WIN && _MSC_VER
+	OutputDebugString(msg);
+#else
 	printf("%s\n", msg);
+#endif
 }
 
 
@@ -30,6 +37,8 @@ void log_error(const char* str, ...)
 
 #if !DEBUG && WIN
 	MessageBox(NULL, str, msg, MB_OKCANCEL);
+#elif WIN && _MSC_VER
+	OutputDebugString(msg);
 #else
 	printf("ERROR: %s\n", msg);
 #endif

@@ -83,41 +83,14 @@ void LightTestScene::update()
 
 void LightTestScene::render()
 {
-	{
-		// draw world from light perspective to occluder map
-		ren->set_target(occluder_map);
-		ren->clear({ 0.0f, 0.0f, 0.0f, 1.0f });
-
-		cam.position = Vec2(pos.x - occluder_map->target_size.x / 2 + 16,
-			pos.y - occluder_map->target_size.y / 2 + 16);
-
-		ren->set_camera(&cam);
-
-		ren->draw_tex_s(test, Vec2(250.0f, 150.0f), Vec2(100.0f, 100.0f), lit_shader);
-		//ren->draw_tex(test, Vec2(x, 200.0f));
-	}
-
-	{
-		ren->set_target(light_map);
-		ren->clear({ 0.0f, 0.0f, 0.0f, 0.0f });
-
-		cam.position = Vec2(pos.x - occluder_map->target_size.x / 2 + 16,
-			pos.y - occluder_map->target_size.y / 2 + 16);
-
-		ren->set_camera(&cam);
-		
-	}
+	// draw final image
+	ren->set_target(target);
+	ren->clear(Vec3(0.0f, 0.0f, 0.0f));
+	ren->set_camera(nullptr);
 
 
-	{
-		// draw final image
-		ren->set_target(target);
-		ren->clear(Vec3(0.0f, 0.0f, 0.0f));
-		ren->set_camera(nullptr);
-
-		ren->draw_tex_s(test, Vec2(250.0f, 150.0f), Vec2(100.0f, 100.0f), lit_shader);
-		//ren->draw_tex(test, Vec2(x, 200.0f));
-	}
+	ren->draw_tex_s(test, Vec2(250.0f, 150.0f), Vec2(100.0f, 100.0f), lit_shader);
+	//ren->draw_tex(test, Vec2(x, 200.0f));
 
 
 	Scene::render();

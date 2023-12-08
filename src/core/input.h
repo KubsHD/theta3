@@ -82,6 +82,9 @@ public:
 	/// <param name="mevt"></param>
 	void update_mouse_wheel(SDL_MouseWheelEvent mevt);
 
+	void update_mouse_position(Vec2 pos);
+	inline void set_mouse_position_override(bool override) { m_mousePositionOverriden = override; }
+
 	/// <summary>
 	/// Check if a mouse button is down
 	/// </summary>
@@ -101,6 +104,8 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	static Vec2 get_mouse_pos();
+private:
+	bool m_mousePositionOverriden;
 };
 
 

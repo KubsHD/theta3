@@ -123,6 +123,7 @@ void Renderer::init(Window* win)
 	m_circleShader = Asset::load_shader("circle");
 	m_defaultShader = Asset::load_shader("default");
 	m_filledBoxShader = Asset::load_shader("box");
+	m_uberShader = Asset::load_shader("uber");
 }
 
 Vec2 current_size;

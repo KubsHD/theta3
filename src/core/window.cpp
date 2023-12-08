@@ -5,10 +5,10 @@ Window::Window()
 {
 	// Initialize and set window variables to default values
 	quit = false;
-	x = 0;
-	y = 0;
-	w = 1600;
-	h = 900;
+	x = 100;
+	y = 100;
+	w = 800;
+	h = 450;
 }
 
 void Window::create()
@@ -16,7 +16,7 @@ void Window::create()
 	THETA_PROFILE;
 
 	// Create window and get its surface
-	pWindow = SDL_CreateWindow("theta3", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	pWindow = SDL_CreateWindow("theta3", x, y,
 		w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	if (pWindow == NULL)

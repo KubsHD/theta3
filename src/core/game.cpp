@@ -162,7 +162,7 @@ void Game::init()
 #pragma endregion
 
 	tools.push_back(new AnimationTool());
-	tools.push_back(new Viewport());
+	tools.push_back(new Viewport(input));
 
 
 	for (auto& tool : tools)
