@@ -38,7 +38,7 @@ enum class EnemyState {
 /// class containing all the necessary attributes and methonds shared by enemies
 /// </summary>
 class Enemy : public Component
-{
+{	
 public:
 	// backend
 	float facing_angle, temp, text_opacity = 1;
@@ -56,11 +56,17 @@ public:
 	Vec2 pos_sprite_center;
 	Player* player;
 	bool is_dead = false;
+	Vec2 target_knochback_position;
 
 	// movement
 	float delta_x, delta_y;
 	int direction_x, direction_y;
 	AStar::Generator astar;
+
+	AStar::CoordinateList::iterator currentPathPosition;
+	AStar::CoordinateList path;
+
+	Vec2 target_pos = { 0, 0 };
 
 
 	// gameplay
@@ -69,11 +75,26 @@ public:
 	Enemy() = default;
 	Enemy(Player* player_ref)
 	{
+		astar.setHeuristic(AStar::Heuristic::euclidean);
+		astar.setDiagonalMovement(true);
+
 		player = player_ref;
 	}
 
 	void init() override
 	{
+		astar.setWorldSize({ 48, 27 });
+		// You can use a few heuristics : manhattan, euclidean or octagonal.
+		astar.setHeuristic(AStar::Heuristic::euclidean);
+		astar.setDiagonalMovement(true);
+
+		path = astar.findPath({ static_cast<int>(entity->position.x / 20), static_cast<int>(entity->position.y) / 20 },
+			{ int(player->pos_sprite_center.x) / 20, int(player->pos_sprite_center.y) / 20 });
+		std::reverse(path.begin(), path.end());
+
+
+		currentPathPosition = path.begin();
+
 		//collider = entity->get<Collider>();
 		//// todo zmienic na rozmiar spritea
 		//collider->size = Vec2(32, 32);
@@ -89,24 +110,7 @@ public:
 	
 	//void handle_collision();
 
-	void update() override 
-	{
-		//text_pos.y -= 0.1f;
-
-		//on_death();
-		
-		flip_sprite();
-
-		if (state == EnemyState::IN_KNOCKBACK)
-		{
-			entity->position = glm::lerp(entity->position, target_knochback_position, 0.1f);
-
-			if (glm::distance(entity->position, target_knochback_position) < 1)
-				state = EnemyState::ATTACK;
-
-			return;
-		}
-	}
+	void update() override;
 
 	void render(Renderer* ren) override
 	{
@@ -126,11 +130,6 @@ public:
 	void take_damage(float melee_damage, float knockback_rate, float facing_angle);
 
 	void followPlayer();
-	
-
-
-private:
-	Vec2 target_knochback_position;
 };
 
 

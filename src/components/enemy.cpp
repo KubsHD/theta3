@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include "dmg_popup.h"
+#include "core/input.h"
+#include <iostream>
+
 
 void Enemy::flip_sprite()
 {
@@ -15,6 +18,21 @@ void Enemy::flip_sprite()
 	else {
 		this->entity->get<Animator>()->flip = false;
 		this->entity->get<Sprite>()->flip = false;
+	}
+}
+
+void Enemy::update()
+{
+	flip_sprite();
+
+	if (state == EnemyState::IN_KNOCKBACK)
+	{
+		entity->position = glm::lerp(entity->position, target_knochback_position, 0.1f);
+
+		if (glm::distance(entity->position, target_knochback_position) < 1)
+			state = EnemyState::ATTACK;
+
+		return;
 	}
 }
 
@@ -31,24 +49,33 @@ void Enemy::take_damage(float melee_damage, float knockback_rate, float facing_a
 	target_knochback_position = entity->position + Vec2( -cos(facing_angle) * 100 * knockback_rate, -sin(facing_angle) * 100 * knockback_rate);
 }
 
+
+
 void Enemy::followPlayer()
 {
 	if (state == EnemyState::IN_KNOCKBACK)
 		return;
+	
 
-	// Calculate A* path from the enemy's current position to the player's position
-	AStar::CoordinateList path = astar.findPath({ static_cast<int>(entity->position.x), static_cast<int>(entity->position.y) },
-		{ static_cast<int>(player->entity->position.x), static_cast<int>(player->entity->position.y) });
-
-	// Move the enemy along the path (you may need to adjust the movement speed)
-	if (!path.empty())
+	if (rand() % 10 == 1)
 	{
-		AStar::Vec2i nextTile = path.back();
-		float targetX = static_cast<float>(nextTile.x);
-		float targetY = static_cast<float>(nextTile.y);
 
-		// Move towards the next tile in the path
-		entity->position.x += (targetX - entity->position.x) * speed;
-		entity->position.y += (targetY - entity->position.y) * speed;
+		if (currentPathPosition != (path.end() - 1)) {
+			++currentPathPosition;
+			std::cout << "Current position: " << currentPathPosition->x << " " << currentPathPosition->y << "\n";
+
+			target_pos = { currentPathPosition->x * 20, currentPathPosition->y * 20 };
+
+			entity->position = target_pos;
+		}
+		else {
+			std::cout << "Path not found.\n";
+			path = astar.findPath({ static_cast<int>(entity->position.x / 20), static_cast<int>(entity->position.y) / 20 },
+				{ int(player->pos_sprite_center.x) / 20, int(player->pos_sprite_center.y) / 20 });
+			std::reverse(path.begin(), path.end());
+
+			currentPathPosition = path.begin();
+		}
 	}
 }
+		//entity->position = glm::lerp(entity->position, target_pos, 1.0f);

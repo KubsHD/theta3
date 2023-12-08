@@ -181,7 +181,7 @@ void PlayerMovement::update()
 			this->entity->get<Animator>()->play_anim(player_anim[RUN]);
 		else
 		{
-			ParticleProps pp = {
+			/*ParticleProps pp = {
 			.Position = entity->position + Vec2(entity->flip ? 32.0f : 0, 32.0f),
 			.LifeTime = 100,
 			.Velocity = Vec2((entity->flip ? 1 : -1) * speed * 2, 0.3f),
@@ -190,7 +190,7 @@ void PlayerMovement::update()
 			.Shape = ParticleShape::Rectangle,
 			};
 
-			entity->get<ParticleSystem>()->emit(pp);
+			entity->get<ParticleSystem>()->emit(pp);*/
 			this->entity->get<Animator>()->play_anim(player_anim[ON_BROOM]);
 		}
 	}

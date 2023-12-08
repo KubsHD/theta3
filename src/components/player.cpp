@@ -11,7 +11,7 @@
 
 Player::Player()
 {
-	god_mode = false;
+	god_mode = true;
 	health = 100;
 	speed = 1.0f;
 	damage_melee = 24;
@@ -29,6 +29,7 @@ Player::Player()
 void Player::init()
 {
 	player_offset = Vec2(entity->get<Sprite>()->tex->size.x / 2, entity->get<Sprite>()->tex->size.y / 2);
+	entity->position = { 400, 240 };
 }
 
 void Player::update()

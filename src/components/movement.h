@@ -29,10 +29,10 @@ public:
 	float knockback_rate = 0.5f;
 
 	float speed_base = 2.0f;
-	float speed_when_attacking = 0.2f;
+	float speed_when_attacking = 0.6f;
 
 	void init() override;
 	void update() override;
 private:
-	float speed_on_broom = 4.0f;
+	float speed_on_broom = 8.0f;
 };
