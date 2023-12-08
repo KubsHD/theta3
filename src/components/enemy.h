@@ -18,6 +18,7 @@
 #include <components/player.h>
 #include <render/Renderer.h>
 #include <components/gun.h>
+#include "lib/a-star-master/AStar.hpp"
 
 #include <glm/gtx/compatibility.hpp>
 
@@ -59,6 +60,8 @@ public:
 	// movement
 	float delta_x, delta_y;
 	int direction_x, direction_y;
+	AStar::Generator astar;
+
 
 	// gameplay
 	float health, damage, souls, speed, money;
@@ -121,7 +124,15 @@ public:
 	/// <param name="knockback_rate">knockback multiplier</param>
 	/// <param name="facing_angle">angle the enemy is facing</param>
 	void take_damage(float melee_damage, float knockback_rate, float facing_angle);
+
+	void followPlayer();
+	
+
+
 private:
 	Vec2 target_knochback_position;
 };
+
+
+
 

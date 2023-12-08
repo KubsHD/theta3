@@ -3,6 +3,7 @@
 #include "gun.h"
 
 
+
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
 	health = 50;
@@ -115,86 +116,85 @@ void Adult::init()
 void Adult::update()
 {
 	Enemy::update();
-
+	Enemy::followPlayer();
 
 	on_death();
 	
-	if (state == EnemyState::IN_KNOCKBACK)
-		return;
+	//if (state == EnemyState::IN_KNOCKBACK)
+	//	return;
 
-	// Enemies' Sprite center coordinates
-	pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
-		entity->position.y + entity->get<Sprite>()->tex->size.y / 2);
+	//// Enemies' Sprite center coordinates
+	//pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
+	//	entity->position.y + entity->get<Sprite>()->tex->size.y / 2);
 
-	// Standard
-	delta_x = player->pos_sprite_center.x - pos_sprite_center.x;// > 0 ? 1 : -1;
-	delta_y = player->pos_sprite_center.y - pos_sprite_center.y;// > 0 ? 1 : -1;
-	direction_x = player->pos_sprite_center.x - pos_sprite_center.x > 0 ? 1 : -1;
-	direction_y = player->pos_sprite_center.y - pos_sprite_center.y > 0 ? 1 : -1;
+	//// Standard
+	//delta_x = player->pos_sprite_center.x - pos_sprite_center.x;// > 0 ? 1 : -1;
+	//delta_y = player->pos_sprite_center.y - pos_sprite_center.y;// > 0 ? 1 : -1;
+	//direction_x = player->pos_sprite_center.x - pos_sprite_center.x > 0 ? 1 : -1;
+	//direction_y = player->pos_sprite_center.y - pos_sprite_center.y > 0 ? 1 : -1;
 
-	facing_angle = atan2(delta_y, delta_x);
-	entity->facing_angle = facing_angle;
+	//facing_angle = atan2(delta_y, delta_x);
+	//entity->facing_angle = facing_angle;
 
-	// Movement 
-	if (can_walk)
-	{
-		if (collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
-			pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Enemy))
-		{
-			// If enemy on the path - move different way
+	//// Movement 
+	//if (can_walk)
+	//{
+	//	if (collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
+	//		pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Enemy))
+	//	{
+	//		// If enemy on the path - move different way
+	//	}
+	//	else if (!collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
+	//		pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player))
+	//	{
+	//		// If not close enough to player - come closer
+	//		//entity->position.x += cos(facing_angle) * speed;
+	//		//entity->position.y += sin(facing_angle) * speed;
+	//	}
+	//	else  	
+	//	{
+	//		// If close enough to player - attack this mofo
+	//		if (temp > attack_cooldown * 60)
+	//		{
+	//			// Play attack animation
+	//			// trick do animacji - XDDD
+	//			if (facing_angle > (M_PI / 2) || facing_angle < -(M_PI / 2))
+	//			{
+	//				if (this->entity->position.x > 0)
+	//				{
+	//					delta_x = -10;
+	//					this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
+	//				}
+	//				else {
+	//					delta_x = 10;
+	//					this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
+	//				}
+	//			}
+	//			else
+	//			{
+	//				this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
+	//			}
 
-		}
-		else if (!collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
-			pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player))
-		{
-			// If not close enough to player - come closer
-			entity->position.x += cos(facing_angle) * speed;
-			entity->position.y += sin(facing_angle) * speed;
-		}
-		else  	
-		{
-			// If close enough to player - attack this mofo
-			if (temp > attack_cooldown * 60)
-			{
-				// Play attack animation
-				// trick do animacji - XDDD
-				if (facing_angle > (M_PI / 2) || facing_angle < -(M_PI / 2))
-				{
-					if (this->entity->position.x > 0)
-					{
-						delta_x = -10;
-						this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
-					}
-					else {
-						delta_x = 10;
-						this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
-					}
-				}
-				else
-				{
-					this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
-				}
+	//			// Play attack sound
+	//			Audio::play_one_shot(audio_damage_dealt, 0.09);
 
-				// Play attack sound
-				Audio::play_one_shot(audio_damage_dealt);
+	//			// Player Damage
+	//			if (player->god_mode == false)
+	//			player->health -= damage;
 
-				// Player Damage
-				if (player->god_mode == false)
-				player->health -= damage;
-
-				// Reset cooldown
-				temp = 0;
+	//			// Reset cooldown
+	//			temp = 0;
 
 
-			}
-		}
-		//TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
+	//		}
+	//	}
+	//	//TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
 
-		// Cooldown countdown
-		temp += 1;		
+	//	// Cooldown countdown
+	//	temp += 1;		
 
-		// 8-way movement
-		//entity->position += Vec2(speed * direction_x, speed * direction_y);
+	//	// 8-way movement
+	//	//entity->position += Vec2(speed * direction_x, speed * direction_y);
 
-	}
+	//}
 }

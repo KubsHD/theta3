@@ -297,7 +297,7 @@ void Game::loop()
 	double lag = 0.0;
 	double current = 0;
 
-	change_scene<LightTestScene>();
+	change_scene<GameScene>();
 
 	while (bRunning)
 	{

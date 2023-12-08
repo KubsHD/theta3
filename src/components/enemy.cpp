@@ -1,3 +1,5 @@
+#pragma once
+
 #include "enemy.h"
 
 #include <iostream>
@@ -16,35 +18,6 @@ void Enemy::flip_sprite()
 	}
 }
 
-// Move to each enemy type separately
-//void Enemy::on_death()
-//{
-//	if (health <= 0 && is_dead == false)
-//	{
-//		is_dead = true;
-//
-//		if (audio_death != NULL) {
-//			std::cout << entity->name << " - Zginal\n" + std::to_string(entity->position.x)
-//				+ " / " + std::to_string(entity->position.y);
-//			
-//			// play death sound
-//			Audio::play_one_shot(audio_death);
-//
-//			// Death Loot Instantly added
-//			player->health += this->souls;
-//			player->money += this->money;
-//			
-//
-//			// skasuj przeciwnika		
-//			this->entity->world->remove(this->entity);
-//		}
-//	}
-//}
-
-//void Enemy::handle_collision()
-//{
-//
-//}
 
 void Enemy::take_damage(float melee_damage, float knockback_rate, float facing_angle)
 {
@@ -56,4 +29,26 @@ void Enemy::take_damage(float melee_damage, float knockback_rate, float facing_a
 	state = EnemyState::IN_KNOCKBACK;
 
 	target_knochback_position = entity->position + Vec2( -cos(facing_angle) * 100 * knockback_rate, -sin(facing_angle) * 100 * knockback_rate);
+}
+
+void Enemy::followPlayer()
+{
+	if (state == EnemyState::IN_KNOCKBACK)
+		return;
+
+	// Calculate A* path from the enemy's current position to the player's position
+	AStar::CoordinateList path = astar.findPath({ static_cast<int>(entity->position.x), static_cast<int>(entity->position.y) },
+		{ static_cast<int>(player->entity->position.x), static_cast<int>(player->entity->position.y) });
+
+	// Move the enemy along the path (you may need to adjust the movement speed)
+	if (!path.empty())
+	{
+		AStar::Vec2i nextTile = path.back();
+		float targetX = static_cast<float>(nextTile.x);
+		float targetY = static_cast<float>(nextTile.y);
+
+		// Move towards the next tile in the path
+		entity->position.x += (targetX - entity->position.x) * speed;
+		entity->position.y += (targetY - entity->position.y) * speed;
+	}
 }
