@@ -13,7 +13,7 @@
 #define THETA_PROFILE_LOG(text, size) TracyMessage(text, size)
 #define THETA_PROFILE_VALUE(text, value) TracyPlot(text, value)
 #define THETA_MARK_GPU_CONTEXT TracyGpuContext
-#define THETA_GPU_COLLECT ThetaGpuColect
+#define THETA_GPU_COLLECT TracyGpuCollect
 #else
 #define THETA_PROFILE 
 #define THETA_PROFILE_FRAME(x) 
