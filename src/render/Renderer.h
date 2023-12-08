@@ -20,6 +20,7 @@
 class Texture;
 class Window;
 class Target;
+class LightSystem;
 
 
 /// <summary>
@@ -63,6 +64,8 @@ public:
 	static Target* Backbuffer;
 	static Target* Viewport;
 	static Font* DefaultFont;
+
+	LightSystem* Light;
 
 	/// <summary>
 	/// Initialize renderer for a given window

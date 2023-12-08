@@ -36,7 +36,6 @@ out vec4 FragColor;
 
 void main()
 {
-
 	vec2 tex = vTexCoord;
 	tex.y = -tex.y;
 
@@ -45,7 +44,6 @@ void main()
 	}
 
 	vec3 ambient = 0 * vec3(1,1,1);
-
 
 	vec3 sum;
 
