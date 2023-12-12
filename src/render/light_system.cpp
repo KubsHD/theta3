@@ -2,11 +2,52 @@
 
 #include <render/Shader.h>
 
-void LightSystem::prepare_shader(Shader* m_uberShader)
+void LightSystem::init(Shader &uber_shader)
 {
-	m_uberShader->set_uniform_float("u_ambientStrength", ambient_strength);
+}
 
-	//m_uberShader->set_uniform_float("pointLightCount", m_pointLightCount);
-	//m_uberShader->set_uniform_float("spotLightCount", m_spotLightCount);
+void LightSystem::update()
+{
+}
+
+LightHandle LightSystem::add_point_light()
+{
+	auto light_handle = m_point_light_count;
+	m_point_light_count++;
+
+    return light_handle;
+}
+
+LightHandle LightSystem::add_spot_light()
+{
+   	auto spot_handle = m_spot_light_count;
+	m_spot_light_count++;
+
+    return spot_handle;
+}
+
+void LightSystem::update_point_light(LightHandle hnd, PointLightData pld)
+{
+	memcpy(&m_point_lights[hnd], &pld, sizeof(PointLightData));
+
+}
+
+void LightSystem::update_spot_light(LightHandle hnd, SpotLightData spotld)
+{
+	memcpy(&m_spot_lights[hnd], &spotld, sizeof(SpotLightData));
+}
+
+void LightSystem::prepare_shader(Shader *m_uberShader)
+{
+	if (m_point_light_count == 0 || true)
+		return;
+
+	m_uberShader->set_uniform_vec2("u_pointLights[0].pos", m_point_lights[0].pos);
+	m_uberShader->set_uniform_float("u_pointLights[0].radius", m_point_lights[0].radius);
+	m_uberShader->set_uniform_vec3("u_pointLights[0].pos", m_point_lights[0].color);
+
+
+	m_uberShader->set_uniform_float("u_pointLightCount", m_point_light_count);
+	m_uberShader->set_uniform_float("u_spotLightCount", m_spot_light_count);
 }
 

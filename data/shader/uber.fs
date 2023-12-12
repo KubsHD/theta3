@@ -6,6 +6,8 @@
 in vec2 vTexCoord;
 in vec2 FragPos;
 
+
+
 struct PointLight {
 	vec2 pos;
 	float radius;
@@ -27,10 +29,11 @@ uniform vec2 u_spriteSize;
 uniform float u_opacity;
 
 uniform PointLight u_pointLights[MAX_POINT_LIGHTS];
-uniform int u_pointLightCount;
-
 uniform SpotLight u_spotLights[MAX_SPOT_LIGHTS];
+
+uniform int u_pointLightCount;
 uniform int u_spotLightCount;
+
 
 uniform float u_ambientStrength;
 

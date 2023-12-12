@@ -3,19 +3,25 @@
 #include <core/types.h>
 #include <core/ecs.h>
 
-public enum LightType {
+#include <render/light_system.h>
+
+enum LightType {
 	Point,
 	Spot
 };
 
 class Light : public Component {
-
+	LightSystem* m_lsRef;
+	LightHandle m_handle;
 public:
 
-	LightType Type;
+	Light(LightSystem* ref, LightType type);
+	Light() {};
 
-	PointLightData Point;
-	SpotLightData Spot;
+	LightType type;
+
+	PointLightData point;
+	SpotLightData spot;
 
 	void init() override;
 

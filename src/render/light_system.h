@@ -30,16 +30,22 @@ public:
 	void init(Shader& uber_shader);
 	void update();
 
-	LightHandle add_point_light(PointLightData point);
-	LightHandle add_spot_light(SpotLightData spot);
+	LightHandle add_point_light();
+	LightHandle add_spot_light();
 
-	void remove_point_light(LightHandle id);
-	void remove_spot_light(LightHandle id);
+	void update_point_light(LightHandle hnd, PointLightData pld);
+	void update_spot_light(LightHandle hnd, SpotLightData spotld);
+
+	//void remove_point_light(LightHandle id);
+	//void remove_spot_light(LightHandle id);
 
 	void prepare_shader(Shader* m_uberShader);
 
 	float ambient_strength = 0.5f;
 private:
-	PointLightData m_pointLights[MAX_SPOT_LIGHTS];
-	SpotLightData m_spotLights[MAX_SPOT_LIGHTS];
+	PointLightData m_point_lights[MAX_SPOT_LIGHTS];
+	int m_point_light_count;
+	SpotLightData m_spot_lights[MAX_SPOT_LIGHTS];
+	int m_spot_light_count;
+
 };

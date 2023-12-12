@@ -12,6 +12,7 @@
 #include <components/wave_system.h>
 #include <components/ui/ui_hp_bar.h>
 #include <components/ui/ui_weapon.h>
+#include <components/light.h>
 
 
 
@@ -67,6 +68,11 @@ void GameScene::init()
 	player->add(Collider(player_hitbox, player_hitbox_offset))->tag = CollisionTag::Player;
 	player->add(Player());
 	auto p = player->add(ParticleSystem());
+
+	auto player_light = create("Player Light");
+	auto l = player_light->add(Light(ren->light, LightType::Point));
+	l->point.color = Vec3(0.4,0.3,0.2);
+	l->point.radius = 25.0f;
 
 
 
