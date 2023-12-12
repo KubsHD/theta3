@@ -11,6 +11,8 @@
 
 #include <core/game.h>
 
+#include <render/light_system.h>
+
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -46,6 +48,8 @@ void Renderer::init(Window* win)
 	Viewport = gpu::device->create_target({ 1280, 720, TargetScalingType::Nearest });
 
 	DefaultFont = Asset::load_font("font/monogram.fnt");
+
+	light = new LightSystem();
 
 	// OpenGL - start
 	float vertices_old[] = {
@@ -183,7 +187,10 @@ void Renderer::draw_target(Target* tg)
 	model = glm::scale(model, Vec3(size.x * scale, size.y * scale, 1.0f));
 
 	m_defaultShader->set_uniform_mat4("u_mvp", projection * model);
-	draw_quad();
+	
+	glUseProgram(m_defaultShader->get_id());
+	glBindVertexArray(VAO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 
@@ -206,13 +213,14 @@ void Renderer::draw_tex(Texture* tex, Vec2 pos, float opacity, bool flip)
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 	glBindTexture(GL_TEXTURE_2D, tex->id);
-	m_defaultShader->set_uniform_float("u_opacity", opacity);
-	m_defaultShader->set_uniform_mat4("u_mvp", mvp);
+
+	set_required_uniforms(m_uberShader, mvp, opacity, model);
+	light->prepare_shader(m_uberShader);
 
 	draw_quad();
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
+	m_uberShader->set_uniform_float("u_opacity", 1.0f);
 }
 
 void Renderer::set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity, glm::mat4 model)
@@ -273,9 +281,9 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
-	set_required_uniforms(m_defaultShader, mvp, opacity, model);
+	set_required_uniforms(m_uberShader, mvp, opacity, model);
 	
-	glUseProgram(m_defaultShader->get_id());
+	glUseProgram(m_uberShader->get_id());
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
 	
 	glBindVertexArray(subTex->vaoId);
@@ -283,7 +291,7 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	m_defaultShader->set_uniform_float("u_opacity", 1.0f);
+	m_uberShader->set_uniform_float("u_opacity", 1.0f);
 
 }
 
@@ -381,7 +389,7 @@ void Renderer::draw_circle(Vec2 pos, float radius, Vec3 color)
 
 void Renderer::draw_quad()
 {
-	glUseProgram(m_defaultShader->get_id());
+	glUseProgram(m_uberShader->get_id());
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

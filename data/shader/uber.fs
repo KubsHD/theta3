@@ -32,6 +32,8 @@ uniform int u_pointLightCount;
 uniform SpotLight u_spotLights[MAX_SPOT_LIGHTS];
 uniform int u_spotLightCount;
 
+uniform float u_ambientStrength;
+
 out vec4 FragColor;
 
 void main()
@@ -43,7 +45,7 @@ void main()
 		discard;
 	}
 
-	vec3 ambient = 0 * vec3(1,1,1);
+	vec3 ambient = u_ambientStrength * vec3(1,1,1);
 
 	vec3 sum;
 

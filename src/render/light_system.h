@@ -20,19 +20,26 @@ struct SpotLightData {
 	Vec3 color;
 };
 
+typedef int LightHandle;
+
 class LightSystem
 {
 public:
-	LightSystem();
-	~LightSystem();
+	LightSystem() {};
 
 	void init(Shader& uber_shader);
 	void update();
 
-	void add_point_light(Vec2 pos, float radius, Vec3 color);
-	void add_spot_light(Vec2 pos, Vec2 direction, float angle, Vec3 color);
-	
+	LightHandle add_point_light(PointLightData point);
+	LightHandle add_spot_light(SpotLightData spot);
+
+	void remove_point_light(LightHandle id);
+	void remove_spot_light(LightHandle id);
+
+	void prepare_shader(Shader* m_uberShader);
+
+	float ambient_strength = 0.5f;
 private:
-	PointLight m_pointLights[MAX_SPOT_LIGHTS];
-	SpotLight m_spotLights[MAX_SPOT_LIGHTS];
-}
+	PointLightData m_pointLights[MAX_SPOT_LIGHTS];
+	SpotLightData m_spotLights[MAX_SPOT_LIGHTS];
+};

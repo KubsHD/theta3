@@ -65,7 +65,7 @@ public:
 	static Target* Viewport;
 	static Font* DefaultFont;
 
-	LightSystem* Light;
+	LightSystem* light;
 
 	/// <summary>
 	/// Initialize renderer for a given window
