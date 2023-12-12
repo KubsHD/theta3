@@ -44,8 +44,8 @@ public:
 	float ambient_strength = 0.5f;
 private:
 	PointLightData m_point_lights[MAX_SPOT_LIGHTS];
-	int m_point_light_count;
+	int m_point_light_count = 0;
 	SpotLightData m_spot_lights[MAX_SPOT_LIGHTS];
-	int m_spot_light_count;
+	int m_spot_light_count = 0;
 
 };

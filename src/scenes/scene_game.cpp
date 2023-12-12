@@ -141,6 +141,8 @@ void GameScene::update()
 	if (Input::key_held(SDL_SCANCODE_UP))
 		game_camera->position.y -= speed;*/
 
+	get("Player Light")->position = get("Player")->position;
+
 	// Player in center of the screen
 	game_camera->position = Vec2(player_ref->position.x - game_view->target_size.x / 2 + 16,
 							player_ref->position.y - game_view->target_size.y / 2 + 16);

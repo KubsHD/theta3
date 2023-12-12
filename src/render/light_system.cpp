@@ -28,23 +28,23 @@ LightHandle LightSystem::add_spot_light()
 
 void LightSystem::update_point_light(LightHandle hnd, PointLightData pld)
 {
-	memcpy(&m_point_lights[hnd], &pld, sizeof(PointLightData));
-
+	m_point_lights[hnd] = pld;
 }
 
 void LightSystem::update_spot_light(LightHandle hnd, SpotLightData spotld)
 {
-	memcpy(&m_spot_lights[hnd], &spotld, sizeof(SpotLightData));
+	m_spot_lights[hnd] = spotld;
 }
 
 void LightSystem::prepare_shader(Shader *m_uberShader)
 {
-	if (m_point_light_count == 0 || true)
+	if (m_point_light_count == 0)
 		return;
 
+	m_uberShader->set_uniform_float("u_ambientStrength", 0.2);
 	m_uberShader->set_uniform_vec2("u_pointLights[0].pos", m_point_lights[0].pos);
 	m_uberShader->set_uniform_float("u_pointLights[0].radius", m_point_lights[0].radius);
-	m_uberShader->set_uniform_vec3("u_pointLights[0].pos", m_point_lights[0].color);
+	m_uberShader->set_uniform_vec3("u_pointLights[0].color", m_point_lights[0].color);
 
 
 	m_uberShader->set_uniform_float("u_pointLightCount", m_point_light_count);

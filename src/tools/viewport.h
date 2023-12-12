@@ -34,7 +34,7 @@ public:
 
 			auto mouse_pos = ImGui::GetMousePos();
 
-			log_info("%d %d\n", (int)(mouse_pos.x - screen_pos.x) , (int)(mouse_pos.y - screen_pos.y));
+			//log_info("%d %d\n", (int)(mouse_pos.x - screen_pos.x) , (int)(mouse_pos.y - screen_pos.y));
 
 			input_ref.update_mouse_position(Vec2((int)(mouse_pos.x - screen_pos.x), (int)(mouse_pos.y - screen_pos.y)));
 		}
