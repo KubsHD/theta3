@@ -155,8 +155,9 @@ void Game::init()
 	ImGui_ImplOpenGL3_Init();
 
 	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
+	//glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_STENCIL_TEST);
+	//glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 #pragma endregion

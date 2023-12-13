@@ -45,3 +45,10 @@ void Shader::set_uniform_vec4(String uniformName, glm::vec4 color)
 	int modelLoc = glGetUniformLocation(get_id(), uniformName.c_str());
 	glUniform4fv(modelLoc, 1, glm::value_ptr(color));
 }
+
+void Shader::set_uniform_int(const char* name, int val)
+{
+	glUseProgram(get_id());
+	int modelLoc = glGetUniformLocation(get_id(), name);
+	glUniform1iv(modelLoc, 1, &val);
+}

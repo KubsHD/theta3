@@ -1,6 +1,7 @@
 #include "bullet.h"
 
 #include <components/gun.h>
+#include <components/light.h>
 
 void Factory::CreateBullet(Scene* scn, Player* player)
 {
@@ -35,6 +36,9 @@ void Factory::CreateBullet(Scene* scn, Player* player)
 	ent->add(Sprite("bullets/" + bullet_sprite));
 	ent->add(Collider());
 	ent->add(Bullet(player->entity));
+	auto l = ent->add(Light(scn->ren->light, LightType::Point));
+	l->point.color = Vec3(0.2, 0.2, 0.2);
+	l->point.radius = 25.0f;
 	//Bullet::bullet_ID++;
 
 	player->weapon_cooldown = ent->get<Bullet>()->attack_cooldown;

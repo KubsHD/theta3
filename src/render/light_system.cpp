@@ -2,12 +2,24 @@
 
 #include <render/Shader.h>
 
-void LightSystem::init(Shader &uber_shader)
+#include <lib/glad/glad.h>
+
+void LightSystem::init()
 {
+	// generate ubos
+	glGenBuffers(1, &m_uboId);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uboId);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(PointLightData) * MAX_POINT_LIGHTS, NULL, GL_DYNAMIC_DRAW); // allocate 152 bytes of memory
+
+	// important
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, m_uboId, 0, sizeof(PointLightData) * MAX_POINT_LIGHTS);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 void LightSystem::update()
 {
+	
 }
 
 LightHandle LightSystem::add_point_light()
@@ -36,18 +48,22 @@ void LightSystem::update_spot_light(LightHandle hnd, SpotLightData spotld)
 	m_spot_lights[hnd] = spotld;
 }
 
-void LightSystem::prepare_shader(Shader *m_uberShader)
+void LightSystem::prepare_shader(Shader *shd)
 {
-	if (m_point_light_count == 0)
-		return;
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uboId);
 
-	m_uberShader->set_uniform_float("u_ambientStrength", 0.2);
-	m_uberShader->set_uniform_vec2("u_pointLights[0].pos", m_point_lights[0].pos);
-	m_uberShader->set_uniform_float("u_pointLights[0].radius", m_point_lights[0].radius);
-	m_uberShader->set_uniform_vec3("u_pointLights[0].color", m_point_lights[0].color);
+	glUniformBlockBinding(shd->get_id(), glGetUniformBlockIndex(shd->get_id(), "LightData"), 0);
+	
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(PointLightData) * MAX_POINT_LIGHTS, m_point_lights);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(PointLightData) * MAX_POINT_LIGHTS, sizeof(SpotLightData) * m_spot_light_count, m_spot_lights);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-
-	m_uberShader->set_uniform_float("u_pointLightCount", m_point_light_count);
-	m_uberShader->set_uniform_float("u_spotLightCount", m_spot_light_count);
+	shd->set_uniform_float("u_ambientStrength", 0.2);
+	
+	if (m_point_light_count < MAX_POINT_LIGHTS)
+		shd->set_uniform_int("u_pointLightCount", m_point_light_count);
+	
+	if (m_spot_light_count < MAX_SPOT_LIGHTS)
+		shd->set_uniform_int("u_spotLightCount", m_spot_light_count);
 }
 

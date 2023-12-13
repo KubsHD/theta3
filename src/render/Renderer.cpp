@@ -50,6 +50,7 @@ void Renderer::init(Window* win)
 	DefaultFont = Asset::load_font("font/monogram.fnt");
 
 	light = new LightSystem();
+	light->init();
 
 	// OpenGL - start
 	float vertices_old[] = {
@@ -282,6 +283,7 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
 
 	set_required_uniforms(m_uberShader, mvp, opacity, model);
+	light->prepare_shader(m_uberShader);
 	
 	glUseProgram(m_uberShader->get_id());
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);

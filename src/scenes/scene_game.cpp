@@ -33,6 +33,8 @@
 #include <components/ui/ui_combo_display.h>
 #include <render/device.h>
 
+static Vec2 player_hitbox_offset;
+
 void GameScene::init()
 {
 	// zmiana rozmiaru wymaga zmiany w spawnowaniu przeciwnikow [enemy]::init
@@ -64,7 +66,7 @@ void GameScene::init()
 	// Forgiving hitboxs for noobs
 	Vec2 player_size = Vec2(player->get<Sprite>()->tex->size.x, player->get<Sprite>()->tex->size.y);
 	Vec2 player_hitbox = Vec2(player_size.x * 5/7, player_size.y * 5/7);
-	Vec2 player_hitbox_offset = Vec2((player_size.x - player_hitbox.x) / 2, (player_size.y - player_hitbox.y) / 2);
+	player_hitbox_offset = Vec2((player_size.x - player_hitbox.x) / 2, (player_size.y - player_hitbox.y) / 2);
 	player->add(Collider(player_hitbox, player_hitbox_offset))->tag = CollisionTag::Player;
 	player->add(Player());
 	auto p = player->add(ParticleSystem());
@@ -141,7 +143,7 @@ void GameScene::update()
 	if (Input::key_held(SDL_SCANCODE_UP))
 		game_camera->position.y -= speed;*/
 
-	get("Player Light")->position = get("Player")->position;
+	get("Player Light")->position = get("Player")->position + player_hitbox_offset + Vec2(10,15);
 
 	// Player in center of the screen
 	game_camera->position = Vec2(player_ref->position.x - game_view->target_size.x / 2 + 16,

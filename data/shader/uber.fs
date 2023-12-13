@@ -28,8 +28,11 @@ uniform vec2 u_spriteSize;
 
 uniform float u_opacity;
 
-uniform PointLight u_pointLights[MAX_POINT_LIGHTS];
-uniform SpotLight u_spotLights[MAX_SPOT_LIGHTS];
+layout (std140) uniform LightData
+{
+	PointLight u_pointLights[MAX_POINT_LIGHTS];
+	SpotLight u_spotLights[MAX_SPOT_LIGHTS];
+};
 
 uniform int u_pointLightCount;
 uniform int u_spotLightCount;
@@ -49,7 +52,6 @@ void main()
 	}
 
 	vec3 ambient = u_ambientStrength * vec3(1,1,1);
-
 	vec3 sum;
 
 	for (int i = 0; i < u_pointLightCount; i++)
@@ -63,7 +65,6 @@ void main()
 	{
 		SpotLight light = u_spotLights[i];
 
-		vec3 ambient = 0.1 * vec3(1,1,1);
 		float light_dist = distance(FragPos, light.pos);
 		vec2 lightDir = normalize(light.pos - FragPos);
 
@@ -80,6 +81,5 @@ void main()
 	}
 
 	vec3 final = (ambient + sum) * texture(u_tex, tex).xyz;
-
 	FragColor = vec4(final, 1.0f);
 }

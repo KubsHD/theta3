@@ -77,4 +77,5 @@ public:
 	/// <param name="uniformName">Uniform name</param>
 	/// <param name="color">Vec4 value</param>
 	void set_uniform_vec4(String uniformName, glm::vec4 color);
+	void set_uniform_int(const char* name, int val);
 };

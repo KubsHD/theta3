@@ -8,16 +8,16 @@
 class Shader;
 
 struct PointLightData {
-	Vec2 pos;
-	float radius;
-	Vec3 color;
+	alignas(16) Vec2 pos;
+	alignas(4) float radius;
+	alignas(16) Vec3 color;
 };
 
 struct SpotLightData {
-	Vec2 pos;
-	Vec2 direction;
-	float angle;
-	Vec3 color;
+	alignas(16) Vec2 pos;
+	alignas(16) Vec2 direction;
+	alignas(4)  float angle;
+	alignas(16) Vec3 color;
 };
 
 typedef int LightHandle;
@@ -27,7 +27,7 @@ class LightSystem
 public:
 	LightSystem() {};
 
-	void init(Shader& uber_shader);
+	void init();
 	void update();
 
 	LightHandle add_point_light();
@@ -43,6 +43,8 @@ public:
 
 	float ambient_strength = 0.5f;
 private:
+	unsigned int m_uboId;
+
 	PointLightData m_point_lights[MAX_SPOT_LIGHTS];
 	int m_point_light_count = 0;
 	SpotLightData m_spot_lights[MAX_SPOT_LIGHTS];
