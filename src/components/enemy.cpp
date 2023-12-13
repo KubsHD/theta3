@@ -55,27 +55,33 @@ void Enemy::followPlayer()
 {
 	if (state == EnemyState::IN_KNOCKBACK)
 		return;
-	
 
-	if (rand() % 10 == 1)
-	{
 
-		if (currentPathPosition != (path.end() - 1)) {
-			++currentPathPosition;
-			std::cout << "Current position: " << currentPathPosition->x << " " << currentPathPosition->y << "\n";
 
-			target_pos = { currentPathPosition->x * 20, currentPathPosition->y * 20 };
+	entity->position = glm::lerp(entity->position, target_pos, 0.04f);
 
-			entity->position = target_pos;
-		}
-		else {
-			std::cout << "Path not found.\n";
-			path = astar.findPath({ static_cast<int>(entity->position.x / 20), static_cast<int>(entity->position.y) / 20 },
-				{ int(player->pos_sprite_center.x) / 20, int(player->pos_sprite_center.y) / 20 });
-			std::reverse(path.begin(), path.end());
+	if (currentPathPosition != path.end()-1 and (looper > 0)) {
+		looper++;
+		++currentPathPosition;
+		std::cout << "Current position: " << currentPathPosition->x << " " << currentPathPosition->y << "\n";
 
-			currentPathPosition = path.begin();
-		}
+		target_pos = { currentPathPosition->x * 20 , currentPathPosition->y * 20};
+
+		std::cout << looper << "- L1" << std::endl;
+
+		if (looper == maxloops)
+			looper = 0;
+	}
+	else {
+		looper++;
+		std::cout << looper << "- L2" << std::endl;
+		std::cout << "Path not found.\n";
+		path = astar.findPath({ static_cast<int>(entity->position.x / 20), static_cast<int>(entity->position.y) / 20 },
+			{ int(player->pos_sprite_center.x) / 20, int(player->pos_sprite_center.y) / 20 });
+		std::reverse(path.begin(), path.end());
+
+		currentPathPosition = path.begin();
+		
 	}
 }
 		//entity->position = glm::lerp(entity->position, target_pos, 1.0f);

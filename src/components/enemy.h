@@ -62,6 +62,7 @@ public:
 	float delta_x, delta_y;
 	int direction_x, direction_y;
 	AStar::Generator astar;
+	int looper, maxloops;
 
 	AStar::CoordinateList::iterator currentPathPosition;
 	AStar::CoordinateList path;
@@ -86,12 +87,14 @@ public:
 		astar.setWorldSize({ 48, 27 });
 		// You can use a few heuristics : manhattan, euclidean or octagonal.
 		astar.setHeuristic(AStar::Heuristic::euclidean);
-		astar.setDiagonalMovement(true);
+		astar.setDiagonalMovement(true);	
 
 		path = astar.findPath({ static_cast<int>(entity->position.x / 20), static_cast<int>(entity->position.y) / 20 },
 			{ int(player->pos_sprite_center.x) / 20, int(player->pos_sprite_center.y) / 20 });
 		std::reverse(path.begin(), path.end());
 
+		looper = 0;
+		maxloops = 10;
 
 		currentPathPosition = path.begin();
 

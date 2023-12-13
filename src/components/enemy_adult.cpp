@@ -70,7 +70,6 @@ void Adult::on_death()
 
 void Adult::init()
 {
-	Enemy::init();
 
 	Vec2 rand_starting_pos;
 	// 2 sides of the screen for x
@@ -115,6 +114,7 @@ void Adult::init()
 	collider->size = this->entity->get<Sprite>()->tex->size;
 	collider->tag = CollisionTag::Enemy;
 
+	Enemy::init();
 }
 
 
