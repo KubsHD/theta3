@@ -7,6 +7,8 @@ uniform sampler2D u_tex;
 uniform vec2 u_spritePos;
 uniform vec2 u_spriteSize;
 
+uniform vec3 u_circleColor;
+
 uniform float u_opacity;
 
 out vec4 FragColor;
@@ -23,5 +25,5 @@ void main()
         discard;
     }
 
-    FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    FragColor = vec4(u_circleColor, 1.0);
 }
