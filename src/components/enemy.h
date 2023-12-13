@@ -136,7 +136,7 @@ public:
 				auto& coordinate = path[i];
 				dot_pos = { coordinate.x * 20, coordinate.y * 20 };
 				std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
-				this->entity->world->ren->draw_circle(dot_pos, 5, Vec3(255, 0, 0));
+				this->entity->world->ren->draw_circle(dot_pos, 5, Vec3(rand()%255, rand() % 255, rand() % 255));
 			}
 		}
 	}
