@@ -51,6 +51,7 @@ public:
 
 	EnemyState state = EnemyState::ATTACK;
 
+	bool flip = 0;
 	Collider* collider;
 	Vec2 death_pos, text_pos;
 	Vec2 pos_sprite_center;
@@ -65,6 +66,8 @@ public:
 	int looper, maxloops;
 	float lerp_rate;
 	Vec2 dot_pos = Vec2(100, 100);
+	Vec3 dot_color = Vec3(static_cast <float> (rand()) / static_cast <float> (100) / 100.0f, static_cast <float> (rand()) / static_cast <float> (100) / 100.0f
+		, static_cast <float> (rand()) / static_cast <float> (100) / 100.0f);
 
 	AStar::CoordinateList::iterator currentPathPosition;
 	AStar::CoordinateList path;
@@ -135,8 +138,8 @@ public:
 			for (size_t i = 1; i < path.size(); ++i) {
 				auto& coordinate = path[i];
 				dot_pos = { coordinate.x * 20, coordinate.y * 20 };
-				std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
-				this->entity->world->ren->draw_circle(dot_pos, 5, Vec3(rand()%255, rand() % 255, rand() % 255));
+				//std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
+				this->entity->world->ren->draw_circle(dot_pos, 5, dot_color);
 			}
 		}
 	}
@@ -147,7 +150,7 @@ public:
 	/// <param name="melee_damage">damage given</param>
 	/// <param name="knockback_rate">knockback multiplier</param>
 	/// <param name="facing_angle">angle the enemy is facing</param>
-	void take_damage(float melee_damage, float knockback_rate, float facing_angle);
+	void take_damage(float melee_damage, float knockback_rate);
 
 	void followPlayer();
 };

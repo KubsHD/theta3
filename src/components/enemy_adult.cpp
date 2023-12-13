@@ -72,39 +72,39 @@ void Adult::init()
 {
 
 	Vec2 rand_starting_pos;
-	// 2 sides of the screen for x
-	//if (rand() % 2)
-	//{
-	//	if (rand() % 2)
-	//		rand_starting_pos.x = player->entity->position.x + rand() % 600;
-	//	else
-	//		rand_starting_pos.x = player->entity->position.x - rand() % 600;
+	 //2 sides of the screen for x
+	if (rand() % 2)
+	{
+		if (rand() % 2)
+			rand_starting_pos.x = player->entity->position.x + rand() % 130;
+		else
+			rand_starting_pos.x = player->entity->position.x - rand() % 130;
 
-	//	// 2 sides of the screen for y
-	//	if (rand() % 2)
-	//		rand_starting_pos.y = player->entity->position.y + rand() % 200 + 500;
-	//	else
-	//		rand_starting_pos.y = player->entity->position.y - rand() % 200 - 400;
-	//}
-	//else
-	//{
-	//	if (rand() % 2)
-	//		rand_starting_pos.x = player->entity->position.x + rand() % 200 + 800;
-	//	else
-	//		rand_starting_pos.x = player->entity->position.x - rand() % 200 - 700;
+		// 2 sides of the screen for y
+		if (rand() % 2)
+			rand_starting_pos.y = player->entity->position.y + rand() % 130 + 130;
+		else
+			rand_starting_pos.y = player->entity->position.y - rand() % 130 - 130;
+	}
+	else
+	{
+		if (rand() % 2)
+			rand_starting_pos.x = player->entity->position.x + rand() % 130 + 130;
+		else
+			rand_starting_pos.x = player->entity->position.x - rand() % 130 - 130;
 
-	//	// 2 sides of the screen for y
-	//	if (rand() % 2)
-	//		rand_starting_pos.y = player->entity->position.y + rand() % 400;
-	//	else
-	//		rand_starting_pos.y = player->entity->position.y - rand() % 400;
-	//}
+		// 2 sides of the screen for y
+		if (rand() % 2)
+			rand_starting_pos.y = player->entity->position.y + rand() % 130;
+		else
+			rand_starting_pos.y = player->entity->position.y - rand() % 130;
+	}
 
 
 
 
 	//entity->position = {player->pos_sprite_center.x + rand() % 200 - 100, player->pos_sprite_center.y + rand() % 200 - 100 };
-	entity->position = { 0, 0 };
+	entity->position = rand_starting_pos;
 
 	this->entity->get<Animator>()->play_anim("adult_enemy_run");
 	this->entity->get<Sprite>()->enabled = false;

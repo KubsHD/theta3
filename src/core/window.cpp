@@ -7,8 +7,8 @@ Window::Window()
 	quit = false;
 	x = 0;
 	y = 0;
-	w = 1600;
-	h = 900;
+	w = 1024;
+	h = 576;
 }
 
 void Window::create()
