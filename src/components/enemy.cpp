@@ -6,6 +6,8 @@
 #include "dmg_popup.h"
 #include "core/input.h"
 #include <iostream>
+#include "utils/profiler.h"
+
 
 
 void Enemy::flip_sprite()
@@ -53,29 +55,28 @@ void Enemy::take_damage(float melee_damage, float knockback_rate, float facing_a
 
 void Enemy::followPlayer()
 {
+	THETA_PROFILE;
+
 	if (state == EnemyState::IN_KNOCKBACK)
 		return;
 
-
-
-	entity->position = glm::lerp(entity->position, target_pos, 0.04f);
+	entity->position = glm::lerp(entity->position, target_pos, lerp_rate);
 
 	if (currentPathPosition != path.end()-1 and (looper > 0)) {
 		looper++;
 		++currentPathPosition;
-		std::cout << "Current position: " << currentPathPosition->x << " " << currentPathPosition->y << "\n";
+		//std::cout << "Current position: " << currentPathPosition->x << " " << currentPathPosition->y << "\n";
 
 		target_pos = { currentPathPosition->x * 20 , currentPathPosition->y * 20};
+		//std::cout << looper << "- L1" << std::endl;
 
-		std::cout << looper << "- L1" << std::endl;
-
-		if (looper == maxloops)
+		if (looper >= maxloops)
 			looper = 0;
 	}
 	else {
 		looper++;
-		std::cout << looper << "- L2" << std::endl;
-		std::cout << "Path not found.\n";
+		//std::cout << looper << "- L2" << std::endl;
+		//std::cout << "Path not found.\n";
 		path = astar.findPath({ static_cast<int>(entity->position.x / 20), static_cast<int>(entity->position.y) / 20 },
 			{ int(player->pos_sprite_center.x) / 20, int(player->pos_sprite_center.y) / 20 });
 		std::reverse(path.begin(), path.end());

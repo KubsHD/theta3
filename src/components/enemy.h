@@ -63,6 +63,8 @@ public:
 	int direction_x, direction_y;
 	AStar::Generator astar;
 	int looper, maxloops;
+	float lerp_rate;
+	Vec2 dot_pos = Vec2(100, 100);
 
 	AStar::CoordinateList::iterator currentPathPosition;
 	AStar::CoordinateList path;
@@ -96,6 +98,8 @@ public:
 		looper = 0;
 		maxloops = 10;
 
+		lerp_rate = 0.024;
+
 		currentPathPosition = path.begin();
 
 		//collider = entity->get<Collider>();
@@ -117,11 +121,24 @@ public:
 
 	void render(Renderer* ren) override
 	{
+		if (ImGui::Begin("FollowPlayer settings"))
+		{
+			ImGui::DragFloat("LerpRate", &lerp_rate, 0.001f, 0.002f, .5f);
+		}
+		ImGui::End();
 		// renderowanie
 		//if (is_dead == true) {
 		//	ren->draw_text("elooo", Renderer::DefaultFont, text_pos, 0.8, 1);
 		//	//text_opacity -= 0.1f;
 		//}
+		if (!path.empty()) {
+			for (size_t i = 1; i < path.size(); ++i) {
+				auto& coordinate = path[i];
+				dot_pos = { coordinate.x * 20, coordinate.y * 20 };
+				std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
+				this->entity->world->ren->draw_circle(dot_pos, 5, Vec3(255, 0, 0));
+			}
+		}
 	}
 
 	/// <summary>
