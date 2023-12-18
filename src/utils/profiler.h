@@ -8,7 +8,11 @@
 
 #define THETA_PROFILE ZoneScoped
 #define THETA_PROFILE_FRAME(x) FrameMark
+
+// this causes memory leak for some reason
+// fix later
 #define THETA_PROFILE_SECTION(x) ZoneScopedN(x)
+
 #define THETA_PROFILE_TAG(y, x) ZoneText(x, strlen(x))
 #define THETA_PROFILE_LOG(text, size) TracyMessage(text, size)
 #define THETA_PROFILE_VALUE(text, value) TracyPlot(text, value)

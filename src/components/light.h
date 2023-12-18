@@ -17,6 +17,7 @@ public:
 
 	Light(LightSystem* ref, LightType type);
 	Light() {};
+	~Light();
 
 	LightType type;
 
@@ -31,4 +32,5 @@ public:
 
 	void render(Renderer* ren) override;
 
+	void destroy() override;
 };

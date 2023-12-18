@@ -67,6 +67,8 @@ public:
 
 	LightSystem* light;
 
+	void update();
+
 	/// <summary>
 	/// Initialize renderer for a given window
 	/// </summary>

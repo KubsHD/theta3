@@ -27,7 +27,7 @@ file(GLOB_RECURSE game_SRC ${game_src_paths})
 
 # don't show console in release build
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_executable(theta3 WIN32
+    add_executable(theta3
         ${game_SRC}
         ${APP_ICON_RESOURCE_WINDOWS}
     )

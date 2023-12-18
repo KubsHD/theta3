@@ -35,6 +35,11 @@ unsigned int VAO;
 unsigned int boxVBO;
 unsigned int boxVAO;
 
+void Renderer::update()
+{
+	light->prepare_shader(m_uberShader);
+}
+
 void Renderer::init(Window* win)
 {
 	THETA_PROFILE;
@@ -148,12 +153,15 @@ void Renderer::clear(Vec3 color)
 {
 	glClearColor(color.x, color.y, color.z, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+
 }
 
 void Renderer::clear(Vec4 color)
 {
 	glClearColor(color.x, color.y, color.z, color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 }
 
 void Renderer::update_size(int w, int h)

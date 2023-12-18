@@ -125,6 +125,8 @@ void Scene::update()
 
 		for (auto comp : ent->m_components)
 		{
+			comp->destroy();
+
 			delete comp;
 		}
 
@@ -257,4 +259,8 @@ void Component::init()
 void Component::render(Renderer* ren)
 {
 
+}
+
+void Component::destroy()
+{
 }

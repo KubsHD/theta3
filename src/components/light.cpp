@@ -9,6 +9,11 @@ Light::Light(LightSystem* ls, LightType type)
 	m_lsRef = ls;
 }
 
+Light::~Light()
+{
+
+}
+
 void Light::init()
 {
 	switch (type) {
@@ -38,5 +43,17 @@ void Light::update()
 void Light::render(Renderer* ren)
 {
 	//throw std::logic_error("The method or operation is not implemented.");
+}
+
+void Light::destroy()
+{
+	switch (type) {
+	case LightType::Spot:
+		m_lsRef->remove_spot_light(m_handle);
+		break;
+	case LightType::Point:
+		m_lsRef->remove_point_light(m_handle);
+		break;
+	}
 }
 

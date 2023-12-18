@@ -24,6 +24,7 @@
 
 
 #include <render/renderer.h>
+#include <render/light_system.h>
 
 #include <scenes/scene_game.h>
 #include <scenes/scene_menu.h>
@@ -343,7 +344,7 @@ void Game::loop()
 
 		while (lag < MS)
 		{
-			THETA_PROFILE_SECTION("Wait for next frame");
+			//THETA_PROFILE_SECTION("Wait for next frame");
 			int milliseconds = (int)(MS - lag);
 			SDL_Delay(milliseconds);
 

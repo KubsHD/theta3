@@ -49,6 +49,8 @@ public:
 	/// </summary>
 	/// <param name="ren">Renderer reference</param>
 	virtual void render(Renderer* ren);
+
+	virtual void destroy();
 };
 
 /// <summary>

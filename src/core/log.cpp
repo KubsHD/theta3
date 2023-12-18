@@ -20,10 +20,9 @@ void log_info(const char* str, ...)
 	
 	// only useful when working with visual studio
 #if WIN && _MSC_VER
-	OutputDebugString(msg);
-#else
-	printf("%s\n", msg);
+	OutputDebugStringA(msg);
 #endif
+	printf("%s\n", msg);
 }
 
 
@@ -39,7 +38,6 @@ void log_error(const char* str, ...)
 	MessageBox(NULL, str, msg, MB_OKCANCEL);
 #elif WIN && _MSC_VER
 	OutputDebugString(msg);
-#else
-	printf("ERROR: %s\n", msg);
 #endif
+	printf("ERROR: %s\n", msg);
 }

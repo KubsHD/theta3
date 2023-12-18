@@ -27,15 +27,16 @@ uniform vec2 u_spritePos;
 uniform vec2 u_spriteSize;
 
 uniform float u_opacity;
-
 layout (std140) uniform LightData
 {
 	PointLight u_pointLights[MAX_POINT_LIGHTS];
 	SpotLight u_spotLights[MAX_SPOT_LIGHTS];
+	vec4 u_pointLightAvailability[MAX_POINT_LIGHTS];
+	vec4 u_spotLightAvailability[MAX_SPOT_LIGHTS];
 };
-
 uniform int u_pointLightCount;
 uniform int u_spotLightCount;
+
 
 
 uniform float u_ambientStrength;
@@ -54,11 +55,15 @@ void main()
 	vec3 ambient = u_ambientStrength * vec3(1,1,1);
 	vec3 sum;
 
-	for (int i = 0; i < u_pointLightCount; i++)
+	for (int i = 0; i < MAX_POINT_LIGHTS; i++)
 	{
 		PointLight light = u_pointLights[i];
         float light_dist = distance(FragPos, light.pos);
-        sum += (1.0 - smoothstep(-0.2, 70, light_dist)) * light.color;
+
+		if (u_pointLightAvailability[i].x == 0)
+			continue;
+
+        sum += ((1.0 - smoothstep(-0.2, 70, light_dist)) * light.color) * u_pointLightAvailability[i][0];
 	}
 
 	for (int i = 0; i < u_spotLightCount; i++)
@@ -76,7 +81,7 @@ void main()
 			float epsilon = light.angle - light.angle * 2;
 			float intensity = clamp((theta - light.angle * 2) / epsilon, 0, 1);
 
-			sum += (1.0 - smoothstep(-0.2, 140, light_dist)) * light.color;
+			sum += ((1.0 - smoothstep(-0.2, 140, light_dist)) * light.color) * u_spotLightAvailability[i].x;
 		}
 	}
 
