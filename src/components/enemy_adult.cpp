@@ -6,13 +6,13 @@
 
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
-	health = 50;
+	health = 5000;
 	damage = 10;
 	souls = 5;
 	money = 3;
 
 	attack_cooldown = 3;
-	speed = 1.23f;
+	speed = 2.0f;
 	temp_pos = Vec2(0, 0);
 	temp_val = 0;
 	temp = 0;
@@ -21,6 +21,8 @@ Adult::Adult(Player* player_ref) : Enemy(player_ref)
 
 	audio_death = Asset::load_sound("audio/adult_death.mp3");
 	audio_damage_dealt = Asset::load_sound("audio/adult_damage_dealt.mp3");
+
+	Enemy::state = EnemyState::ATTACK;
 }
 
 
@@ -68,38 +70,40 @@ void Adult::on_death()
 
 void Adult::init()
 {
-	Enemy::init();
 
 	Vec2 rand_starting_pos;
-	// 2 sides of the screen for x
+	 //2 sides of the screen for x
 	if (rand() % 2)
 	{
 		if (rand() % 2)
-			rand_starting_pos.x = player->entity->position.x + rand() % 600;
+			rand_starting_pos.x = player->entity->position.x + rand() % 130;
 		else
-			rand_starting_pos.x = player->entity->position.x - rand() % 600;
+			rand_starting_pos.x = player->entity->position.x - rand() % 130;
 
 		// 2 sides of the screen for y
 		if (rand() % 2)
-			rand_starting_pos.y = player->entity->position.y + rand() % 200 + 500;
+			rand_starting_pos.y = player->entity->position.y + rand() % 130 + 130;
 		else
-			rand_starting_pos.y = player->entity->position.y - rand() % 200 - 400;
+			rand_starting_pos.y = player->entity->position.y - rand() % 130 - 130;
 	}
 	else
 	{
 		if (rand() % 2)
-			rand_starting_pos.x = player->entity->position.x + rand() % 200 + 800;
+			rand_starting_pos.x = player->entity->position.x + rand() % 130 + 130;
 		else
-			rand_starting_pos.x = player->entity->position.x - rand() % 200 - 700;
+			rand_starting_pos.x = player->entity->position.x - rand() % 130 - 130;
 
 		// 2 sides of the screen for y
 		if (rand() % 2)
-			rand_starting_pos.y = player->entity->position.y + rand() % 400;
+			rand_starting_pos.y = player->entity->position.y + rand() % 130;
 		else
-			rand_starting_pos.y = player->entity->position.y - rand() % 400;
+			rand_starting_pos.y = player->entity->position.y - rand() % 130;
 	}
 
 
+
+
+	//entity->position = {player->pos_sprite_center.x + rand() % 200 - 100, player->pos_sprite_center.y + rand() % 200 - 100 };
 	entity->position = rand_starting_pos;
 
 	this->entity->get<Animator>()->play_anim("adult_enemy_run");
@@ -110,22 +114,23 @@ void Adult::init()
 	collider->size = this->entity->get<Sprite>()->tex->size;
 	collider->tag = CollisionTag::Enemy;
 
+	Enemy::init();
 }
 
 
 void Adult::update()
 {
-	Enemy::update();
 	Enemy::followPlayer();
+	Enemy::update();
 
 	on_death();
 	
-	//if (state == EnemyState::IN_KNOCKBACK)
-	//	return;
+	/*if (state == EnemyState::IN_KNOCKBACK)
+		return;*/
 
-	//// Enemies' Sprite center coordinates
-	//pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
-	//	entity->position.y + entity->get<Sprite>()->tex->size.y / 2);
+	// Enemies' Sprite center coordinates
+	/*pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
+		entity->position.y + entity->get<Sprite>()->tex->size.y / 2);*/
 
 	//// Standard
 	//delta_x = player->pos_sprite_center.x - pos_sprite_center.x;// > 0 ? 1 : -1;
@@ -188,13 +193,10 @@ void Adult::update()
 
 	//		}
 	//	}
-	//	//TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
+		//TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
 
-	//	// Cooldown countdown
-	//	temp += 1;		
+		// Cooldown countdown
+	/*	temp += 1;		
 
-	//	// 8-way movement
-	//	//entity->position += Vec2(speed * direction_x, speed * direction_y);
-
-	//}
+	}*/
 }

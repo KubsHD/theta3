@@ -38,7 +38,7 @@ enum class EnemyState {
 /// class containing all the necessary attributes and methonds shared by enemies
 /// </summary>
 class Enemy : public Component
-{
+{	
 public:
 	// backend
 	float facing_angle, temp, text_opacity = 1;
@@ -51,16 +51,28 @@ public:
 
 	EnemyState state = EnemyState::ATTACK;
 
+	bool flip = 0;
 	Collider* collider;
 	Vec2 death_pos, text_pos;
 	Vec2 pos_sprite_center;
 	Player* player;
 	bool is_dead = false;
+	Vec2 target_knochback_position;
 
 	// movement
 	float delta_x, delta_y;
 	int direction_x, direction_y;
 	AStar::Generator astar;
+	int looper, maxloops;
+	float lerp_rate;
+	Vec2 dot_pos = Vec2(100, 100);
+	Vec3 dot_color = Vec3(static_cast <float> (rand()) / static_cast <float> (100) / 100.0f, static_cast <float> (rand()) / static_cast <float> (100) / 100.0f
+		, static_cast <float> (rand()) / static_cast <float> (100) / 100.0f);
+
+	AStar::CoordinateList::iterator currentPathPosition;
+	AStar::CoordinateList path;
+
+	Vec2 target_pos = { 0, 0 };
 
 
 	// gameplay
@@ -69,11 +81,30 @@ public:
 	Enemy() = default;
 	Enemy(Player* player_ref)
 	{
+		astar.setHeuristic(AStar::Heuristic::euclidean);
+		astar.setDiagonalMovement(true);
+
 		player = player_ref;
 	}
 
 	void init() override
 	{
+		astar.setWorldSize({ 48, 27 });
+		// You can use a few heuristics : manhattan, euclidean or octagonal.
+		astar.setHeuristic(AStar::Heuristic::euclidean);
+		astar.setDiagonalMovement(true);	
+
+		path = astar.findPath({ static_cast<int>(entity->position.x / 20), static_cast<int>(entity->position.y) / 20 },
+			{ int(player->pos_sprite_center.x) / 20, int(player->pos_sprite_center.y) / 20 });
+		std::reverse(path.begin(), path.end());
+
+		looper = 0;
+		maxloops = 10;
+
+		lerp_rate = 0.024;
+
+		currentPathPosition = path.begin();
+
 		//collider = entity->get<Collider>();
 		//// todo zmienic na rozmiar spritea
 		//collider->size = Vec2(32, 32);
@@ -89,32 +120,28 @@ public:
 	
 	//void handle_collision();
 
-	void update() override 
-	{
-		//text_pos.y -= 0.1f;
-
-		//on_death();
-		
-		flip_sprite();
-
-		if (state == EnemyState::IN_KNOCKBACK)
-		{
-			entity->position = glm::lerp(entity->position, target_knochback_position, 0.1f);
-
-			if (glm::distance(entity->position, target_knochback_position) < 1)
-				state = EnemyState::ATTACK;
-
-			return;
-		}
-	}
+	void update() override;
 
 	void render(Renderer* ren) override
 	{
+		if (ImGui::Begin("FollowPlayer settings"))
+		{
+			ImGui::DragFloat("LerpRate", &lerp_rate, 0.001f, 0.002f, .5f);
+		}
+		ImGui::End();
 		// renderowanie
 		//if (is_dead == true) {
 		//	ren->draw_text("elooo", Renderer::DefaultFont, text_pos, 0.8, 1);
 		//	//text_opacity -= 0.1f;
 		//}
+		if (!path.empty()) {
+			for (size_t i = 1; i < path.size(); ++i) {
+				auto& coordinate = path[i];
+				dot_pos = { coordinate.x * 20, coordinate.y * 20 };
+				//std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
+				this->entity->world->ren->draw_circle(dot_pos, 5, dot_color);
+			}
+		}
 	}
 
 	/// <summary>
@@ -123,14 +150,9 @@ public:
 	/// <param name="melee_damage">damage given</param>
 	/// <param name="knockback_rate">knockback multiplier</param>
 	/// <param name="facing_angle">angle the enemy is facing</param>
-	void take_damage(float melee_damage, float knockback_rate, float facing_angle);
+	void take_damage(float melee_damage, float knockback_rate);
 
 	void followPlayer();
-	
-
-
-private:
-	Vec2 target_knochback_position;
 };
 
 

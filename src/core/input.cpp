@@ -66,6 +66,8 @@ void Input::update_mouse_position(Vec2 pos)
 
 bool Input::mouse_down(int key)
 {
+
+	std::cout << "mouse:" << mouse.pos.x << " " << mouse.pos.y << std::endl;
 	if (key == 0)
 		return mouse.LMB == true && last_mouse.LMB == false;
 	else if (key == 1)

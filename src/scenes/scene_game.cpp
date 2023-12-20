@@ -52,7 +52,7 @@ void GameScene::init()
 
 	// Backround Sound
 	Sound* backround_music = Asset::load_sound("audio/background_music_1.mp3");
-	Audio::play_one_shot(backround_music, 0.001f);
+	Audio::play_one_shot(backround_music, 0.24f);
 	
 
 	
@@ -69,7 +69,7 @@ void GameScene::init()
 	player_hitbox_offset = Vec2((player_size.x - player_hitbox.x) / 2, (player_size.y - player_hitbox.y) / 2);
 	player->add(Collider(player_hitbox, player_hitbox_offset))->tag = CollisionTag::Player;
 	player->add(Player());
-	auto p = player->add(ParticleSystem());
+	//auto p = player->add(ParticleSystem());
 
 	auto player_light = create("Player Light");
 	auto l = player_light->add(Light(ren->light, LightType::Point));

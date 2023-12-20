@@ -203,7 +203,7 @@ public:
 		// TO DO: offset = w init entity->get<Sprite>()->tex->size.x / 2
 		if (entity->get<Collider>()->check_sphere(Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2, entity->position.y + entity->get<Sprite>()->tex->size.y / 2), 3.0f, CollisionTag::Enemy, entity_hit))
 		{
-			entity_hit.get<Enemy>()->take_damage(bullet_damage, bullet_knockback, entity_hit.facing_angle);
+			entity_hit.get<Enemy>()->take_damage(bullet_damage, bullet_knockback);
 			if (audio_shot != NULL) {
 				Audio::play_one_shot(adult_damaged, 0.1f);
 			}

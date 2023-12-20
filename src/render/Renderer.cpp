@@ -390,6 +390,7 @@ void Renderer::draw_circle(Vec2 pos, float radius, Vec3 color)
 
 
 	m_circleShader->set_uniform_mat4("u_mvp", mvp);
+	m_circleShader->set_uniform_vec3("u_circleColor", color);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

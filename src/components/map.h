@@ -65,21 +65,25 @@ public:
 		{
 			positions_to_draw_map_at.clear();
 
-			positions_to_draw_map_at.insert({ map_pos, 0 });
-			
-			positions_to_draw_map_at.insert({ map_pos + Vec2(960, 544), 0 });
-			positions_to_draw_map_at.insert({ map_pos - Vec2(960, 544), 0 });
+			auto addIfNotNegative = [&](const Vec2& pos)
+				{
+					if (pos.x >= 0 && pos.y >= 0)
+					{
+						positions_to_draw_map_at.insert({ pos, 0 });
+					}
+				};
 
-			positions_to_draw_map_at.insert({ map_pos + Vec2(960, -544), 0 });
-			positions_to_draw_map_at.insert({ map_pos - Vec2(960, -544), 0 });
+			// Add positions only if they are not negative
+			addIfNotNegative(map_pos);
+			addIfNotNegative(map_pos + Vec2(960, 544));
+			addIfNotNegative(map_pos - Vec2(960, 544));
+			addIfNotNegative(map_pos + Vec2(960, -544));
+			addIfNotNegative(map_pos - Vec2(960, -544));
+			addIfNotNegative(map_pos + Vec2(960, 0));
+			addIfNotNegative(map_pos - Vec2(960, 0));
+			addIfNotNegative(map_pos + Vec2(0, 544));
+			addIfNotNegative(map_pos - Vec2(0, 544));
 
-			positions_to_draw_map_at.insert({ map_pos + Vec2(960, 0), 0 });
-			positions_to_draw_map_at.insert({ map_pos - Vec2(960, 0), 0 });
-			
-			positions_to_draw_map_at.insert({ map_pos + Vec2(0, 544), 0 });
-			positions_to_draw_map_at.insert({ map_pos - Vec2(0, 544), 0 });
-
-			
 			player_pos_during_last_map_update = player_pos;
 		}
 	};
