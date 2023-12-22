@@ -134,6 +134,7 @@ void Renderer::init(Window* win)
 	m_defaultShader = Asset::load_shader("default");
 	m_filledBoxShader = Asset::load_shader("box");
 	m_uberShader = Asset::load_shader("uber");
+	m_uiShader = Asset::load_shader("default");
 }
 
 Vec2 current_size;
@@ -421,7 +422,7 @@ void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale, float o
 
 			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
 			
-			draw_subtex(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), opacity, scale);
+			draw_subtex_s(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), m_uiShader, opacity, scale);
 			//draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
 			adv += g.xadv;
 
@@ -463,7 +464,6 @@ void Renderer::ui_draw_box(Vec2 pos, Vec2 size, Vec3 color /*= Vec3(0, 0, 0)*/, 
 	set_camera(cam);
 }
 
-
 void Renderer::draw_vao(GLuint vao, Shader* shd, glm::mat4 model)
 {
 	
@@ -474,6 +474,8 @@ void Renderer::draw_vao(GLuint vao, Shader* shd, glm::mat4 model)
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
+
+
 
 Target* Renderer::Backbuffer;
 Target* Renderer::Viewport;
@@ -528,5 +530,42 @@ Subtexture::~Subtexture()
 	//delete tex;
 	glDeleteBuffers(1, &this->vaoId);
 	glDeleteBuffers(1, &this->vboId);
+}
+
+void Renderer::ui_draw_tex(Texture* tex, Vec2 pos, float opacity /*= 1.0f*/, bool flip /*= false*/)
+{
+	auto cam = m_currentCamera;
+	set_camera(nullptr);
+	draw_tex_s(tex, pos, tex->size, m_uiShader, opacity, flip);
+	set_camera(cam);
+}
+
+void Renderer::ui_draw_text(String text, Font* font, Vec2 pos, float scale /*= 1.0f*/, float opacity /*= 1.0f*/)
+{
+	auto cam = m_currentCamera;
+	set_camera(nullptr);
+
+	int adv = 0;
+
+	for (int i = 0; text[i]; i++) {
+		if (text[i] >= 32 && text[i] < 128) {
+
+			Glyph g = font->glyphs[text[i]];
+
+			SDL_Rect src = { g.x,  g.y,  g.w,  g.h };
+
+			//SDL_FRect dest = { pos.x + (g.xoff + adv), pos.y + g.yoff , g.w , g.h };
+
+
+			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
+
+			draw_subtex_s(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), m_uiShader, opacity, scale);
+			//draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
+			adv += g.xadv;
+
+		}
+	}
+
+	set_camera(cam);
 }
 

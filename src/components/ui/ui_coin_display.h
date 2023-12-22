@@ -65,15 +65,15 @@ public:
 	void render(Renderer* ren) override
 	{
 		// Money display
-		ren->draw_tex(tex_money, Vec2(pos_money));
-		ren->draw_text(text_money, Renderer::DefaultFont, Vec2(pos_money.x + tex_money->size.x + 10, pos_money.y - 14));
+		ren->ui_draw_tex(tex_money, Vec2(pos_money));
+		ren->ui_draw_text(text_money, Renderer::DefaultFont, Vec2(pos_money.x + tex_money->size.x + 10, pos_money.y - 14));
 
-		ren->draw_tex(tex_skull, Vec2(pos_kills));
-		ren->draw_text(text_kills, Renderer::DefaultFont, Vec2(pos_kills.x + tex_skull->size.x + 10, pos_kills.y - 14));
+		ren->ui_draw_tex(tex_skull, Vec2(pos_kills));
+		ren->ui_draw_text(text_kills, Renderer::DefaultFont, Vec2(pos_kills.x + tex_skull->size.x + 10, pos_kills.y - 14));
 
 	
 		// Game time
-		ren->draw_text(text_game_time, Renderer::DefaultFont, Vec2(640, 20));
+		ren->ui_draw_text(text_game_time, Renderer::DefaultFont, Vec2(640, 20));
 	}
 
 };

@@ -57,6 +57,7 @@ class Renderer {
 	Shader* m_defaultShader;
 	Shader* m_filledBoxShader;
 	Shader* m_uberShader;
+	Shader* m_uiShader;
 
 	void set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity, glm::mat4 model);
 
@@ -187,7 +188,6 @@ public:
 	/// <param name="shd">Custom shader to use</param>
 	void draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd);
 
-	void ui_draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0, 0, 0), bool fill = false);
 
 	// used for particles
 
@@ -198,4 +198,9 @@ public:
 	/// <param name="m_ptl_shader">Pointer to the shader to use</param>
 	/// <param name="model">model matrix to use</param>
 	void draw_vao(GLuint m_particle_vao, Shader* m_ptl_shader, glm::mat4 model);
+
+	// UI DRAWING
+	void ui_draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);
+	void ui_draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);
+	void ui_draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0, 0, 0), bool fill = false);
 };
