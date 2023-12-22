@@ -21,29 +21,7 @@ class Texture;
 class Window;
 class Target;
 class LightSystem;
-
-
-/// <summary>
-/// Texture inside of another texture
-/// </summary>
-class Subtexture
-{
-public:
-
-	/// <summary>
-	/// Create a subtexture
-	/// </summary>
-	/// <param name="sheetTex">Root texture</param>
-	/// <param name="pos">Position of subtexture's top-left corner in a root texture (in px)</param>
-	/// <param name="size">Size of a subtexture</param>
-	Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size);
-	~Subtexture();
-	Texture* tex;
-	Vec2 texSize;
-	unsigned int vboId;
-	unsigned int vaoId;
-};
-
+class Subtexture;
 
 /// <summary>
 /// Main renderer
@@ -197,7 +175,7 @@ public:
 	/// <param name="m_particle_vao">VAO Object</param>
 	/// <param name="m_ptl_shader">Pointer to the shader to use</param>
 	/// <param name="model">model matrix to use</param>
-	void draw_vao(GLuint m_particle_vao, Shader* m_ptl_shader, glm::mat4 model);
+	void draw_vao(GLuint vao, Shader* shader, glm::mat4 model);
 
 	// UI DRAWING
 	void ui_draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);

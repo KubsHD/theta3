@@ -144,7 +144,51 @@ namespace gpu {
 
 	gpu::Buffer* Device::create_buffer(const gpu::BufferDesc& desc)
 	{
-		return nullptr;
+		auto buffer = new Buffer();
+
+
+		glGenBuffers(1, &buffer->vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
+		glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, GL_STATIC_DRAW);
+
+		// using VAOs
+		glGenVertexArrays(1, &buffer->vao);
+		glBindVertexArray(buffer->vao);
+
+		int offset = 0;
+		int stride = 0;
+		
+		for (int i = 0; i < desc.layout.size(); i++)
+		{
+			auto input = desc.layout[i];
+
+			if (input.type == GL_FLOAT)
+			{
+				stride += input.size * sizeof(float);
+			}
+		}
+
+
+		for (int i = 0; i< desc.layout.size(); i++)
+		{
+			auto input = desc.layout[i];
+
+			glVertexAttribPointer(i, input.size, input.type, GL_FALSE, stride, (void*)offset);
+
+			if (input.type == GL_FLOAT)
+			{
+				offset += input.size * sizeof(float);
+			}
+
+			glEnableVertexAttribArray(i);
+		}
+
+
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+		return buffer;
 	}
 
 	/*Target::~Target()

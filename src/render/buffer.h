@@ -9,14 +9,21 @@ namespace gpu {
 		BIND_CONSTANT_BUFFER
 	};
 
+	struct Input {
+		int size;
+		int type;
+	};
+
 	struct BufferDesc {
+		Vector<Input> layout;
 		BindFlags bindFlags;
-		int byteWidth;
+		int size;
 		void* data;
 	};
 
 	struct Buffer {
 		BufferDesc desc;
-		void* buf;
+		GLuint vao;
+		GLuint vbo;
 	};
 }

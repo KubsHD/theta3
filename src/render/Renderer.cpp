@@ -13,6 +13,8 @@
 
 #include <render/light_system.h>
 
+#include <render/subtexture.h>
+#include <render/buffer.h>
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -297,7 +299,7 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 	glUseProgram(m_uberShader->get_id());
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
 	
-	glBindVertexArray(subTex->vaoId);
+	glBindVertexArray(subTex->buf->vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -327,7 +329,7 @@ void Renderer::draw_subtex_s(Subtexture* subTex, Vec2 pos, Shader* shd, float op
 	glUseProgram(shd->get_id());
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
 
-	glBindVertexArray(subTex->vaoId);
+	glBindVertexArray(subTex->buf->vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -482,55 +484,6 @@ Target* Renderer::Viewport;
 Font* Renderer::DefaultFont;
 
 
-
-float px_to_ogl(float px, float size)
-{
-	return px / size;
-}
-
-Subtexture::Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size)
-{
-	tex = sheetTex;
-	texSize = size;
-
-
-
-	float vertices[] = {
-		// pos			// tex
-		0.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x),  px_to_ogl(pos.y + size.y, sheetTex->size.y),
-		1.0f, 0.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),  px_to_ogl(pos.y, sheetTex->size.y),
-		0.0f, 0.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y , sheetTex->size.y),
-
-		0.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
-		1.0f, 1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
-		1.0f, 0.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),px_to_ogl(pos.y, sheetTex->size.y),
-	};
-
-	glGenBuffers(1, &vboId);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	// using VAOs
-	glGenVertexArrays(1, &vaoId);
-	glBindVertexArray(vaoId);
-	// telling opengl how to connext vertex data and their atributes
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-Subtexture::~Subtexture()
-{
-	//delete tex;
-	glDeleteBuffers(1, &this->vaoId);
-	glDeleteBuffers(1, &this->vboId);
-}
 
 void Renderer::ui_draw_tex(Texture* tex, Vec2 pos, float opacity /*= 1.0f*/, bool flip /*= false*/)
 {
