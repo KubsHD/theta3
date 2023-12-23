@@ -77,7 +77,7 @@ public:
 	{
 		//ren->draw_box(position, size, Vec3(0.1f, 0.1f, 1.0f));
 		if (last_circle_query.second != 0)
-			ren->draw_circle(last_circle_query.first, last_circle_query.second);
+			ren->draw_circle(last_circle_query.first, last_circle_query.second, Vec3(1.0, 0.0, 0.0));
 	}
 
 };

@@ -19,6 +19,8 @@ static bool input_locked = false;
 static Mouse last_mouse;
 static Mouse mouse;
 
+Vec2 Input::viewport_size;
+
 
 
 void Input::update(SDL_Event& evt)
@@ -88,6 +90,16 @@ bool Input::mouse_held(int key)
 Vec2 Input::get_mouse_pos()
 {
 	return mouse.pos;
+}
+
+void Input::update_viewport_size(ImVec2 viewportSize)
+{
+	this->viewport_size = Vec2(viewportSize.x, viewportSize.y);
+}
+
+Vec2 Input::get_viewport_size()
+{
+	return viewport_size;
 }
 
 

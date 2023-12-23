@@ -82,20 +82,20 @@ public:
 
 
 	Bullet() = default;
-    Bullet(Entity* player_ref)
+    Bullet(Entity* player_ref, int weapon_type)
     {
         this->player = player_ref->get<Player>();
 		
-		if (player->selected_weapon == SHOTGUN)
+		if (weapon_type == SHOTGUN)
 		{
-			destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270) + Vec2(rand() % 70 - 35, rand() % 70 - 35);
+			destination = Input::get_mouse_pos();
 		}
-		else if (player->selected_weapon == MACHINE_GUN)
+		else if (weapon_type == MACHINE_GUN)
 		{
-			destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270) + Vec2(rand() % 20 - 10, rand() % 20 - 10);
+			destination = Input::get_mouse_pos(); //+ Vec2(rand() % 20 - 10, rand() % 20 - 10);
 		}
 		else
-			destination = Vec2(Input::get_mouse_pos().x * 3 / 4, Input::get_mouse_pos().y * 3 / 4) - Vec2(480, 270);
+			destination = Input::get_mouse_pos();
 
 		
 	}
@@ -174,13 +174,15 @@ public:
 		adult_damaged = Asset::load_sound("audio/adultenemy_damaged.mp3");
 
         entity->position = player->pos_sprite_center;
-        // 
 
-        delta_x = destination.x;
-        delta_y = destination.y;
+		auto viewportSize = Input::get_viewport_size();
 
+        delta_x = destination.x - viewportSize.x/2;
+        delta_y = destination.y - viewportSize.y/2;
 
         facing_angle = atan2(delta_y, delta_x);
+
+		log_info("bullet: %f  %f    ang: %f\n", destination.x, viewportSize.x / 2, facing_angle);
 
 
         collider = entity->get<Collider>();

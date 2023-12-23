@@ -58,6 +58,7 @@ void Player::update()
 
 void Player::render(Renderer* ren)
 {
+
 	if (ImGui::Begin("Player info"))
 	{
 		ImGui::Text("name: %s", this->entity->name.c_str());

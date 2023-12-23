@@ -76,7 +76,7 @@ public:
 
 
 	// gameplay
-	float health, damage, souls, speed, money;
+	float health, max_health, damage, souls, speed, money;
 
 	Enemy() = default;
 	Enemy(Player* player_ref)
