@@ -74,7 +74,7 @@ void GameScene::init()
 	auto player_light = create("Player Light");
 	auto l = player_light->add(Light(ren->light, LightType::Point));
 	l->point.color = Vec3(0.4,0.3,0.2);
-	l->point.radius = 25.0f;
+	l->point.radius = 100.0f;
 
 
 

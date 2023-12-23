@@ -63,7 +63,7 @@ void main()
 		if (u_pointLightAvailability[i].x == 0)
 			continue;
 
-        sum += ((1.0 - smoothstep(-0.2, 70, light_dist)) * light.color) * u_pointLightAvailability[i][0];
+        sum += ((1.0 - smoothstep(-0.2, light.radius, light_dist)) * light.color) * u_pointLightAvailability[i][0];
 	}
 
 	for (int i = 0; i < u_spotLightCount; i++)
