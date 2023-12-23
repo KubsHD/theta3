@@ -9,6 +9,8 @@
 
 #include <glm/fwd.hpp>
 #include <core/types.h>
+#include <lib/imgui/imgui.h>
+
 
 /// <summary>
 /// Struct containing mouse data
@@ -45,6 +47,9 @@ struct Mouse
 class Input
 {
 public:
+
+	static Vec2 viewport_size;
+
 	/// <summary>
 	/// Return if a key is down 
 	/// </summary>
@@ -104,6 +109,10 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	static Vec2 get_mouse_pos();
+
+	void update_viewport_size(ImVec2);
+	static Vec2 get_viewport_size();
+
 private:
 	bool m_mousePositionOverriden;
 };

@@ -19,6 +19,8 @@ static bool input_locked = false;
 static Mouse last_mouse;
 static Mouse mouse;
 
+Vec2 Input::viewport_size;
+
 
 
 void Input::update(SDL_Event& evt)
@@ -67,7 +69,7 @@ void Input::update_mouse_position(Vec2 pos)
 bool Input::mouse_down(int key)
 {
 
-	std::cout << "mouse:" << mouse.pos.x << " " << mouse.pos.y << std::endl;
+	//std::cout << "mouse:" << mouse.pos.x << " " << mouse.pos.y << std::endl;
 	if (key == 0)
 		return mouse.LMB == true && last_mouse.LMB == false;
 	else if (key == 1)
@@ -89,6 +91,16 @@ bool Input::mouse_held(int key)
 Vec2 Input::get_mouse_pos()
 {
 	return mouse.pos;
+}
+
+void Input::update_viewport_size(ImVec2 viewportSize)
+{
+	this->viewport_size = Vec2(viewportSize.x, viewportSize.y);
+}
+
+Vec2 Input::get_viewport_size()
+{
+	return viewport_size;
 }
 
 

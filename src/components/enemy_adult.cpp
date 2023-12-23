@@ -1,12 +1,14 @@
 #include "enemy_adult.h"
 #include "collider.h"
 #include "gun.h"
+#include <components/light.h>
 
 
 
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
-	health = 5000;
+	health = 70 + rand()%130;
+	max_health = health;
 	damage = 10;
 	souls = 5;
 	money = 3;
@@ -114,6 +116,11 @@ void Adult::init()
 	collider->size = this->entity->get<Sprite>()->tex->size;
 	collider->tag = CollisionTag::Enemy;
 
+
+	auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
+	l->point.color = Vec3(1 , 0.1, 0.1);
+	l->point.radius = 25.0f;
+
 	Enemy::init();
 }
 
@@ -124,6 +131,9 @@ void Adult::update()
 	Enemy::update();
 
 	on_death();
+
+	float light_amp = (health + 1 - 70) / (max_health - 70);
+	entity->get<Light>()->point.color = Vec3(light_amp * 1, 0.1, 0.1);
 	
 	/*if (state == EnemyState::IN_KNOCKBACK)
 		return;*/
