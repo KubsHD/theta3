@@ -105,7 +105,7 @@ public:
 	/// <returns></returns>
 	static Vec2 get_mouse_pos();
 private:
-	bool m_mousePositionOverriden;
+	bool m_mousePositionOverriden = false;
 };
 
 

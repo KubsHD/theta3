@@ -163,6 +163,8 @@ void Game::init()
 
 #pragma endregion
 
+#if DEBUG
+
 	tools.push_back(new AnimationTool());
 	tools.push_back(new Viewport(input));
 
@@ -171,7 +173,7 @@ void Game::init()
 	{
 		tool->init();
 	}
-
+#endif
 	
 	ren.init(&window);
 }
@@ -193,6 +195,11 @@ void Game::render()
 
 	ren.set_target(Renderer::Backbuffer);
 	ren.clear(Vec3(0, 0, 0));
+
+#if !DEBUG
+	ren.draw_target(Renderer::Viewport);
+	return;
+#endif
 
 	{
 		for (auto& tool : tools)
