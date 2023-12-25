@@ -16,8 +16,9 @@ struct PointLight {
 
 struct SpotLight {
 	vec2 pos;
-    vec2 direction;
 	float angle;
+	float radius;
+	float width;
     vec3 color;
 };
 		
@@ -34,9 +35,6 @@ layout (std140) uniform LightData
 	vec4 u_pointLightAvailability[MAX_POINT_LIGHTS];
 	vec4 u_spotLightAvailability[MAX_SPOT_LIGHTS];
 };
-uniform int u_pointLightCount;
-uniform int u_spotLightCount;
-
 
 
 uniform float u_ambientStrength;
@@ -60,28 +58,20 @@ void main()
 		PointLight light = u_pointLights[i];
         float light_dist = distance(FragPos, light.pos);
 
-		if (u_pointLightAvailability[i].x == 0)
-			continue;
-
         sum += ((1.0 - smoothstep(-0.2, light.radius, light_dist)) * light.color) * u_pointLightAvailability[i][0];
 	}
 
-	for (int i = 0; i < u_spotLightCount; i++)
+	for (int i = 0; i < MAX_SPOT_LIGHTS; i++)
 	{
 		SpotLight light = u_spotLights[i];
 
 		float light_dist = distance(FragPos, light.pos);
 		vec2 lightDir = normalize(light.pos - FragPos);
 
-		float theta = dot(lightDir, light.direction);
+		float angleCosine = dot(lightDir, normalize(vec2(cos(radians(light.angle)), sin(radians(light.angle)))));
 
-	
-		if (theta > light.angle)
-		{
-			float epsilon = light.angle - light.angle * 2;
-			float intensity = clamp((theta - light.angle * 2) / epsilon, 0, 1);
-
-			sum += ((1.0 - smoothstep(-0.2, 140, light_dist)) * light.color) * u_spotLightAvailability[i].x;
+		if (light_dist < light.radius && angleCosine > cos(radians(light.width) / 2.0)) {
+			sum += 1.0 - smoothstep(0.0, light.radius, light_dist);
 		}
 	}
 

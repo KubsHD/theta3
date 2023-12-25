@@ -13,7 +13,7 @@
 #include <components/ui/ui_hp_bar.h>
 #include <components/ui/ui_weapon.h>
 #include <components/light.h>
-
+#include <components/flashlight.h>
 
 
 #include <core/asset.h>
@@ -62,6 +62,7 @@ void GameScene::init()
 	player->add(Sprite("spr_player.png"));
 	player->get<Sprite>()->enabled = false;
 
+	player->add(Flashlight());
 
 	// Forgiving hitboxs for noobs
 	Vec2 player_size = Vec2(player->get<Sprite>()->tex->size.x, player->get<Sprite>()->tex->size.y);

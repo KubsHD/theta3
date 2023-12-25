@@ -182,7 +182,7 @@ public:
 
         facing_angle = atan2(delta_y, delta_x);
 
-		log_info("bullet: %f  %f    ang: %f\n", destination.x, viewportSize.x / 2, facing_angle);
+		//log_info("bullet: %f  %f    ang: %f\n", destination.x, viewportSize.x / 2, facing_angle);
 
 
         collider = entity->get<Collider>();
