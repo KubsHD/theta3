@@ -139,7 +139,7 @@ public:
 				auto& coordinate = path[i];
 				dot_pos = { coordinate.x * 20, coordinate.y * 20 };
 				//std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
-				this->entity->world->ren->draw_circle(dot_pos, 5, dot_color);
+				//this->entity->world->ren->draw_circle(dot_pos, 5, dot_color);
 			}
 		}
 	}

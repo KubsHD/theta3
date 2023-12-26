@@ -466,6 +466,11 @@ void Renderer::ui_draw_box(Vec2 pos, Vec2 size, Vec3 color /*= Vec3(0, 0, 0)*/, 
 	set_camera(cam);
 }
 
+Camera* Renderer::get_camera()
+{
+	return m_currentCamera;
+}
+
 void Renderer::draw_vao(GLuint vao, Shader* shd, glm::mat4 model)
 {
 	

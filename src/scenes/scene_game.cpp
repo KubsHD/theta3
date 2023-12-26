@@ -62,7 +62,6 @@ void GameScene::init()
 	player->add(Sprite("spr_player.png"));
 	player->get<Sprite>()->enabled = false;
 
-	player->add(Flashlight());
 
 	// Forgiving hitboxs for noobs
 	Vec2 player_size = Vec2(player->get<Sprite>()->tex->size.x, player->get<Sprite>()->tex->size.y);
@@ -77,7 +76,8 @@ void GameScene::init()
 	l->point.color = Vec3(0.4,0.3,0.2);
 	l->point.radius = 100.0f;
 
-
+	auto player_flashlight = create("Player Flashlight");
+	player_flashlight->add(Flashlight());
 
 	//Factory::CreateSkillSpinner(this, player);
 
@@ -145,6 +145,8 @@ void GameScene::update()
 		game_camera->position.y -= speed;*/
 
 	get("Player Light")->position = get("Player")->position + player_hitbox_offset + Vec2(10,15);
+	get("Player Flashlight")->position = get("Player")->position + player_hitbox_offset + Vec2(10, 15);
+
 
 	// Player in center of the screen
 	game_camera->position = Vec2(player_ref->position.x - game_view->target_size.x / 2 + 16,
@@ -174,7 +176,6 @@ void GameScene::render()
 	Scene::render();
 
 
-	ren->set_camera(nullptr);
 	ren->set_target(menu_view);
 
 	ren->clear(Vec3(0, 0, 0));
@@ -196,5 +197,5 @@ void GameScene::render()
 
 void GameScene::destroy()
 {
-
+	Scene::destroy();
 }

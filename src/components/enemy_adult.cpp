@@ -116,10 +116,10 @@ void Adult::init()
 	collider->size = this->entity->get<Sprite>()->tex->size;
 	collider->tag = CollisionTag::Enemy;
 
-
-	auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
-	l->point.color = Vec3(1 , 0.1, 0.1);
-	l->point.radius = 25.0f;
+	// temporary turned off
+	//auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
+	//l->point.color = Vec3(1 , 0.1, 0.1);
+	//l->point.radius = 25.0f;
 
 	Enemy::init();
 }
@@ -132,15 +132,15 @@ void Adult::update()
 
 	on_death();
 
-	float light_amp = (health + 1 - 70) / (max_health - 70);
-	entity->get<Light>()->point.color = Vec3(light_amp * 1, 0.1, 0.1);
-	
+	//float light_amp = (health + 1 - 70) / (max_health - 70);
+	//entity->get<Light>()->point.color = Vec3(light_amp * 1, 0.1, 0.1);
+	//
 	/*if (state == EnemyState::IN_KNOCKBACK)
 		return;*/
 
 	// Enemies' Sprite center coordinates
 	/*pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
-		entity->position.y + entity->get<Sprite>()->tex->size.y / 2);*/
+		entity->position.y + entity->get<Sprite>()->tex->size.y / 2d;*/
 
 	//// Standard
 	//delta_x = player->pos_sprite_center.x - pos_sprite_center.x;// > 0 ? 1 : -1;

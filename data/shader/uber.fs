@@ -68,10 +68,12 @@ void main()
 		float light_dist = distance(FragPos, light.pos);
 		vec2 lightDir = normalize(light.pos - FragPos);
 
-		float angleCosine = dot(lightDir, normalize(vec2(cos(radians(light.angle)), sin(radians(light.angle)))));
+		float theta = dot(lightDir, normalize(vec2(cos(radians(light.angle)), sin(radians(light.angle)))));
 
-		if (light_dist < light.radius && angleCosine > cos(radians(light.width) / 2.0)) {
-			sum += 1.0 - smoothstep(0.0, light.radius, light_dist);
+		float falloff = smoothstep(cos(radians(light.width) / 2.0), 1.0, theta);
+
+		if ( theta > cos(radians(light.width) / 2.0)) {
+			sum += falloff * (1.0 - smoothstep(0.0, 1.0, light_dist / light.radius)) * u_spotLightAvailability[i][0] * light.color;
 		}
 	}
 

@@ -86,7 +86,10 @@ public:
 	/// Set the camera for the renderer to use when drawing
 	/// </summary>
 	/// <param name="cam"></param>
-	inline void set_camera(Camera* cam) { m_currentCamera = cam; };
+	void set_camera(Camera* cam) 
+	{ 
+		m_currentCamera = cam; 
+	};
 
 	/// <summary>
 	/// Draw given target
@@ -181,4 +184,5 @@ public:
 	void ui_draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);
 	void ui_draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);
 	void ui_draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0, 0, 0), bool fill = false);
+	Camera* get_camera();
 };

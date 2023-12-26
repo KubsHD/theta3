@@ -29,7 +29,7 @@ public:
 
 	void render(Renderer* ren) override
 	{
-		ren->draw_box(Vec2(0, 700), Vec2(width, 50), Vec3(1, 0.2f, 0), true);
+		ren->ui_draw_box(Vec2(0, 700), Vec2(width, 50), Vec3(1, 0.2f, 0), true);
 	}
 
 };

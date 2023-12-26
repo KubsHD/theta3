@@ -112,6 +112,7 @@ Texture* Asset::load_texture(String path)
 Sound* Asset::load_sound(String path)
 {
 	THETA_PROFILE;
+	THETA_PROFILE_TAG("Sound path", path.c_str());
 
 	for (auto [k, v] : cache_sound)
 	{
