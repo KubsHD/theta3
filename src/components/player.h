@@ -33,7 +33,7 @@ public:
 	int available_weapons;
 	int weapon_cooldown;
 	int enemies;
-
+	bool isInteracting;
 	Player();
 
 	

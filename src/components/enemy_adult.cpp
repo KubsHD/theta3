@@ -4,7 +4,6 @@
 #include <components/light.h>
 
 
-
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
 	health = 70 + rand()%130;
@@ -33,6 +32,7 @@ void Adult::on_death()
 	if (health <= 0 && is_dead == false)
 	{
 		// DROP GUN
+		/*
 		if (rand() % 6 == 0)
 		{
 			Entity* gun = this->entity->world->create("Gun");
@@ -43,7 +43,9 @@ void Adult::on_death()
 			animator_gun->add_animation("anim/gun_shotgun");
 			gun->add(Gun(this->entity, player->entity));
 		}
-		
+		*/
+		Entity* pickup = PickupManager::GetRandomPickup(player);
+		pickup->position = entity->position;
 
 		// fucking die lmao
 		is_dead = true;

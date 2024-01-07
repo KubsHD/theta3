@@ -11,6 +11,7 @@
 
 Player::Player()
 {
+	isInteracting = false;
 	god_mode = true;
 	health = 100;
 	speed = 1.0f;
@@ -49,7 +50,12 @@ void Player::update()
 		selected_weapon = 3;
 	else if (Input::key_down(SDL_SCANCODE_5))// && (0b1000 & available_weapons))
 		selected_weapon = 4;
-
+	if (Input::key_down(SDL_SCANCODE_E)) {
+		isInteracting = true;
+	}
+	else {
+		isInteracting = false;
+	}
 	if (weapon_cooldown > 0)
 		weapon_cooldown--;
 

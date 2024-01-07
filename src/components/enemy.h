@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <SDL_stdinc.h>
 
+
+#include "components/pickups/pickup_manager.h"
 #include <components/animator.h>
 #include <components/sprite.h>	
 #include <core/audio.h>
