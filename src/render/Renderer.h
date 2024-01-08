@@ -16,6 +16,7 @@
 #include <render/font.h>
 #include <render/Camera.h>
 #include <render/target.h>
+#include <render/buffer.h>
 
 class Texture;
 class Window;
@@ -179,6 +180,15 @@ public:
 	/// <param name="m_ptl_shader">Pointer to the shader to use</param>
 	/// <param name="model">model matrix to use</param>
 	void draw_vao(GLuint vao, Shader* shader, glm::mat4 model);
+
+
+	/// <summary>
+	/// Draw Buffer directly
+	/// </summary>
+	/// <param name="m_particle_vao">VAO Object</param>
+	/// <param name="m_ptl_shader">Pointer to the shader to use</param>
+	/// <param name="model">model matrix to use</param>
+	void draw_buffer(gpu::Buffer* buffer, int vertex_count, glm::mat4 model, Texture* tex);
 
 	// UI DRAWING
 	void ui_draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);

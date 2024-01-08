@@ -9,6 +9,11 @@ namespace gpu {
 		BIND_CONSTANT_BUFFER
 	};
 
+	enum class UsageFlags {
+		STATIC_DRAW,
+		DYNAMIC_DRAW,
+	};
+
 	struct Input {
 		int size;
 		int type;
@@ -17,7 +22,8 @@ namespace gpu {
 	struct BufferDesc {
 		Vector<Input> layout;
 		BindFlags bindFlags;
-		int size;
+		UsageFlags usageFlags;
+		unsigned long long size;
 		void* data;
 	};
 

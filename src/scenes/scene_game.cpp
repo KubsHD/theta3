@@ -38,7 +38,7 @@ static Vec2 player_hitbox_offset;
 void GameScene::init()
 {
 	// zmiana rozmiaru wymaga zmiany w spawnowaniu przeciwnikow [enemy]::init
-	game_view = gpu::device->create_target({ 960, 540, TargetScalingType::Nearest });
+	game_view = gpu::device->create_target({ 480, 270, TargetScalingType::Nearest });
 	menu_view = gpu::device->create_target({ 1280, 720, TargetScalingType::Linear });
 
 	game_camera = CreateRef<Camera>();
@@ -47,7 +47,7 @@ void GameScene::init()
 
 	// Backround Image // TODO: replace with generated tiles maybe
 	auto map = create("Map");
-	//map->add(Map2());
+	map->add(Map2());
 
 
 	// Backround Sound

@@ -146,10 +146,11 @@ namespace gpu {
 	{
 		auto buffer = new Buffer();
 
+		GLsizeiptr;
 
 		glGenBuffers(1, &buffer->vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
-		glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, desc.usageFlags == gpu::UsageFlags::STATIC_DRAW ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 
 		// using VAOs
 		glGenVertexArrays(1, &buffer->vao);
@@ -189,6 +190,13 @@ namespace gpu {
 
 
 		return buffer;
+	}
+
+	void Device::update_buffer(Buffer* buffer, void* data, int size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	/*Target::~Target()

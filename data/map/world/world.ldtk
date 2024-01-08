@@ -11,7 +11,7 @@
 	"iid": "4b04fda0-7820-11ed-8e87-bf42eeadacae",
 	"jsonVersion": "1.4.1",
 	"appBuildId": 471015,
-	"nextUid": 81,
+	"nextUid": 82,
 	"identifierStyle": "Capitalize",
 	"toc": [],
 	"worldLayout": "Free",
@@ -1220,6 +1220,22 @@
 								"id": "V_String",
 								"params": ["CHEST"]
 							}] }]
+						},
+						{
+							"__identifier": "PLAYER_SPAWN",
+							"__grid": [22,19],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": null,
+							"__smartColor": "#0099DB",
+							"__worldX": 357,
+							"__worldY": 307,
+							"iid": "67db9730-8990-11ee-ad27-fb15002e1d2b",
+							"width": 16,
+							"height": 16,
+							"defUid": 8,
+							"px": [357,307],
+							"fieldInstances": []
 						}
 					]
 				},

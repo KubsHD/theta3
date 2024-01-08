@@ -31,6 +31,7 @@ Subtexture::Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size)
 		{
 			{ {2 , GL_FLOAT}, {2, GL_FLOAT } },
 			gpu::BindFlags::BIND_VERTEX_BUFFER,
+			gpu::UsageFlags::STATIC_DRAW,
 			sizeof(vertices),
 			vertices
 		}

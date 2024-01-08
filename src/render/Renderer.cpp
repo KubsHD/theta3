@@ -155,7 +155,7 @@ void Renderer::set_target(Target* tg)
 void Renderer::clear(Vec3 color)
 {
 	glClearColor(color.x, color.y, color.z, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 }
@@ -163,7 +163,7 @@ void Renderer::clear(Vec3 color)
 void Renderer::clear(Vec4 color)
 {
 	glClearColor(color.x, color.y, color.z, color.w);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
 
@@ -276,6 +276,8 @@ void Renderer::draw_tex_s(Texture* tex, Vec2 pos, Vec2 size, Shader* custom_shad
 	glUseProgram(0);
 }
 
+static GLuint currently_bound_tex_id= 99999;
+
 void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale, bool flip)
 {
 	glm::mat4 model = glm::mat4(1.0f);
@@ -297,8 +299,10 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 	light->prepare_shader(m_uberShader);
 	
 	glUseProgram(m_uberShader->get_id());
+
+
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
-	
+
 	glBindVertexArray(subTex->buf->vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -483,6 +487,24 @@ void Renderer::draw_vao(GLuint vao, Shader* shd, glm::mat4 model)
 }
 
 
+
+void Renderer::draw_buffer(gpu::Buffer* buffer, int vertex_count, glm::mat4 model, Texture* tex)
+{
+	if (vertex_count == 0) {
+		return;
+	}
+
+	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
+
+	glUseProgram(m_uberShader->get_id());
+
+	set_required_uniforms(m_uberShader, mvp, 1.0f, model);
+	light->prepare_shader(m_uberShader);
+
+	glBindTexture(GL_TEXTURE_2D, tex->id);
+	glBindVertexArray(buffer->vao);
+	glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+}
 
 Target* Renderer::Backbuffer;
 Target* Renderer::Viewport;
