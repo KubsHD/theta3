@@ -31,7 +31,7 @@ void Flashlight::update()
 	m_lightRef->spot.angle = glm::degrees(atan2(delta_y, delta_x)) + 180;
 
 
-	log_info("fl: %f  %f    ang: %f\n", Input::get_mouse_pos().y, Input::get_mouse_pos().x, m_lightRef->spot.angle);
+	//log_info("fl: %f  %f    ang: %f\n", Input::get_mouse_pos().y, Input::get_mouse_pos().x, m_lightRef->spot.angle);
 
 	float target_width = 75.0f;
 

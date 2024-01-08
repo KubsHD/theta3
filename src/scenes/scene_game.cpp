@@ -14,7 +14,7 @@
 #include <components/ui/ui_weapon.h>
 #include <components/light.h>
 #include <components/flashlight.h>
-
+#include <components/map2.h>
 
 #include <core/asset.h>
 #include <core/audio.h>
@@ -47,7 +47,7 @@ void GameScene::init()
 
 	// Backround Image // TODO: replace with generated tiles maybe
 	auto map = create("Map");
-	map->add(MapGenerator());
+	//map->add(Map2());
 
 
 	// Backround Sound
@@ -97,12 +97,6 @@ void GameScene::init()
 
 	player_ref = player;
 
-	// TO MAP
-	map->get<MapGenerator>()->player_ref = player;
-
-
-
-
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
 
@@ -129,20 +123,6 @@ void GameScene::init()
 void GameScene::update()
 {
 	Scene::update();
-
-	/*float speed = 1.0f;
-
-	if (Input::key_held(SDL_SCANCODE_RIGHT))
-		game_camera->position.x += speed;
-
-	if (Input::key_held(SDL_SCANCODE_DOWN))
-		game_camera->position.y += speed;
-
-	if (Input::key_held(SDL_SCANCODE_LEFT))
-		game_camera->position.x -= speed;
-
-	if (Input::key_held(SDL_SCANCODE_UP))
-		game_camera->position.y -= speed;*/
 
 	get("Player Light")->position = get("Player")->position + player_hitbox_offset + Vec2(10,15);
 	get("Player Flashlight")->position = get("Player")->position + player_hitbox_offset + Vec2(10, 15);
@@ -171,7 +151,7 @@ void GameScene::render()
 {
 	ren->set_camera(game_camera.get());
 	ren->set_target(game_view);
-	ren->clear(Vec3(0.03f, 0.4f, 0.03f));
+	ren->clear(Vec4(0.00f, 0.0f, 0.0f, 1.0f));
 
 	Scene::render();
 
