@@ -32,7 +32,7 @@ void Factory::CreateBullet(Scene* scn, Player* player)
 		break;
 	}
 
-	auto ent = scn->create("Bullet"); // std::to_string(Bullet::bullet_ID));
+	auto ent = scn->create("Bullet", player->entity); // std::to_string(Bullet::bullet_ID));
 	ent->add(Sprite("bullets/" + bullet_sprite));
 	ent->add(Collider());
 	ent->add(Bullet(player->entity, player->selected_weapon));

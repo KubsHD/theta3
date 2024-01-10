@@ -71,7 +71,7 @@ public:
 	/// </summary>
 	/// <param name="name">Entity name</param>
 	/// <returns></returns>
-	Entity* create(String name);
+	Entity* create(String name, Entity* parent = nullptr);
 
 	/// <summary>
 	/// Get an entity by name
@@ -79,6 +79,10 @@ public:
 	/// <param name="name">name</param>
 	/// <returns></returns>
 	Entity* get(String name);
+
+	// TODO: docs
+	Vector<Entity*> get_all(String name);
+
 
 	/// <summary>
 	/// Remove an entity
@@ -213,8 +217,17 @@ public:
 	/// <returns></returns>
 	int get_component_count() {return m_components.size();}
 	Vector<Component*> get_components() { return m_components; }
+	Vector<Entity*> get_children() { return m_children; }
+	void add_children(Entity* ent);
+	void destroy();
+	void update();
+	void render(Renderer* ren);
+	void destroy_child(Entity* ent);
+	void remove_child(Entity* ent);
+	Entity* parent;
 private:
 	Vector<Component*> m_components;
+	Vector<Entity*> m_children;
 };
 
 
