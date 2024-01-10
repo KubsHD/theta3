@@ -13,8 +13,8 @@
 #include <components/ui/ui_hp_bar.h>
 #include <components/ui/ui_weapon.h>
 #include <components/light.h>
-
-
+#include <components/flashlight.h>
+#include <components/map2.h>
 
 #include <core/asset.h>
 #include <core/audio.h>
@@ -38,7 +38,7 @@ static Vec2 player_hitbox_offset;
 void GameScene::init()
 {
 	// zmiana rozmiaru wymaga zmiany w spawnowaniu przeciwnikow [enemy]::init
-	game_view = gpu::device->create_target({ 960, 540, TargetScalingType::Nearest });
+	game_view = gpu::device->create_target({ 480, 270, TargetScalingType::Nearest });
 	menu_view = gpu::device->create_target({ 1280, 720, TargetScalingType::Linear });
 
 	game_camera = CreateRef<Camera>();
@@ -47,7 +47,7 @@ void GameScene::init()
 
 	// Backround Image // TODO: replace with generated tiles maybe
 	auto map = create("Map");
-	map->add(MapGenerator());
+	map->add(Map2());
 
 
 	// Backround Sound
@@ -74,9 +74,10 @@ void GameScene::init()
 	auto player_light = create("Player Light");
 	auto l = player_light->add(Light(ren->light, LightType::Point));
 	l->point.color = Vec3(0.4,0.3,0.2);
-	l->point.radius = 25.0f;
+	l->point.radius = 100.0f;
 
-
+	auto player_flashlight = create("Player Flashlight");
+	player_flashlight->add(Flashlight());
 
 	//Factory::CreateSkillSpinner(this, player);
 
@@ -95,12 +96,6 @@ void GameScene::init()
 	player->add(PlayerMovement(player, 2.0f));
 
 	player_ref = player;
-
-	// TO MAP
-	map->get<MapGenerator>()->player_ref = player;
-
-
-
 
 	auto wave = create("WaveManager");
 	wave->add(Wave(player));
@@ -129,21 +124,9 @@ void GameScene::update()
 {
 	Scene::update();
 
-	/*float speed = 1.0f;
-
-	if (Input::key_held(SDL_SCANCODE_RIGHT))
-		game_camera->position.x += speed;
-
-	if (Input::key_held(SDL_SCANCODE_DOWN))
-		game_camera->position.y += speed;
-
-	if (Input::key_held(SDL_SCANCODE_LEFT))
-		game_camera->position.x -= speed;
-
-	if (Input::key_held(SDL_SCANCODE_UP))
-		game_camera->position.y -= speed;*/
-
 	get("Player Light")->position = get("Player")->position + player_hitbox_offset + Vec2(10,15);
+	get("Player Flashlight")->position = get("Player")->position + player_hitbox_offset + Vec2(10, 15);
+
 
 	// Player in center of the screen
 	game_camera->position = Vec2(player_ref->position.x - game_view->target_size.x / 2 + 16,
@@ -168,12 +151,11 @@ void GameScene::render()
 {
 	ren->set_camera(game_camera.get());
 	ren->set_target(game_view);
-	ren->clear(Vec3(0.03f, 0.4f, 0.03f));
+	ren->clear(Vec4(0.00f, 0.0f, 0.0f, 1.0f));
 
 	Scene::render();
 
 
-	ren->set_camera(nullptr);
 	ren->set_target(menu_view);
 
 	ren->clear(Vec3(0, 0, 0));
@@ -195,5 +177,5 @@ void GameScene::render()
 
 void GameScene::destroy()
 {
-
+	Scene::destroy();
 }

@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <SDL_stdinc.h>
 
+
+#include "components/pickups/pickup_manager.h"
 #include <components/animator.h>
 #include <components/sprite.h>	
 #include <core/audio.h>
@@ -76,7 +78,7 @@ public:
 
 
 	// gameplay
-	float health, damage, souls, speed, money;
+	float health, max_health, damage, souls, speed, money;
 
 	Enemy() = default;
 	Enemy(Player* player_ref)
@@ -139,7 +141,7 @@ public:
 				auto& coordinate = path[i];
 				dot_pos = { coordinate.x * 20, coordinate.y * 20 };
 				//std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
-				this->entity->world->ren->draw_circle(dot_pos, 5, dot_color);
+				//this->entity->world->ren->draw_circle(dot_pos, 5, dot_color);
 			}
 		}
 	}

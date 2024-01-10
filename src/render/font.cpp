@@ -3,6 +3,7 @@
 #include <core/asset.h>
 #include <core/log.h>
 #include <render/Renderer.h>
+#include <render/subtexture.h>
 
 Font::Font(String path)
 {

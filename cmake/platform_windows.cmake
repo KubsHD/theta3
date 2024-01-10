@@ -21,6 +21,9 @@ add_compile_definitions(TRACY_ENABLE=1 NOMINMAX=1)
 set(game_src_paths "${PROJECT_SOURCE_DIR}/src/*.cpp" "${PROJECT_SOURCE_DIR}/src/*.c" "${PROJECT_SOURCE_DIR}/src/*.h" "${PROJECT_SOURCE_DIR}/src/*.rc" "${PROJECT_SOURCE_DIR}/src/*.cur")
 file(GLOB_RECURSE game_SRC ${game_src_paths})
 
+find_package(LDtkLoader)
+
+
 #set_source_files_properties(game_SRC PROPERTIES LANGUAGE CXX)
 
 #set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/src/platform/windows/theta.rc")
@@ -49,4 +52,6 @@ add_custom_command(
     COMMAND_EXPAND_LISTS
 )
 
-set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" "Rpcrt4" Tracy::TracyClient)
+
+
+set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" "Rpcrt4" Tracy::TracyClient LDtkLoader)

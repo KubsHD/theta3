@@ -35,10 +35,10 @@ void Factory::CreateBullet(Scene* scn, Player* player)
 	auto ent = scn->create("Bullet"); // std::to_string(Bullet::bullet_ID));
 	ent->add(Sprite("bullets/" + bullet_sprite));
 	ent->add(Collider());
-	ent->add(Bullet(player->entity));
-	auto l = ent->add(Light(scn->ren->light, LightType::Point));
-	l->point.color = Vec3(0.2, 0.2, 0.2);
-	l->point.radius = 25.0f;
+	ent->add(Bullet(player->entity, player->selected_weapon));
+	//auto l = ent->add(Light(scn->ren->light, LightType::Point));
+	//l->point.color = Vec3(0.15, 0.15, 0.15);
+	//l->point.radius = 25.0f;
 	//Bullet::bullet_ID++;
 
 	player->weapon_cooldown = ent->get<Bullet>()->attack_cooldown;

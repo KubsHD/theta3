@@ -60,6 +60,6 @@ public:
 	void render(Renderer* ren) override
 	{		
 		if (selected < tex.size())
-			ren->draw_tex(tex[selected], Vec2(20, 50));
+			ren->ui_draw_tex(tex[selected], Vec2(20, 50));
 	}
 };

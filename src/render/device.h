@@ -34,6 +34,8 @@ namespace gpu
 		Shader* create_shader(const ShaderDesc& desc);
 		Target* create_target(const TargetDesc& desc);
 		Buffer* create_buffer(const BufferDesc& desc);
+
+		void update_buffer(Buffer* buffer, void* data, int size);
 	};
 
 	extern Device* device;

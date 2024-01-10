@@ -15,8 +15,9 @@ struct PointLightData {
 
 struct SpotLightData {
 	alignas(16) Vec2 pos;
-	alignas(16) Vec2 direction;
 	alignas(4)  float angle;
+	alignas(4)  float radius;
+	alignas(4)  float width;
 	alignas(16) Vec3 color;
 };
 

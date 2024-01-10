@@ -7,6 +7,7 @@
 /// Scene Camera
 /// </summary>
 class Camera {
+	glm::mat4 m_projMatrix;
 	glm::mat4 m_viewMatrix;
 public:
 
@@ -22,7 +23,7 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	inline glm::mat4 get_matrix() {
-		return glm::translate(m_viewMatrix, Vec3(-position, 0.0));
+		return glm::scale(glm::translate(m_viewMatrix, Vec3(-position, 0.0)), Vec3(zoom, zoom, 1.0));
 	}
 
 	Vec2 position;

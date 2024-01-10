@@ -13,6 +13,8 @@
 
 #include <render/light_system.h>
 
+#include <render/subtexture.h>
+#include <render/buffer.h>
 
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -134,6 +136,7 @@ void Renderer::init(Window* win)
 	m_defaultShader = Asset::load_shader("default");
 	m_filledBoxShader = Asset::load_shader("box");
 	m_uberShader = Asset::load_shader("uber");
+	m_uiShader = Asset::load_shader("default");
 }
 
 Vec2 current_size;
@@ -152,7 +155,7 @@ void Renderer::set_target(Target* tg)
 void Renderer::clear(Vec3 color)
 {
 	glClearColor(color.x, color.y, color.z, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 }
@@ -160,7 +163,7 @@ void Renderer::clear(Vec3 color)
 void Renderer::clear(Vec4 color)
 {
 	glClearColor(color.x, color.y, color.z, color.w);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
 
@@ -273,6 +276,8 @@ void Renderer::draw_tex_s(Texture* tex, Vec2 pos, Vec2 size, Shader* custom_shad
 	glUseProgram(0);
 }
 
+static GLuint currently_bound_tex_id= 99999;
+
 void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float scale, bool flip)
 {
 	glm::mat4 model = glm::mat4(1.0f);
@@ -294,9 +299,11 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 	light->prepare_shader(m_uberShader);
 	
 	glUseProgram(m_uberShader->get_id());
+
+
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
-	
-	glBindVertexArray(subTex->vaoId);
+
+	glBindVertexArray(subTex->buf->vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -326,7 +333,7 @@ void Renderer::draw_subtex_s(Subtexture* subTex, Vec2 pos, Shader* shd, float op
 	glUseProgram(shd->get_id());
 	glBindTexture(GL_TEXTURE_2D, subTex->tex->id);
 
-	glBindVertexArray(subTex->vaoId);
+	glBindVertexArray(subTex->buf->vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -421,7 +428,7 @@ void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale, float o
 
 			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
 			
-			draw_subtex(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), opacity, scale);
+			draw_subtex_s(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), m_uiShader, opacity, scale);
 			//draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
 			adv += g.xadv;
 
@@ -463,6 +470,10 @@ void Renderer::ui_draw_box(Vec2 pos, Vec2 size, Vec3 color /*= Vec3(0, 0, 0)*/, 
 	set_camera(cam);
 }
 
+Camera* Renderer::get_camera()
+{
+	return m_currentCamera;
+}
 
 void Renderer::draw_vao(GLuint vao, Shader* shd, glm::mat4 model)
 {
@@ -475,58 +486,66 @@ void Renderer::draw_vao(GLuint vao, Shader* shd, glm::mat4 model)
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
+
+
+void Renderer::draw_buffer(gpu::Buffer* buffer, int vertex_count, glm::mat4 model, Texture* tex)
+{
+	if (vertex_count == 0) {
+		return;
+	}
+
+	auto mvp = projection * (m_currentCamera != nullptr ? m_currentCamera->get_matrix() : glm::mat4(1.0f)) * model;
+
+	glUseProgram(m_uberShader->get_id());
+
+	set_required_uniforms(m_uberShader, mvp, 1.0f, model);
+	light->prepare_shader(m_uberShader);
+
+	glBindTexture(GL_TEXTURE_2D, tex->id);
+	glBindVertexArray(buffer->vao);
+	glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+}
+
 Target* Renderer::Backbuffer;
 Target* Renderer::Viewport;
 Font* Renderer::DefaultFont;
 
 
 
-float px_to_ogl(float px, float size)
+void Renderer::ui_draw_tex(Texture* tex, Vec2 pos, float opacity /*= 1.0f*/, bool flip /*= false*/)
 {
-	return px / size;
+	auto cam = m_currentCamera;
+	set_camera(nullptr);
+	draw_tex_s(tex, pos, tex->size, m_uiShader, opacity, flip);
+	set_camera(cam);
 }
 
-Subtexture::Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size)
+void Renderer::ui_draw_text(String text, Font* font, Vec2 pos, float scale /*= 1.0f*/, float opacity /*= 1.0f*/)
 {
-	tex = sheetTex;
-	texSize = size;
+	auto cam = m_currentCamera;
+	set_camera(nullptr);
+
+	int adv = 0;
+
+	for (int i = 0; text[i]; i++) {
+		if (text[i] >= 32 && text[i] < 128) {
+
+			Glyph g = font->glyphs[text[i]];
+
+			SDL_Rect src = { g.x,  g.y,  g.w,  g.h };
+
+			//SDL_FRect dest = { pos.x + (g.xoff + adv), pos.y + g.yoff , g.w , g.h };
 
 
+			//SDL_RenderCopyF(ren, font->atlas->ptr, &src, &dest);
 
-	float vertices[] = {
-		// pos			// tex
-		0.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x),  px_to_ogl(pos.y + size.y, sheetTex->size.y),
-		1.0f, 0.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),  px_to_ogl(pos.y, sheetTex->size.y),
-		0.0f, 0.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y , sheetTex->size.y),
+			draw_subtex_s(g.subTex.get(), Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), m_uiShader, opacity, scale);
+			//draw_box(Vec2(pos.x + (g.xoff + adv), pos.y + g.yoff), Vec2(g.w, g.h), Vec3(1, 1, 1));
+			adv += g.xadv;
 
-		0.0f, 1.0f,	px_to_ogl(pos.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
-		1.0f, 1.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x), px_to_ogl(pos.y + size.y, sheetTex->size.y),
-		1.0f, 0.0f,	px_to_ogl(pos.x + size.x, sheetTex->size.x),px_to_ogl(pos.y, sheetTex->size.y),
-	};
+		}
+	}
 
-	glGenBuffers(1, &vboId);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	// using VAOs
-	glGenVertexArrays(1, &vaoId);
-	glBindVertexArray(vaoId);
-	// telling opengl how to connext vertex data and their atributes
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-Subtexture::~Subtexture()
-{
-	//delete tex;
-	glDeleteBuffers(1, &this->vaoId);
-	glDeleteBuffers(1, &this->vboId);
+	set_camera(cam);
 }
 

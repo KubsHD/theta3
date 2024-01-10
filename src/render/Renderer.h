@@ -16,34 +16,13 @@
 #include <render/font.h>
 #include <render/Camera.h>
 #include <render/target.h>
+#include <render/buffer.h>
 
 class Texture;
 class Window;
 class Target;
 class LightSystem;
-
-
-/// <summary>
-/// Texture inside of another texture
-/// </summary>
-class Subtexture
-{
-public:
-
-	/// <summary>
-	/// Create a subtexture
-	/// </summary>
-	/// <param name="sheetTex">Root texture</param>
-	/// <param name="pos">Position of subtexture's top-left corner in a root texture (in px)</param>
-	/// <param name="size">Size of a subtexture</param>
-	Subtexture(Texture* sheetTex, Vec2 pos, Vec2 size);
-	~Subtexture();
-	Texture* tex;
-	Vec2 texSize;
-	unsigned int vboId;
-	unsigned int vaoId;
-};
-
+class Subtexture;
 
 /// <summary>
 /// Main renderer
@@ -57,6 +36,7 @@ class Renderer {
 	Shader* m_defaultShader;
 	Shader* m_filledBoxShader;
 	Shader* m_uberShader;
+	Shader* m_uiShader;
 
 	void set_required_uniforms(Shader* s, glm::mat4 mvp, float opacity, glm::mat4 model);
 
@@ -107,7 +87,10 @@ public:
 	/// Set the camera for the renderer to use when drawing
 	/// </summary>
 	/// <param name="cam"></param>
-	inline void set_camera(Camera* cam) { m_currentCamera = cam; };
+	void set_camera(Camera* cam) 
+	{ 
+		m_currentCamera = cam; 
+	};
 
 	/// <summary>
 	/// Draw given target
@@ -187,7 +170,6 @@ public:
 	/// <param name="shd">Custom shader to use</param>
 	void draw_box_s(Vec2 pos, Vec2 size, Vec3 color, Shader* shd);
 
-	void ui_draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0, 0, 0), bool fill = false);
 
 	// used for particles
 
@@ -197,5 +179,20 @@ public:
 	/// <param name="m_particle_vao">VAO Object</param>
 	/// <param name="m_ptl_shader">Pointer to the shader to use</param>
 	/// <param name="model">model matrix to use</param>
-	void draw_vao(GLuint m_particle_vao, Shader* m_ptl_shader, glm::mat4 model);
+	void draw_vao(GLuint vao, Shader* shader, glm::mat4 model);
+
+
+	/// <summary>
+	/// Draw Buffer directly
+	/// </summary>
+	/// <param name="m_particle_vao">VAO Object</param>
+	/// <param name="m_ptl_shader">Pointer to the shader to use</param>
+	/// <param name="model">model matrix to use</param>
+	void draw_buffer(gpu::Buffer* buffer, int vertex_count, glm::mat4 model, Texture* tex);
+
+	// UI DRAWING
+	void ui_draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);
+	void ui_draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);
+	void ui_draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0, 0, 0), bool fill = false);
+	Camera* get_camera();
 };

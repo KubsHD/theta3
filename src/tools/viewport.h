@@ -4,7 +4,6 @@
 #include <core/types.h>
 #include <render/Renderer.h>
 #include <core/input.h>
-
 #include <lib/imgui/imgui.h>
 
 
@@ -27,6 +26,8 @@ public:
 		{
 			auto winSize = ImGui::GetWindowSize();
 
+			input_ref.update_viewport_size(winSize);
+
 			float scale = glm::min((float)winSize.x / 1280, (float)winSize.y / 720);
 
 			auto screen_pos = ImGui::GetCursorScreenPos();
@@ -34,7 +35,7 @@ public:
 
 			auto mouse_pos = ImGui::GetMousePos();
 
-			//log_info("%d %d\n", (int)(mouse_pos.x - screen_pos.x) , (int)(mouse_pos.y - screen_pos.y));
+			//log_info("viewport.h: %d %d\n", (int)(mouse_pos.x - screen_pos.x) , (int)(mouse_pos.y - screen_pos.y));
 
 			input_ref.update_mouse_position(Vec2((int)(mouse_pos.x - screen_pos.x), (int)(mouse_pos.y - screen_pos.y)));
 		}

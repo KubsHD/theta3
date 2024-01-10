@@ -171,6 +171,23 @@ void Scene::render()
 
 }
 
+void Scene::destroy()
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		auto ent = m_entities[i];
+
+		for (auto comp : ent->m_components)
+		{
+			comp->destroy();
+
+			delete comp;
+		}
+
+		delete ent;
+	}
+}
+
 bool Scene::collision_query_sphere_result(Collider* requestor, Vec2 point, float radius, CollisionTag tagToQueryFor, Entity& hit)
 {
 	for (auto col : _colliders)
@@ -236,14 +253,7 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-	for (Entity* ent : m_entities)
-	{
-		for (Component* comp : ent->m_components)
-		{
-			delete comp;
-		}
-		delete ent;
-	}
+
 }
 
 Component::Component()

@@ -3,9 +3,6 @@ in vec2 vTexCoord;
 		
 uniform sampler2D u_tex;
 
-uniform vec2 u_spritePos;
-uniform vec2 u_spriteSize;
-
 uniform float u_opacity;
 
 out vec4 FragColor;

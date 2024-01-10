@@ -8,6 +8,8 @@
 
 #include <core/types.h>
 #include <core/ecs.h>
+#include "core/input.h"
+
 
 
 
@@ -31,7 +33,7 @@ public:
 	int available_weapons;
 	int weapon_cooldown;
 	int enemies;
-
+	bool isInteracting;
 	Player();
 
 	

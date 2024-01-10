@@ -13,6 +13,20 @@
 #include <core/asset.h>
 #include <lib/imgui/imgui.h>
 
+// https://stackoverflow.com/questions/9047612/glmivec2-as-key-in-unordered-map
+struct KeyFuncs
+{
+	size_t operator()(const Vec2& k)const
+	{
+		return std::hash<int>()(k.x) ^ std::hash<int>()(k.y);
+	}
+
+	bool operator()(const Vec2& a, const Vec2& b)const
+	{
+		return a.x == b.x && a.y == b.y;
+	}
+};
+
 
 class Player;
 /// <summary>
@@ -31,7 +45,7 @@ public:
 	/// <summary>
 	/// map of positions to draw map at
 	/// </summary>
-	UnorderedMap<Vec2, int> positions_to_draw_map_at;
+	std::unordered_map<Vec2, int, KeyFuncs, KeyFuncs> positions_to_draw_map_at;
 
 	Vec2 player_pos_during_last_map_update = Vec2(100000, 10000);
 

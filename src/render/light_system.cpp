@@ -119,7 +119,7 @@ void LightSystem::prepare_shader(Shader *shd)
 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	shd->set_uniform_float("u_ambientStrength", 0.2);
+	shd->set_uniform_float("u_ambientStrength", 0);
 
 }
 

@@ -115,8 +115,7 @@ public:
 	/// <summary>
 	/// Destroy the scene
 	/// </summary>
-	virtual void destroy() = 0;
-
+	virtual void destroy();
 private:
 
 	/// <summary>

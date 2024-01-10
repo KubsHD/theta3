@@ -13,3 +13,15 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(glm)
+
+
+#ldtk parser
+FetchContent_Declare(
+    LDtk
+    GIT_REPOSITORY https://github.com/Madour/LDtkLoader
+    GIT_TAG master
+)
+
+FetchContent_MakeAvailable(LDtk)
+
+include_directories(${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/_deps/ldtk-src/include)

@@ -1,12 +1,13 @@
 #include "enemy_adult.h"
 #include "collider.h"
 #include "gun.h"
-
+#include <components/light.h>
 
 
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
-	health = 5000;
+	health = 70 + rand()%130;
+	max_health = health;
 	damage = 10;
 	souls = 5;
 	money = 3;
@@ -31,6 +32,7 @@ void Adult::on_death()
 	if (health <= 0 && is_dead == false)
 	{
 		// DROP GUN
+		/*
 		if (rand() % 6 == 0)
 		{
 			Entity* gun = this->entity->world->create("Gun");
@@ -41,7 +43,9 @@ void Adult::on_death()
 			animator_gun->add_animation("anim/gun_shotgun");
 			gun->add(Gun(this->entity, player->entity));
 		}
-		
+		*/
+		Entity* pickup = PickupManager::GetRandomPickup(player);
+		pickup->position = entity->position;
 
 		// fucking die lmao
 		is_dead = true;
@@ -114,6 +118,11 @@ void Adult::init()
 	collider->size = this->entity->get<Sprite>()->tex->size;
 	collider->tag = CollisionTag::Enemy;
 
+	// temporary turned off
+	//auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
+	//l->point.color = Vec3(1 , 0.1, 0.1);
+	//l->point.radius = 25.0f;
+
 	Enemy::init();
 }
 
@@ -124,13 +133,16 @@ void Adult::update()
 	Enemy::update();
 
 	on_death();
-	
+
+	//float light_amp = (health + 1 - 70) / (max_health - 70);
+	//entity->get<Light>()->point.color = Vec3(light_amp * 1, 0.1, 0.1);
+	//
 	/*if (state == EnemyState::IN_KNOCKBACK)
 		return;*/
 
 	// Enemies' Sprite center coordinates
 	/*pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
-		entity->position.y + entity->get<Sprite>()->tex->size.y / 2);*/
+		entity->position.y + entity->get<Sprite>()->tex->size.y / 2d;*/
 
 	//// Standard
 	//delta_x = player->pos_sprite_center.x - pos_sprite_center.x;// > 0 ? 1 : -1;

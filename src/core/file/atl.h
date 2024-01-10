@@ -21,6 +21,8 @@
 
 #include <utils/file.h>
 
+#include <render/subtexture.h>
+
 namespace glm
 {
 
