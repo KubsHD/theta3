@@ -66,11 +66,11 @@ public:
 
 	void render(Renderer* ren) override
 	{
-		if (ImGui::Begin("Pickup settings"))
+		/*if (ImGui::Begin("Pickup settings"))
 		{
 			ImGui::DragFloat("Facing angle", &facing_angle, 1.0f, 1.0f, 360.0f);
 		}
-		ImGui::End();
+		ImGui::End();*/
 
 		
 	}

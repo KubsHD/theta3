@@ -52,6 +52,8 @@ void PlayerMovement::update()
 	else
 		combo_step = 1;
 
+	Vec2 movement = Vec2(0, 0);
+
 	// shoot on LMB hold
 	if (Input::mouse_held(0))
 	{
@@ -127,7 +129,7 @@ void PlayerMovement::update()
 	is_running = false;
 	
 	if (Input::key_held(SDL_SCANCODE_D)) {
-		entity->position.x += speed;
+		movement.x += speed;
 		
 
 		if (!is_attacking)
@@ -139,12 +141,12 @@ void PlayerMovement::update()
 	}
 
 	if (Input::key_held(SDL_SCANCODE_S)) {
-		entity->position.y += speed;
+		movement.y += speed;
 		is_running = true;
 	}
 
 	if (Input::key_held(SDL_SCANCODE_A)) {
-		entity->position.x -= speed;
+		movement.x -= speed;
 
 
 		if (!is_attacking)
@@ -156,7 +158,7 @@ void PlayerMovement::update()
 	}
 
 	if (Input::key_held(SDL_SCANCODE_W)) {
-		entity->position.y -= speed;
+		movement.y -= speed;
 		is_running = true;
 	}
 
@@ -204,5 +206,12 @@ void PlayerMovement::update()
 
 		this->entity->get<Animator>()->play_anim(player_anim[ON_BROOM]);
 	}
+
+	if (this->entity->get<Collider>()->check_sphere(this->entity->position + Vec2(16,16) + movement * Vec2(2,2), 5.0f, CollisionTag::Solid))
+	{
+		movement = Vec2(0, 0);
+	}
+
+	entity->position += movement;
 };
 

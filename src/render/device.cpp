@@ -199,6 +199,19 @@ namespace gpu {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	void Device::destroy_buffer(Buffer* buf)
+	{
+		glDeleteBuffers(1, &buf->vao);
+		glDeleteBuffers(1, &buf->vbo);
+		delete buf;
+	}
+
+	void Device::destroy_texture(Texture* tex)
+	{
+		glDeleteTextures(1, &tex->id);
+		delete tex;
+	}
+
 	/*Target::~Target()
 	{
 		glDeleteTextures(1, &texId);

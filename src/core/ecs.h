@@ -14,6 +14,11 @@ class Entity;
 class Collider;
 enum class CollisionTag;
 
+#define RTTI_COMPONENT_NAME(NAME) \
+const char* get_class_name() override { \
+	return #NAME; \
+} \
+
 /// <summary>
 /// Base class for all components
 /// </summary>
@@ -23,6 +28,11 @@ class Component {
 public:
 	Component();
 	virtual ~Component() = default;
+
+	virtual const char* get_class_name()
+	{
+		return "Component";
+	}
 
 	/// <summary>
 	/// Pointer to the entity this component is attached to
@@ -101,6 +111,9 @@ public:
 	/// </summary>
 	void update_collider_list();
 	
+	void register_collider(Collider*);
+	void deregister_collider(Collider*);
+
 	/// <summary>
 	/// Initialize the scene
 	/// </summary>

@@ -55,7 +55,6 @@ public:
 	Texture* tileset;
 
 	Vector<Tile> tiles;
-
 	
 	Vertex* vertices;
 	gpu::Buffer* map_buffer;
@@ -80,6 +79,33 @@ public:
 
 	}
 
+	void load_colliders(const ldtk::Level& lvl, String collider_layer_name)
+	{
+		const auto& layer = lvl.getLayer(collider_layer_name);
+
+		log_info("[MAP] Loading collisions: %s", layer.getName().c_str());
+		
+		auto g_size = layer.getGridSize();
+
+		for (int x = 0; x < g_size.x; x++)
+		{
+			for (int y = 0; y < g_size.y; y++)
+			{
+				if (layer.getIntGridVal(x, y).value == 1)
+				{
+					std::ostringstream str;
+					str << "Collider: " << x << "x" << y;
+
+					auto ent = this->entity->world->create(str.str(), this->entity);
+					ent->position = Vec2(x * 16, y * 16);
+					auto col = ent->add(Collider(Vec2(16, 16), Vec2(0,0)));
+					col->tag = CollisionTag::Solid;
+				}
+			}
+
+		}
+	}
+
 	void init() override
 	{
 		ldtk::Project ldtk_project;
@@ -97,6 +123,7 @@ public:
 		tileset = Asset::load_texture("map/world/" + layer.getTileset().path);
 
 		load_layer(lvl, "IntGrid");
+		load_colliders(lvl, "Colliders");
 
 		for (auto tile : layer.allTiles())
 		{
@@ -195,6 +222,13 @@ public:
 			ImGui::InputInt("How many tiles to render", &tile_limit);
 			ImGui::End();
 		}
+	}
+
+	void destroy() override
+	{
+		free(vertices);
+		gpu::device->destroy_buffer(map_buffer);
+		//gpu::device->destroy_texture(tileset);
 	}
 };
 

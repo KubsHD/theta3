@@ -31,7 +31,9 @@ class Collider : public Component {
 
 public:
 	Collider() = default;
-	Collider(Vec2 size, Vec2 offset) : size(size), offset(offset) {};
+	Collider(Vec2 size, Vec2 offset) : size(size), offset(offset) {
+	
+	};
 
 	Vec2 size;
 	Vec2 offset;
@@ -43,6 +45,11 @@ public:
 	
 	std::function<void(Entity* other)> on_collision_enter;
 	std::function<void(Entity* other)> on_collision_leave;
+
+	void init() override 
+	{
+		this->entity->world->register_collider(this);
+	}
 
 	bool check_sphere(Vec2 point, float radius, CollisionTag tagToQueryFor)
 	{
@@ -78,6 +85,11 @@ public:
 		//ren->draw_box(position, size, Vec3(0.1f, 0.1f, 1.0f));
 		if (last_circle_query.second != 0)
 			ren->draw_circle(last_circle_query.first, last_circle_query.second, Vec3(1.0, 0.0, 0.0));
+	}
+
+	void destroy() override 
+	{
+		this->entity->world->deregister_collider(this);
 	}
 
 };

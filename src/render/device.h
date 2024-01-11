@@ -36,6 +36,9 @@ namespace gpu
 		Buffer* create_buffer(const BufferDesc& desc);
 
 		void update_buffer(Buffer* buffer, void* data, int size);
+
+		void destroy_buffer(Buffer* buf);
+		void destroy_texture(Texture* tex);
 	};
 
 	extern Device* device;

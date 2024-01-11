@@ -24,6 +24,9 @@
 class Wave : public Component
 {
 public: 
+
+	RTTI_COMPONENT_NAME(Wave)
+
 	Entity* player;
 
 	int waveID, frames;

@@ -65,6 +65,8 @@ bool check_rect_sphere_collision(float rectX, float rectY, float rectWidth, floa
 
 void Scene::update_collider_list()
 {
+	return;
+
 	for (auto ent : m_entities)
 	{
 		for (auto comp : ent->m_components)
@@ -73,6 +75,16 @@ void Scene::update_collider_list()
 				_colliders.push_back(dynamic_cast<Collider*>(comp));
 		}
 	}
+}
+
+void Scene::register_collider(Collider* col)
+{
+	_colliders.push_back(dynamic_cast<Collider*>(col));
+}
+
+void Scene::deregister_collider(Collider* col)
+{
+	_colliders.erase(std::remove(_colliders.begin(), _colliders.end(), col), _colliders.end());
 }
 
 void Scene::init()
@@ -156,8 +168,10 @@ static void draw_entity(Entity* ent)
 {
 	if (ImGui::TreeNode(ent->id.c_str(), "%s : %s", ent->name.c_str(), ent->id.c_str()))
 	{
-		//for (auto compo : ent->get_components())
-		//{
+		for (auto compo : ent->get_components())
+		{
+			ImGui::Text("%s", compo->get_class_name());
+
 		//	////draw_component(compo);
 		//	//auto cls = compo->get_class();
 		//	//if (ImGui::TreeNode(cls->name.c_str()))
@@ -173,7 +187,7 @@ static void draw_entity(Entity* ent)
 		//	//		}
 		//	//	}
 		//	//	ImGui::TreePop();
-		//}
+		}
 
 		for (auto child_ent : ent->get_children())
 		{

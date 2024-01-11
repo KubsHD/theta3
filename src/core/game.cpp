@@ -124,7 +124,7 @@ void Game::change_scene()
 	Game::Instance->current_scene = new T();
 	Game::Instance->current_scene->ren = &Game::Instance->ren;
 	Game::Instance->current_scene->init();
-	Game::Instance->current_scene->update_collider_list();
+	//Game::Instance->current_scene->update_collider_list();
 }
 
 void Game::init()
@@ -234,6 +234,22 @@ void Game::update(float dt)
 {
 	THETA_PROFILE;
 
+	if ( Input::key_down(SDL_SCANCODE_F1))
+		change_scene<GameScene>();
+
+	if (Input::key_down(SDL_SCANCODE_F2))
+		change_scene<MenuScene>();
+
+	if (Input::key_down(SDL_SCANCODE_F3))
+		change_scene<TitleScene>();
+
+	if (Input::key_down(SDL_SCANCODE_F4))
+		change_scene<ShopTestScene>();
+
+	if (Input::key_down(SDL_SCANCODE_F5))
+		change_scene<LightTestScene>();
+
+
 	if (current_scene != nullptr)
 		current_scene->update();
 }
@@ -265,22 +281,22 @@ void Game::render()
 
 		if (ImGui::BeginMenu("Scenes"))
 		{
-			if (ImGui::MenuItem("Game"))
+			if (ImGui::MenuItem("Game") || Input::key_down(SDL_SCANCODE_F1))
 				change_scene<GameScene>();
 
 
-			if (ImGui::MenuItem("Menu"))
+			if (ImGui::MenuItem("Menu") || Input::key_down(SDL_SCANCODE_F2))
 				change_scene<MenuScene>();
 
-			if (ImGui::MenuItem("Title"))
+			if (ImGui::MenuItem("Title") || Input::key_down(SDL_SCANCODE_F3))
 				change_scene<TitleScene>();
 
 
-			if (ImGui::MenuItem("Shop"))
+			if (ImGui::MenuItem("Shop") || Input::key_down(SDL_SCANCODE_F4))
 				change_scene<ShopTestScene>();
 
 
-			if (ImGui::MenuItem("Light"))
+			if (ImGui::MenuItem("Light") || Input::key_down(SDL_SCANCODE_F5))
 				change_scene<LightTestScene>();
 
 			ImGui::EndMenu();
@@ -358,7 +374,7 @@ void Game::loop()
 	double lag = 0.0;
 	double current = 0;
 
-	change_scene<GameScene>();
+	change_scene<ShopTestScene>();
 
 	while (bRunning)
 	{
