@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef WIN
+#ifdef WIN && DEBUG
 #define TRACY_ENABLE
 #include <tracy/Tracy.hpp>
 #include <lib/glad/glad.h>

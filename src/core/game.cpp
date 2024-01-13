@@ -175,15 +175,18 @@ void Game::init()
 
 	THETA_MARK_GPU_CONTEXT;
 
+
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+#if DEBUG
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 	io.ConfigWindowsMoveFromTitleBarOnly = true;
+#endif
 	//io.ConfigViewportsNoAutoMerge = true;
 //io.ConfigViewportsNoTaskBarIcon = true;
 
@@ -249,6 +252,12 @@ void Game::update(float dt)
 	if (Input::key_down(SDL_SCANCODE_F5))
 		change_scene<LightTestScene>();
 
+#if !DEBUG
+	// update viewport when running without tools
+	int w, h;
+	SDL_GetWindowSize(window.pWindow, &w, &h);
+	input.update_viewport_size(ImVec2(w,h));
+#endif
 
 	if (current_scene != nullptr)
 		current_scene->update();
@@ -374,7 +383,11 @@ void Game::loop()
 	double lag = 0.0;
 	double current = 0;
 
+#if !DEBUG
+	change_scene<MenuScene>();
+#else
 	change_scene<ShopTestScene>();
+#endif
 
 	while (bRunning)
 	{
@@ -442,8 +455,12 @@ void Game::loop()
 
 		render();
 
+#if DEBUG
+
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+#endif
 
 		if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{

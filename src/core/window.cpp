@@ -7,8 +7,13 @@ Window::Window()
 	quit = false;
 	x = 100;
 	y = 100;
+#if DEBUG
 	w = 800;
 	h = 450;
+#else
+	w = 1280;
+	h = 720;
+#endif
 }
 
 void Window::create()
