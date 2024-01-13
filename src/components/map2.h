@@ -61,7 +61,7 @@ public:
 	int vertex_capacity = 1000;
 	int vertex_count = 0;
 
-	void load_layer(const ldtk::Level& lvl, String layer_name)
+	void load_tilelayer(const ldtk::Level& lvl, String layer_name)
 	{
 		const auto& layer = lvl.getLayer(layer_name);
 
@@ -122,18 +122,12 @@ public:
 		log_info("[MAP] Loading tileset: %s for layer: %s", layer.getTileset().name.c_str(), layer.getName().c_str());
 		tileset = Asset::load_texture("map/world/" + layer.getTileset().path);
 
-		load_layer(lvl, "IntGrid");
+		load_tilelayer(lvl, "IntGrid");
+		load_tilelayer(lvl, "Tiles");
+
 		load_colliders(lvl, "Colliders");
-
-		for (auto tile : layer.allTiles())
-		{
-			Tile t;
-			t.Position = Vec2(tile.getWorldPosition().x, tile.getWorldPosition().y);
-			t.Rect = Vec2(tile.getTextureRect().x, tile.getTextureRect().y);
-			t.SubTex = new Subtexture(tileset, Vec2(tile.getTextureRect().x, tile.getTextureRect().y), Vec2(tile.getTextureRect().width, tile.getTextureRect().height));
-			tiles.push_back(t);
-		}
-
+		
+		load_entities(lvl, "Entities");
 
 		map_buffer = gpu::device->create_buffer({
 			{{2, GL_FLOAT}, {2, GL_FLOAT}},
@@ -174,8 +168,8 @@ public:
 
 		for (auto& tile : tiles)
 		{
-			if (tile.Position.x - 32 < ren->get_camera()->position.x || tile.Position.x + 32 > ren->get_camera()->position.x + ren->get_target()->target_size.x ||
-				tile.Position.y + 32 < ren->get_camera()->position.y || tile.Position.y - 32 > ren->get_camera()->position.y + ren->get_target()->target_size.y)
+			if ((tile.Position.x < ren->get_camera()->position.x || tile.Position.x + 32 > ren->get_camera()->position.x + ren->get_target()->target_size.x) &&
+				(tile.Position.y + 32 < ren->get_camera()->position.y || tile.Position.y - 32 > ren->get_camera()->position.y + ren->get_target()->target_size.y))
 				continue;
 
 
@@ -230,5 +224,45 @@ public:
 		gpu::device->destroy_buffer(map_buffer);
 		//gpu::device->destroy_texture(tileset);
 	}
+private:
+
+	float color_convert(float original)
+	{
+		// convert from 0-255 to 0-1 scale
+		return original / 255;
+	}
+
+	void load_entities(const ldtk::Level& lvl, const char* layer_name)
+	{
+		const auto& layer = lvl.getLayer(layer_name);
+		const auto& entities = layer.allEntities();
+
+		for (const auto& light_entity : layer.getEntitiesByName("LIGHT"))
+		{
+			// create light
+			auto lightobj = this->entity->world->create("Light", this->entity);
+			auto light = lightobj->add(Light(this->entity->world->ren->light, light_entity.get().getField<ldtk::EnumValue>("LIGHT_TYPE") == lvl.world->getEnum("LIGHT_TYPE")["POINT"] ? LightType::Point : LightType::Spot));
+			lightobj->position = glm::vec3(light_entity.get().getWorldPosition().x, light_entity.get().getWorldPosition().y, 0.0f);
+			
+
+			// iterate over an array field of Enum values
+			if (light_entity.get().getField<ldtk::EnumValue>("LIGHT_TYPE") == lvl.world->getEnum("LIGHT_TYPE")["POINT"])
+			{
+				light->type = LightType::Point;	
+				light->point.pos = lightobj->position;
+				light->point.radius = light_entity.get().getField<float>("Radius").value();
+				auto ldtk_color = light_entity.get().getField<ldtk::Color>("Color").value();
+
+				light->point.color = Vec3(color_convert(ldtk_color.r), color_convert(ldtk_color.g), color_convert(ldtk_color.b));
+
+			}
+			else if (light_entity.get().getField<ldtk::EnumValue>("LIGHT_TYPE") == lvl.world->getEnum("LIGHT_TYPE")["SPOT"])
+			{
+				light->type = LightType::Spot;
+			}
+		}
+	}
+
+
 };
 
