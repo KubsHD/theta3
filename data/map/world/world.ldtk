@@ -1446,7 +1446,7 @@
 					"layerDefUid": 84,
 					"pxOffsetX": 0,
 					"pxOffsetY": 0,
-					"visible": false,
+					"visible": true,
 					"optionalRules": [],
 					"intGridCsv": [
 						0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -1888,6 +1888,27 @@
 							],
 							"__worldX": 642,
 							"__worldY": 167
+						},
+						{
+							"__identifier": "LIGHT",
+							"__grid": [467,337],
+							"__pivot": [0,0],
+							"__tags": [],
+							"__tile": { "tilesetUid": 86, "x": 400, "y": 0, "w": 16, "h": 16 },
+							"__smartColor": "#C74B4B",
+							"iid": "9acae070-b0a0-11ee-8e20-87859482b0f0",
+							"width": 16,
+							"height": 16,
+							"defUid": 85,
+							"px": [467,337],
+							"fieldInstances": [
+								{ "__identifier": "LIGHT_TYPE", "__type": "LocalEnum.LIGHT_TYPE", "__value": "POINT", "__tile": null, "defUid": 88, "realEditorValues": [] },
+								{ "__identifier": "Radius", "__type": "Float", "__value": 100, "__tile": null, "defUid": 90, "realEditorValues": [{ "id": "V_Float", "params": [100] }] },
+								{ "__identifier": "Angle", "__type": "Float", "__value": 0, "__tile": null, "defUid": 91, "realEditorValues": [] },
+								{ "__identifier": "Color", "__type": "Color", "__value": "#C74B4B", "__tile": null, "defUid": 92, "realEditorValues": [{ "id": "V_Int", "params": [13060939] }] }
+							],
+							"__worldX": 467,
+							"__worldY": 337
 						}
 					]
 				},

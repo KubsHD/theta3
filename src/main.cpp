@@ -13,15 +13,12 @@ extern "C" {
 }
 #endif
 
-
 int main(int argc, char* argv[])
 {
 	srand(time(NULL));
 
-
 	Game game;
 
-	
 	game.init();
 
 	if (argv[1] == "--compile")

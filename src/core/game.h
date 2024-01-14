@@ -8,6 +8,7 @@
 #include <render/Renderer.h>
 #include <core/asset.h>
 #include <core/ecs.h>
+#include <system/script_system.h>
 
 
 
@@ -68,6 +69,7 @@ public:
 	Audio audio;
 	Asset ass;
 
+	ScriptSystem script;
 
 private:
 	Vector<Tool*> tools;

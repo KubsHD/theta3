@@ -160,8 +160,11 @@ void Game::init()
 
 	audio.init();
 
+
 	ass.init(&ren);
 
+	script.init();
+	
 	maincontext = SDL_GL_CreateContext(window.pWindow);
 
 	if (maincontext == NULL)
@@ -261,6 +264,8 @@ void Game::update(float dt)
 
 	if (current_scene != nullptr)
 		current_scene->update();
+
+	script.update(dt);
 }
 
 void Game::render()

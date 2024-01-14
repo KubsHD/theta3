@@ -24,4 +24,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(LDtk)
 
+#luau
+FetchContent_Declare(
+    luau
+    GIT_REPOSITORY https://github.com/luau-lang/luau
+    GIT_TAG master
+)
+
+FetchContent_MakeAvailable(luau)
+
+
 include_directories(${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/_deps/ldtk-src/include)
