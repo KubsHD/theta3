@@ -44,9 +44,12 @@ void Adult::on_death()
 			gun->add(Gun(this->entity, player->entity));
 		}
 		*/
-		Entity* pickup = PickupManager::GetRandomPickup(player);
-		pickup->position = entity->position;
 
+		Entity* pickup = PickupManager::GetRandomPickup(player);
+			
+		if (pickup) {
+			pickup->position = entity->position;
+		}
 		// fucking die lmao
 		is_dead = true;
 
