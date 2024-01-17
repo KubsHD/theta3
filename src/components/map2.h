@@ -55,6 +55,8 @@ public:
 	Texture* tileset;
 
 	Vector<Tile> tiles;
+
+	Vector<Vec2> colliders;
 	
 	Vertex* vertices;
 	gpu::Buffer* map_buffer;
@@ -100,6 +102,7 @@ public:
 					ent->position = Vec2(x * 16, y * 16);
 					auto col = ent->add(Collider(Vec2(16, 16), Vec2(0,0)));
 					col->tag = CollisionTag::Solid;
+					colliders.push_back(Vec2(x,y));
 				}
 			}
 
