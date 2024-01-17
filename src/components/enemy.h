@@ -44,7 +44,7 @@ class Enemy : public Component
 public:
 	// backend
 	float facing_angle, temp, text_opacity = 1;
-	int attack_cooldown;
+	int attack_cooldown_seconds_seconds;
 
 	// Audio
 	Sound* audio_death;
@@ -78,7 +78,7 @@ public:
 
 
 	// gameplay
-	float health, max_health, damage, souls, speed, money;
+	float health, max_health, damage, souls, speed, money, attack_cooldown_seconds;
 
 	Enemy() = default;
 	Enemy(Player* player_ref)

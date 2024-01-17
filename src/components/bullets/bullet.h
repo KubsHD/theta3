@@ -56,7 +56,7 @@ public:
 	/// <summary>
 	/// Attack cooldown, bullet damage, bullet knockback, bullet speed
 	/// </summary>
-	float attack_cooldown, bullet_damage, bullet_knockback, bullet_speed;
+	float attack_cooldown_seconds , bullet_damage, bullet_knockback, bullet_speed;
 	float auto_destroy_timer = 0;
 	int magazine_capacity, bullets_left;
 	
@@ -111,7 +111,7 @@ public:
 		{
 		case PISTOL:
 		{
-			attack_cooldown = 0.13f * 60;
+			attack_cooldown_seconds = 0.13f * 60;
 			magazine_capacity = 9;
 			bullets_left = magazine_capacity;
 			bullet_damage = 13;
@@ -125,7 +125,7 @@ public:
 
 		case SHOTGUN:
 		{
-			attack_cooldown = 0.4f * 60;
+			attack_cooldown_seconds = 0.4f * 60;
 			magazine_capacity = 3;
 			bullets_left = magazine_capacity;
 			bullet_damage = 14;
@@ -139,7 +139,7 @@ public:
 
 		case MACHINE_GUN:
 		{
-			attack_cooldown = 0.05f * 60;
+			attack_cooldown_seconds = 0.05f * 60;
 			magazine_capacity = 60;
 			bullets_left = magazine_capacity;
 			bullet_damage = 9;
@@ -154,10 +154,10 @@ public:
 
 		case CROSSBOW:
 		{
-			attack_cooldown = 2.0f * 60;
+			attack_cooldown_seconds = 2.0f * 24;
 			magazine_capacity = 3;
 			bullets_left = magazine_capacity;
-			bullet_damage = 160;
+			bullet_damage = 130+rand()%80;
 			bullet_knockback = 0.9f;
 			bullet_speed = 9.4f;
 			weapon_sprite = "icon_crossbow.png";

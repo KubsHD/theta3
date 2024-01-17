@@ -41,7 +41,7 @@ void Factory::CreateBullet(Scene* scn, Player* player)
 	//l->point.radius = 25.0f;
 	//Bullet::bullet_ID++;
 
-	player->weapon_cooldown = ent->get<Bullet>()->attack_cooldown;
+	player->weapon_cooldown = ent->get<Bullet>()->attack_cooldown_seconds;
 }
 
 void Factory::shotgunShoot(Scene* scn, Player* player)

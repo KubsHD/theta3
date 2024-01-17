@@ -6,10 +6,10 @@
 
 
  void Inventory::Init() {
-	 PistolAmmo = 50000;
-	 ShotgunAmmo = 10;
-	 MachinegunAmmo = 10;
-	 CrossbowAmmo = 10;
+	 PistolAmmo = 999;
+	 ShotgunAmmo = 24;
+	 MachinegunAmmo = 30;
+	 CrossbowAmmo = 3;
  }
 bool Inventory::CanShootThenSubstractAmmo(GUN_TYPE gun_type) {
 	switch (gun_type)

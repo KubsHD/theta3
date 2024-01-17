@@ -9,6 +9,7 @@
 #include <core/types.h>
 #include <core/ecs.h>
 #include <components/wave_system.h>
+#include <components/pickups/Inventory.h>
 
 
 /// <summary>
@@ -21,12 +22,12 @@ public:
 	/// <summary>
 	/// Text for money, game time, kills
 	/// </summary>
-	String text_money, text_game_time, text_kills;
+	String text_money, text_game_time, text_kills, text_ammo;
 	
 	/// <summary>
 	/// Position of money icon, kills icon
 	/// </summary>
-	Vec2 pos_money, pos_kills;
+	Vec2 pos_money, pos_kills, pos_ammo;
 	
 	/// <summary>
 	/// Texture for money icon
@@ -44,6 +45,7 @@ public:
 		tex_money = Asset::load_texture("sakiew.png");
 		tex_skull = Asset::load_texture("icon_skull.png");
 
+		pos_ammo = Vec2(32, 55);
 		pos_money = Vec2(32, 90);
 		pos_kills = Vec2(32 , 135);
 	};
@@ -59,6 +61,9 @@ public:
 
 		auto kills = entity->world->get("Player")->get<Player>()->kill_count;
 		text_kills = std::to_string(kills);
+
+		auto ammo = entity->world->get("Player")->get<Player>()->current_ammo;
+		text_ammo = std::to_string(ammo);
 	}
 
 
@@ -70,6 +75,8 @@ public:
 
 		ren->ui_draw_tex(tex_skull, Vec2(pos_kills));
 		ren->ui_draw_text(text_kills, Renderer::DefaultFont, Vec2(pos_kills.x + tex_skull->size.x + 10, pos_kills.y - 14));
+
+		ren->ui_draw_text(text_ammo, Renderer::DefaultFont, Vec2(pos_ammo.x + tex_skull->size.x + 10, pos_ammo.y - 14));
 
 	
 		// Game time

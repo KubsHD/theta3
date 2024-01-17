@@ -24,7 +24,7 @@ public:
 	static Entity* GetRandomPickup(Player* player) {
 		int r = rand() % 100;
 		
-		if (r < 10) {
+		if (r < 15) {
 			//shotugn ammo
 			Entity* pickup = player->entity->world->create("Pickup");
 			auto col = pickup->add(Collider(Vec2(24, 24), Vec2(0, 0)));
@@ -33,7 +33,7 @@ public:
 
 			return pickup;
 		}
-		else if (r < 20) {
+		else if (r < 30) {
 
 			//machine gun ammo
 
@@ -44,7 +44,7 @@ public:
 
 			return pickup;
 		}
-		else if (r < 30) {
+		else if (r < 40) {
 			//crossbow ammo
 			Entity* pickup = player->entity->world->create("Pickup");
 			auto col = pickup->add(Collider(Vec2(24, 24), Vec2(0, 0)));
@@ -53,7 +53,7 @@ public:
 
 			return pickup;
 		}
-		else if(r < 40){
+		else if(r < 50){
 			//medpack
 			Entity* pickup = player->entity->world->create("Pickup");
 			auto col = pickup->add(Collider(Vec2(24, 24), Vec2(0, 0)));

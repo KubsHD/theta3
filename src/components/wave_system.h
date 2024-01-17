@@ -30,8 +30,10 @@ public:
 	Entity* player;
 
 	int waveID, frames;
+	float time_between_spawns_seconds, enemy_spawn_multiplier;
 	static unsigned int round_time;
 
+	Sound* thunder;
 	//Effects;
 	Entity* fog;
 

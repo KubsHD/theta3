@@ -34,6 +34,7 @@ public:
 	int weapon_cooldown;
 	int enemies;
 	bool isInteracting;
+	int current_ammo;
 	Player();
 
 	

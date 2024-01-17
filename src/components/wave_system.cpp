@@ -14,26 +14,28 @@ void Wave::init()
 	waveID = 0;
 	round_time = 0;
 	frames = 0;
+	enemy_spawn_multiplier = 1.0f;
+	time_between_spawns_seconds = 25.0f;
 
 
-	// Effect fog;
-	//fog = this->entity->world->create("fog");
-	//auto animator_fog = fog->add(Animator());
-	//animator_fog->add_animation("anim/effects_fog");
-	//fog->add(Effect(player, "effects_fog"));
-
-
+	thunder = Asset::load_sound("audio/thunder.mp3");
 }
 
 void Wave::update()
 {
-	if (frames == 60)
+	if (frames >= 60)
 	{
 		round_time++;
 		frames = 0;
-		if (round_time == 1|| round_time % 20 == 0)
+		if (round_time == 10 || round_time % int(time_between_spawns_seconds) == 0)
 		{
+			if (time_between_spawns_seconds > 10)
+				time_between_spawns_seconds -= 1.5f;
+			if (enemy_spawn_multiplier < 2.2)
+				enemy_spawn_multiplier += 0.2;
+
 			waveID++;
+			Audio::play_one_shot(thunder, 0.8f);
 			wave_spawn();
 		}
 	}
@@ -57,7 +59,7 @@ void Wave::wave_spawn()
 	
 	//fog->get<Effect>()->play_once();
 
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 16*enemy_spawn_multiplier; i++)
 	{
 		Entity* adult = entity->world->create("AdultEnemyW" + std::to_string(waveID) + "E" + std::to_string(i), this->entity);
 		adult->add(Sprite("spr_enemy_adult.png"));

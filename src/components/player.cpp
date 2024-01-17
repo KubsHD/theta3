@@ -44,7 +44,6 @@ void Player::update()
 	if (Input::key_down(SDL_SCANCODE_1)){// && (0b0001 & available_weapons))
 		if (Inventory::HasAmmo(PISTOL)) {
 			selected_weapon = 1;
-
 		}
 	}
 		
@@ -72,6 +71,7 @@ void Player::update()
 	}
 
 
+
 	if (Input::key_down(SDL_SCANCODE_E)) {
 		isInteracting = true;
 	}
@@ -80,6 +80,22 @@ void Player::update()
 	}
 	if (weapon_cooldown > 0)
 		weapon_cooldown--;
+
+
+	switch (selected_weapon) {
+	case PISTOL:
+		current_ammo = Inventory::PistolAmmo;
+		break;
+	case SHOTGUN:
+		current_ammo = Inventory::ShotgunAmmo;
+		break;
+	case MACHINE_GUN:
+		current_ammo = Inventory::MachinegunAmmo;
+		break;
+	case CROSSBOW:
+		current_ammo = Inventory::CrossbowAmmo;
+		break;
+	}
 
 }
 

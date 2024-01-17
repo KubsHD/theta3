@@ -6,13 +6,13 @@
 
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
-	health = 90 + rand()%260;
+	health = 35 + rand()%150;
 	max_health = health;
-	damage = 10;
+	damage = 4;
 	souls = 5;
 	money = 3;
 
-	attack_cooldown = 3;
+	attack_cooldown_seconds = 3;
 	speed = 2.0f;
 	temp_pos = Vec2(0, 0);
 	temp_val = 0;
@@ -62,7 +62,6 @@ void Adult::on_death()
 			// play death sound
 			//Audio::play_one_shot(audio_death);
 		}
-
 
 		player->health += this->souls;
 		player->money += this->money;
@@ -122,9 +121,9 @@ void Adult::init()
 	collider->tag = CollisionTag::Enemy;
 
 	// temporary turned off
-	auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
+	/*auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
 	l->point.color = Vec3(0.4, 0.05, 0.05);
-	l->point.radius = 50.0f;
+	l->point.radius = 50.0f;*/
 
 	Enemy::init();
 }
@@ -132,8 +131,6 @@ void Adult::init()
 
 void Adult::update()
 {
-	//Enemy::followPlayerAStar();
-	//Enemy::followPlayerStraightPath();
 	Enemy::handleEnemyMovement();
 
 	Enemy::update();
@@ -142,11 +139,29 @@ void Adult::update()
 
 	if (can_walk)
 	{
-		Vec2 pos = Vec2(player->pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
-			player->pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3);
+		Vec2 collider_position = Vec2(entity->position.x + 11 + cos(facing_angle) * collider->size.x / 8 * 3,
+			entity->position.y + 15 + sin(facing_angle) * collider->size.y / 8 * 3);
 
-		if (collider->check_sphere(pos, 2, CollisionTag::Player)) {
-			std::cout << "ATAK\n";
+		temp += 1;
+		if (collider->check_sphere(collider_position, 2, CollisionTag::Player)) {
+			if (temp > attack_cooldown_seconds * 60)
+			{
+				// Play attack animation
+				if (delta_x < 8 || delta_y < 8)
+				{
+					this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
+				}
+
+				// Play attack sound
+				Audio::play_one_shot(audio_damage_dealt, 0.2);
+
+				// Player Damage
+				if (player->god_mode == false)
+					player->health -= damage;
+
+				// Reset cooldown
+				temp = 0;
+			}
 		}
 
 	}
@@ -178,45 +193,13 @@ void Adult::update()
 	//	
 	//	{
 	//		// If close enough to player - attack this mofo
-	//		if (temp > attack_cooldown * 60)
-	//		{
-	//			// Play attack animation
-	//			// trick do animacji - XDDD
-	//			if (facing_angle > (M_PI / 2) || facing_angle < -(M_PI / 2))
-	//			{
-	//				if (this->entity->position.x > 0)
-	//				{
-	//					delta_x = -10;
-	//					this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
-	//				}
-	//				else {
-	//					delta_x = 10;
-	//					this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
-	//				}
-	//			}
-	//			else
-	//			{
-	//				this->entity->get<Animator>()->play_one_shot("adult_enemy_attack", [this]() {});
-	//			}
-
-	//			// Play attack sound
-	//			Audio::play_one_shot(audio_damage_dealt, 0.09);
-
-	//			// Player Damage
-	//			if (player->god_mode == false)
-	//				player->health -= damage;
-
-	//			// Reset cooldown
-	//			temp = 0;
-
-
-	//		}
+			
 	//	}
 
 
 		// TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
 
 		 //Cooldown countdown
-		//temp += 1;
+		
 	//}
 }

@@ -2,7 +2,7 @@
 
 
 void MachineAmmoPickup::onPickUp() {
-	Inventory::MachinegunAmmo += 50;
+	Inventory::MachinegunAmmo += 90;
 	Factory::CreateTextPopup(this->entity->world, this->entity->position, "50x machine gun ammo");
 	this->entity->world->remove(this->entity);
 
