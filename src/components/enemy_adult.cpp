@@ -142,8 +142,10 @@ void Adult::update()
 
 	if (can_walk)
 	{
-		if (collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
-			pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player)) {
+		Vec2 pos = Vec2(player->pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
+			player->pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3);
+
+		if (collider->check_sphere(pos, 2, CollisionTag::Player)) {
 			std::cout << "ATAK\n";
 		}
 
