@@ -213,6 +213,11 @@ public:
 			this->entity->world->remove(this->entity);
 		}
 
+		if (entity->get<Collider>()->check_sphere(Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2, entity->position.y + entity->get<Sprite>()->tex->size.y / 2), 3.0f, CollisionTag::Solid))
+		{
+			this->entity->world->remove(this->entity);
+		}
+
 
 		if (abs(entity->position.x - player->pos_sprite_center.x) > 483)
 			this->entity->world->remove(this->entity);
