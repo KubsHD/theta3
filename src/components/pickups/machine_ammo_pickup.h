@@ -7,11 +7,11 @@
 #include <stdlib.h>
 #include <SDL_stdinc.h>
 
-class AmmoPickup : public Pickupable {
+class MachineAmmoPickup : public Pickupable {
 public:
 
-	AmmoPickup() = default;
-	AmmoPickup(Player* p) {
+	MachineAmmoPickup() = default;
+	MachineAmmoPickup(Player* p) {
 		player = p;
 	}
 	

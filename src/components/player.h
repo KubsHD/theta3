@@ -9,8 +9,8 @@
 #include <core/types.h>
 #include <core/ecs.h>
 #include "core/input.h"
-
-
+#include "components/pickups/Inventory.h"
+#include "components/gun_type.h"
 
 
 /// <summary>

@@ -18,14 +18,12 @@
 #include <core/asset.h>
 #include <components/player.h>
 #include <render/Renderer.h>
-
+#include "components/gun_type.h"
 
 class Player;
 
-/// <summary>
-/// enum for gun types
-/// </summary>
-enum GUN_TYPE { BROOM, PISTOL, SHOTGUN, MACHINE_GUN, CROSSBOW };
+
+
 
 /// <summary>
 /// creating a gun that can be collected by stepping on it

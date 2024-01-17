@@ -7,7 +7,7 @@
 #include <lib/imgui/imgui.h>
 #include <core/input.h>
 #include "enemy.h"
-
+#include "components/pickups/Inventory.h"
 
 Player::Player()
 {
@@ -40,16 +40,29 @@ void Player::update()
 
 	pos_sprite_center = entity->position + player_offset;
 
-	if (Input::key_down(SDL_SCANCODE_1))// && (0b0001 & available_weapons))
-		selected_weapon = 0;
+	if (Input::key_down(SDL_SCANCODE_1)){// && (0b0001 & available_weapons))
+		if (Inventory::HasAmmo(PISTOL)) {
+			selected_weapon = 1;
+
+		}
+	}
+		
+
 	else if (Input::key_down(SDL_SCANCODE_2))// && (0b0010 & available_weapons))
-		selected_weapon = 1;
+		if (Inventory::HasAmmo(SHOTGUN)) {
+			selected_weapon = 2;
+
+		}
 	else if (Input::key_down(SDL_SCANCODE_3))// && (0b0100 & available_weapons))
-		selected_weapon = 2;
+		if (Inventory::HasAmmo(MACHINE_GUN)) {
+			selected_weapon = 3;
+
+		}
 	else if (Input::key_down(SDL_SCANCODE_4))// && (0b1000 & available_weapons))
-		selected_weapon = 3;
-	else if (Input::key_down(SDL_SCANCODE_5))// && (0b1000 & available_weapons))
-		selected_weapon = 4;
+			if (Inventory::HasAmmo(CROSSBOW)) {
+				selected_weapon = 4;
+
+			}
 	if (Input::key_down(SDL_SCANCODE_E)) {
 		isInteracting = true;
 	}

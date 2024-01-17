@@ -17,7 +17,8 @@
 #include <components/player.h>
 #include <render/Renderer.h>
 #include <components/gun.h>
-
+#include <components/pickups/Inventory.h>
+#include <components/text_popup.h>
 #include <glm/gtx/compatibility.hpp>
 
 class Player;

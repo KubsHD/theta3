@@ -12,6 +12,7 @@
 #include <render/renderer.h>
 #include <components/animator.h>
 #include <components/player.h>
+#include <components/pickups/Inventory.h>
 
 enum PLAYER_STATES
 {
@@ -57,8 +58,12 @@ void PlayerMovement::update()
 	// shoot on LMB hold
 	if (Input::mouse_held(0))
 	{
-		if (player->selected_weapon == MACHINE_GUN && player->weapon_cooldown == 0)
-			Factory::CreateBullet(entity->world, player);
+		if (player->selected_weapon == MACHINE_GUN && player->weapon_cooldown == 0) {
+			if (Inventory::CanShootThenSubstractAmmo(MACHINE_GUN) ){
+				Factory::CreateBullet(entity->world, player);
+
+			}
+		}
 
 	}
 
@@ -67,11 +72,27 @@ void PlayerMovement::update()
 	{
 		if (player->selected_weapon == SHOTGUN && player->weapon_cooldown == 0)
 		{
-			Factory::shotgunShoot(entity->world, player);
+
+			if (Inventory::CanShootThenSubstractAmmo(SHOTGUN)) {
+				Factory::shotgunShoot(entity->world, player);
+
+			}
+			
 		}
-		else if (player->selected_weapon != BROOM && player->weapon_cooldown == 0)
+		else if (player->selected_weapon == CROSSBOW && player->weapon_cooldown == 0)
 		{
-			Factory::CreateBullet(entity->world, player);
+			if (Inventory::CanShootThenSubstractAmmo(CROSSBOW)) {
+				Factory::CreateBullet(entity->world, player);
+
+			}
+			
+		}
+		else if (player->selected_weapon == PISTOL && player->weapon_cooldown == 0)
+		{
+			if (Inventory::CanShootThenSubstractAmmo(PISTOL)) {
+				Factory::CreateBullet(entity->world, player);
+
+			}
 		}
 	}
 

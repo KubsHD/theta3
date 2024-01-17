@@ -21,6 +21,7 @@ class DamagePopup : public Component
 public:
 
 	int dmg;
+	
 	// Constructors
 	DamagePopup() = default;
 
