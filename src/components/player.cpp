@@ -18,7 +18,7 @@ Player::Player()
 	damage_melee = 24;
 	money = 0;
 	kill_count = 0;
-	health_decay = 0.05f;
+	health_decay = 0.00f; // chujowy gameplay z tym gownem
 	selected_weapon = 0;
 	weapon_cooldown = 0;
 	// in reversed order tho { BROOM, SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW }

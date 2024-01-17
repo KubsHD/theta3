@@ -91,11 +91,13 @@ public:
 
 	void init() override
 	{
-		astar.setWorldSize({ 48, 27 });
+		speed = 1.58;
+
+		astar.setWorldSize({ 200, 200 });
 		// You can use a few heuristics : manhattan, euclidean or octagonal.
 		astar.setHeuristic(AStar::Heuristic::euclidean);
 		astar.setDiagonalMovement(true);	
-
+		
 		path = astar.findPath({ static_cast<int>(entity->position.x / 20), static_cast<int>(entity->position.y) / 20 },
 			{ int(player->pos_sprite_center.x) / 20, int(player->pos_sprite_center.y) / 20 });
 		std::reverse(path.begin(), path.end());
@@ -126,7 +128,7 @@ public:
 
 	void render(Renderer* ren) override
 	{
-		if (ImGui::Begin("FollowPlayer settings"))
+		if (ImGui::Begin("followPlayerAStar settings"))
 		{
 			ImGui::DragFloat("LerpRate", &lerp_rate, 0.001f, 0.002f, .5f);
 		}
@@ -154,7 +156,11 @@ public:
 	/// <param name="facing_angle">angle the enemy is facing</param>
 	void take_damage(float melee_damage, float knockback_rate);
 
-	void followPlayer();
+	void handleEnemyMovement();
+
+	void followPlayerStraightPath();
+
+	void followPlayerAStar();
 };
 
 

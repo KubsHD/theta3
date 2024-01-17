@@ -6,7 +6,7 @@
 
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
-	health = 70 + rand()%130;
+	health = 70 + rand()%230;
 	max_health = health;
 	damage = 10;
 	souls = 5;
@@ -119,9 +119,9 @@ void Adult::init()
 	collider->tag = CollisionTag::Enemy;
 
 	// temporary turned off
-	//auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
-	//l->point.color = Vec3(1 , 0.1, 0.1);
-	//l->point.radius = 25.0f;
+	auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
+	l->point.color = Vec3(1 , 0.1, 0.1);
+	l->point.radius = 150.0f;
 
 	Enemy::init();
 }
@@ -129,7 +129,10 @@ void Adult::init()
 
 void Adult::update()
 {
-	Enemy::followPlayer();
+	//Enemy::followPlayerAStar();
+	//Enemy::followPlayerStraightPath();
+	Enemy::handleEnemyMovement();
+	
 	Enemy::update();
 
 	on_death();

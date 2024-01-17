@@ -65,12 +65,32 @@ void Enemy::take_damage(float melee_damage, float knockback_rate)
 
 	target_knochback_position = entity->position + Vec2( -cos(facing_angle) * 100 * knockback_rate, -sin(facing_angle) * 100 * knockback_rate);
 	//std::cout << "kb: " << facing_angle << " | " << (Vec2(-cos(facing_angle) * 100 * knockback_rate, -sin(facing_angle) * 100 * knockback_rate)).x << " " << (Vec2(-cos(facing_angle) * 100 * knockback_rate, -sin(facing_angle) * 100 * knockback_rate)).y << "\n";
+}
 
+void Enemy::handleEnemyMovement()
+{
+	if ((abs(entity->position.x - player->pos_sprite_center.x) > 400) or (abs(entity->position.y - player->pos_sprite_center.y) > 350)) {
+		followPlayerStraightPath();
+		std::cout << "Straight Path\n";
+	}
+	else {
+		followPlayerAStar();
+		std::cout << "AStar\n";
+	}
 }
 
 
+void Enemy::followPlayerStraightPath()
+{
+	if (state == EnemyState::IN_KNOCKBACK)
+		return;
 
-void Enemy::followPlayer()
+	glm::vec2 direction = glm::normalize(player->pos_sprite_center - entity->position);
+	entity->position += direction * speed;
+}
+
+
+void Enemy::followPlayerAStar()
 {
 	THETA_PROFILE;
 

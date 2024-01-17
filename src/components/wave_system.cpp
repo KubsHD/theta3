@@ -31,7 +31,7 @@ void Wave::update()
 	{
 		round_time++;
 		frames = 0;
-		if (round_time == 1|| round_time % 10 == 0)
+		if (round_time == 1|| round_time % 18 == 0)
 		{
 			waveID++;
 			wave_spawn();
@@ -57,7 +57,7 @@ void Wave::wave_spawn()
 	
 	//fog->get<Effect>()->play_once();
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		Entity* adult = entity->world->create("AdultEnemyW" + std::to_string(waveID) + "E" + std::to_string(i), this->entity);
 		adult->add(Sprite("spr_enemy_adult.png"));

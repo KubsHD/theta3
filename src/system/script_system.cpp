@@ -25,7 +25,7 @@ int input_key_down_wrapper(lua_State* L)
 {
 
 
-	Input::key_down();
+	//Input::key_down();
 	return 0;
 }
 
@@ -38,7 +38,7 @@ void ScriptSystem::init()
 	
 
 
-	bind_function("fntest", test);
+	//bind_function("fntest", test);
 	run_script("script/test.lua");
 }
 
