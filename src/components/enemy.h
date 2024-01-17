@@ -138,14 +138,14 @@ public:
 		//	ren->draw_text("elooo", Renderer::DefaultFont, text_pos, 0.8, 1);
 		//	//text_opacity -= 0.1f;
 		//}
-		if (!path.empty()) {
-			for (size_t i = 1; i < path.size(); ++i) {
-				auto& coordinate = path[i];
-				dot_pos = { coordinate.x * 20, coordinate.y * 20 };
-				//std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
-				//this->entity->world->ren->draw_circle(dot_pos, 5, dot_color);
-			}
-		}
+		//if (!path.empty()) {
+		//	for (size_t i = 1; i < path.size(); ++i) {
+		//		auto& coordinate = path[i];
+		//		dot_pos = { coordinate.x * 20, coordinate.y * 20 };
+		//		//std::cout << "dot: " << dot_pos.x << " " << dot_pos.y << "\n";
+		//		this->entity->world->ren->draw_circle(dot_pos, 5, dot_color);
+		//	}
+		//}
 	}
 
 	/// <summary>

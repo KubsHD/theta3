@@ -108,6 +108,7 @@ void PlayerMovement::update()
 		for (auto& i : entity->get<Collider>()->check_sphere_list(entity->position + Vec2(entity->flip ? -5 : 40, 25.0f), 35.0f, CollisionTag::Enemy))
 		{
 			i->entity->get<Enemy>()->take_damage(player->damage_melee, knockback_rate);
+			break;
 		}
 
 		switch (combo_step)

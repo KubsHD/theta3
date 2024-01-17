@@ -12,13 +12,13 @@
 Player::Player()
 {
 	isInteracting = false;
-	god_mode = true;
-	health = 100;
+	god_mode = false;
+	health = 50;
 	speed = 1.0f;
 	damage_melee = 24;
 	money = 0;
 	kill_count = 0;
-	health_decay = 0.00f; // chujowy gameplay z tym gownem
+	health_decay = 0.013f; // chujowy gameplay z tym gownem
 	selected_weapon = 0;
 	weapon_cooldown = 0;
 	// in reversed order tho { BROOM, SHOTGUN, PISTOL, MACHINE_GUN, CROSSBOW }

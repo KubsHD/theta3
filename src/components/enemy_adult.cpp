@@ -6,7 +6,7 @@
 
 Adult::Adult(Player* player_ref) : Enemy(player_ref)
 {
-	health = 70 + rand()%230;
+	health = 90 + rand()%260;
 	max_health = health;
 	damage = 10;
 	souls = 5;
@@ -83,28 +83,28 @@ void Adult::init()
 	if (rand() % 2)
 	{
 		if (rand() % 2)
-			rand_starting_pos.x = player->entity->position.x + rand() % 130;
+			rand_starting_pos.x = player->entity->position.x + rand() % 230;
 		else
-			rand_starting_pos.x = player->entity->position.x - rand() % 130;
+			rand_starting_pos.x = player->entity->position.x - rand() % 230;
 
 		// 2 sides of the screen for y
 		if (rand() % 2)
-			rand_starting_pos.y = player->entity->position.y + rand() % 130 + 130;
+			rand_starting_pos.y = player->entity->position.y + rand() % 230 + 230;
 		else
-			rand_starting_pos.y = player->entity->position.y - rand() % 130 - 130;
+			rand_starting_pos.y = player->entity->position.y - rand() % 230 - 230;
 	}
 	else
 	{
 		if (rand() % 2)
-			rand_starting_pos.x = player->entity->position.x + rand() % 130 + 130;
+			rand_starting_pos.x = player->entity->position.x + rand() % 230 + 230;
 		else
-			rand_starting_pos.x = player->entity->position.x - rand() % 130 - 130;
+			rand_starting_pos.x = player->entity->position.x - rand() % 230 - 230;
 
 		// 2 sides of the screen for y
 		if (rand() % 2)
-			rand_starting_pos.y = player->entity->position.y + rand() % 130;
+			rand_starting_pos.y = player->entity->position.y + rand() % 230;
 		else
-			rand_starting_pos.y = player->entity->position.y - rand() % 130;
+			rand_starting_pos.y = player->entity->position.y - rand() % 230;
 	}
 
 
@@ -135,10 +135,20 @@ void Adult::update()
 	//Enemy::followPlayerAStar();
 	//Enemy::followPlayerStraightPath();
 	Enemy::handleEnemyMovement();
-	
+
 	Enemy::update();
 
 	on_death();
+
+	if (can_walk)
+	{
+		if (collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
+			pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player)) {
+			std::cout << "ATAK\n";
+		}
+
+	}
+
 
 	//float light_amp = (health + 1 - 70) / (max_health - 70);
 	//entity->get<Light>()->point.color = Vec3(light_amp * 1, 0.1, 0.1);
@@ -146,11 +156,11 @@ void Adult::update()
 	/*if (state == EnemyState::IN_KNOCKBACK)
 		return;*/
 
-	// Enemies' Sprite center coordinates
-	/*pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
-		entity->position.y + entity->get<Sprite>()->tex->size.y / 2d;*/
+		// Enemies' Sprite center coordinates
+		/*pos_sprite_center = Vec2(entity->position.x + entity->get<Sprite>()->tex->size.x / 2,
+			entity->position.y + entity->get<Sprite>()->tex->size.y / 2d;*/
 
-	//// Standard
+			//// Standard
 	//delta_x = player->pos_sprite_center.x - pos_sprite_center.x;// > 0 ? 1 : -1;
 	//delta_y = player->pos_sprite_center.y - pos_sprite_center.y;// > 0 ? 1 : -1;
 	//direction_x = player->pos_sprite_center.x - pos_sprite_center.x > 0 ? 1 : -1;
@@ -162,19 +172,8 @@ void Adult::update()
 	//// Movement 
 	//if (can_walk)
 	//{
-	//	if (collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
-	//		pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Enemy))
-	//	{
-	//		// If enemy on the path - move different way
-	//	}
-	//	else if (!collider->check_sphere(Vec2(pos_sprite_center.x + cos(facing_angle) * collider->size.x / 8 * 3,
-	//		pos_sprite_center.y + sin(facing_angle) * collider->size.y / 8 * 3), 2, CollisionTag::Player))
-	//	{
-	//		// If not close enough to player - come closer
-	//		//entity->position.x += cos(facing_angle) * speed;
-	//		//entity->position.y += sin(facing_angle) * speed;
-	//	}
-	//	else  	
+
+	//	
 	//	{
 	//		// If close enough to player - attack this mofo
 	//		if (temp > attack_cooldown * 60)
@@ -203,7 +202,7 @@ void Adult::update()
 
 	//			// Player Damage
 	//			if (player->god_mode == false)
-	//			player->health -= damage;
+	//				player->health -= damage;
 
 	//			// Reset cooldown
 	//			temp = 0;
@@ -211,10 +210,11 @@ void Adult::update()
 
 	//		}
 	//	}
-		//TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
 
-		// Cooldown countdown
-	/*	temp += 1;		
 
-	}*/
+		// TODO: FIXLATER: IMPORTANT OPTIMIZATION!!!!!!!!!!!! CAN BE MERGED WITH MOVEMENT COLLIDER ABOVE
+
+		 //Cooldown countdown
+		//temp += 1;
+	//}
 }
