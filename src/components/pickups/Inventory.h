@@ -9,12 +9,7 @@ public:
 	static long int MachinegunAmmo;
 	static long int CrossbowAmmo;
 
-	Inventory() {
-		PistolAmmo = 50000;
-		ShotgunAmmo = 0;
-		MachinegunAmmo = 0;
-		CrossbowAmmo = 0;
-	}
+	static void Init();
 
 	static bool HasAmmo(GUN_TYPE gun_type);
 

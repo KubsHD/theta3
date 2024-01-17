@@ -29,6 +29,7 @@ Player::Player()
 
 void Player::init()
 {
+	Inventory::Init();
 	player_offset = Vec2(entity->get<Sprite>()->tex->size.x / 2, entity->get<Sprite>()->tex->size.y / 2);
 	entity->position = { 400, 240 };
 }
@@ -48,21 +49,29 @@ void Player::update()
 	}
 		
 
-	else if (Input::key_down(SDL_SCANCODE_2))// && (0b0010 & available_weapons))
+	else if (Input::key_down(SDL_SCANCODE_2))
+	{// && (0b0010 & available_weapons))
 		if (Inventory::HasAmmo(SHOTGUN)) {
 			selected_weapon = 2;
 
 		}
+	}
 	else if (Input::key_down(SDL_SCANCODE_3))// && (0b0100 & available_weapons))
+	{
 		if (Inventory::HasAmmo(MACHINE_GUN)) {
 			selected_weapon = 3;
 
 		}
+	}
 	else if (Input::key_down(SDL_SCANCODE_4))// && (0b1000 & available_weapons))
-			if (Inventory::HasAmmo(CROSSBOW)) {
-				selected_weapon = 4;
+	{
+		if (Inventory::HasAmmo(CROSSBOW)) {
+			selected_weapon = 4;
 
-			}
+		}
+	}
+
+
 	if (Input::key_down(SDL_SCANCODE_E)) {
 		isInteracting = true;
 	}
