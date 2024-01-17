@@ -1,7 +1,7 @@
 #version 330 core
 
-#define MAX_POINT_LIGHTS 50
-#define MAX_SPOT_LIGHTS 50
+#define MAX_POINT_LIGHTS 100
+#define MAX_SPOT_LIGHTS 100
 
 in vec2 vTexCoord;
 in vec2 FragPos;

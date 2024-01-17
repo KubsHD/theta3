@@ -133,8 +133,6 @@ LightHandle LightSystem::get_available_handle(Vec4* availability_array, int max_
 			return i;
 		}
 	}
-
-
 	assert(false, "No available light handles");
 	return -1;
 }
