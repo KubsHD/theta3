@@ -32,8 +32,7 @@ find_package(LDtkLoader)
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_executable(theta3
         ${game_SRC}
-        ${APP_ICON_RESOURCE_WINDOWS}
-    )
+        ${APP_ICON_RESOURCE_WINDOWS})
 else()
     add_executable(theta3 WIN32
         ${game_SRC}
