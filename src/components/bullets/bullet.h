@@ -177,8 +177,14 @@ public:
 
 		auto viewportSize = Input::get_viewport_size();
 
-        delta_x = destination.x - viewportSize.x/2;
-        delta_y = destination.y - viewportSize.y/2;
+		if (player->selected_weapon == SHOTGUN) {
+			delta_x = destination.x - viewportSize.x / 2 - 30 + rand() % 60;
+			delta_y = destination.y - viewportSize.y / 2 - 30 + rand() % 60;
+		}
+		else {
+			delta_x = destination.x - viewportSize.x / 2;
+			delta_y = destination.y - viewportSize.y / 2;
+		}
 
         facing_angle = atan2(delta_y, delta_x);
 

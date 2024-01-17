@@ -46,7 +46,7 @@ void Factory::CreateBullet(Scene* scn, Player* player)
 
 void Factory::shotgunShoot(Scene* scn, Player* player)
 {
-	for (int i = 0; i < rand() % 4 + 3; i++)
+	for (int i = 0; i < rand() % 3 + 3; i++)
 	{
 		CreateBullet(scn, player);
 	}

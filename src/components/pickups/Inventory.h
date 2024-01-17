@@ -11,9 +11,9 @@ public:
 
 	Inventory() {
 		PistolAmmo = 50000;
-		ShotgunAmmo = 0;
-		MachinegunAmmo = 0;
-		CrossbowAmmo = 0;
+		ShotgunAmmo = 10;
+		MachinegunAmmo = 10;
+		CrossbowAmmo = 10;
 	}
 
 	static bool HasAmmo(GUN_TYPE gun_type);
