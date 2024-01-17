@@ -8,6 +8,8 @@
 
 #include <core/types.h>
 #include <core/ecs.h>
+
+#include <render/Renderer.h>
 /// <summary>
 /// this class is respinsible for dmg text pop up
 /// </summary>
@@ -48,11 +50,5 @@ public:
 };
 
 namespace Factory {
-	void CreateTextPopup(Scene* scn, Vec2 pos, String textToPopup)
-	{
-		auto ent = scn->create("popup");
-		auto c = ent->add(TextPopup());
-		ent->position = pos + Vec2(rand() % 10 - 5, 0);
-		c->text = textToPopup;
-	}
+	void CreateTextPopup(Scene* scn, Vec2 pos, String textToPopup);
 }
