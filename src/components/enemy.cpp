@@ -71,11 +71,11 @@ void Enemy::handleEnemyMovement()
 {
 	if ((abs(entity->position.x - player->pos_sprite_center.x) > 400) or (abs(entity->position.y - player->pos_sprite_center.y) > 350)) {
 		followPlayerStraightPath();
-		std::cout << "Straight Path\n";
+		//std::cout << "Straight Path\n";
 	}
 	else {
 		followPlayerAStar();
-		std::cout << "AStar\n";
+		//std::cout << "AStar\n";
 	}
 }
 

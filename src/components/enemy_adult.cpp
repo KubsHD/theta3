@@ -120,8 +120,8 @@ void Adult::init()
 
 	// temporary turned off
 	auto l = entity->add(Light(entity->world->ren->light, LightType::Point));
-	l->point.color = Vec3(1 , 0.1, 0.1);
-	l->point.radius = 150.0f;
+	l->point.color = Vec3(0.4, 0.05, 0.05);
+	l->point.radius = 50.0f;
 
 	Enemy::init();
 }
