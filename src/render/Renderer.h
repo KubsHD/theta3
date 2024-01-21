@@ -47,6 +47,9 @@ public:
 
 	LightSystem* light;
 
+	/// <summary>
+	/// Update renderer for a given frame
+	/// </summary>
 	void update();
 
 	/// <summary>
@@ -128,7 +131,14 @@ public:
 	/// <param name="flip">Should the texture be flipped?</param>
 	void draw_subtex(Subtexture* subTex, Vec2 pos, float opacity = 1.0f, float scale = 1.0f, bool flip = false);
 
-
+	/// <summary>
+	/// Draw a subtexture of a texture with custom shader
+	/// </summary>
+	/// <param name="subTex">Subtexture pointer</param>
+	/// <param name="pos">Position to draw at</param>
+	/// <param name="scale">Scale to draw with</param>
+	/// <param name="opacity">Opacity to draw with</param>
+	/// <param name="flip">Should the texture be flipped?</param>
 	void draw_subtex_s(Subtexture* subTex, Vec2 pos, Shader* shd, float opacity = 1.0f, float scale = 1.0f, bool flip = false);
 
 
@@ -191,8 +201,39 @@ public:
 	void draw_buffer(gpu::Buffer* buffer, int vertex_count, glm::mat4 model, Texture* tex);
 
 	// UI DRAWING
+
+	/// <summary>
+	/// Draw a texture
+	/// </summary>
+	/// <param name="tex">Texture pointer</param>
+	/// <param name="pos">Position to draw at</param>
+	/// <param name="size">Texture size</param>
+	/// <param name="custom_shader">Shader pointer</param>
+	/// <param name="opacity">Opacity to draw with</param>
+	/// <param name="flip">Should the texture be flipped?</param>
 	void ui_draw_tex(Texture* tex, Vec2 pos, float opacity = 1.0f, bool flip = false);
+
+	/// <summary>
+	/// Draw text to ui with given font
+	/// </summary>
+	/// <param name="text">Text to draw</param>
+	/// <param name="font">Font to use</param>
+	/// <param name="pos">Text position</param>
+	/// <param name="scale">Text scale</param>
+	/// <param name="opacity">Text opacity</param>
 	void ui_draw_text(String text, Font* font, Vec2 pos, float scale = 1.0f, float opacity = 1.0f);
+
+	/// <summary>
+	/// Draw to ui filled box
+	/// </summary>
+	/// <param name="pos">Position to draw at</param>
+	/// <param name="size">Size of the box</param>
+	/// <param name="color">Color of the box</param>
+	/// <param name="shd">Custom shader to use</param>
 	void ui_draw_box(Vec2 pos, Vec2 size, Vec3 color = Vec3(0, 0, 0), bool fill = false);
+
+	/// <summary>
+	/// Get current camera
+	/// </summary>
 	Camera* get_camera();
 };
