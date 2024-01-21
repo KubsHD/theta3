@@ -5,6 +5,9 @@
 
 class Light;
 
+/// <summary>
+/// Flashlight component
+/// </summary>
 class Flashlight : public Component {
 
 public:
@@ -14,6 +17,13 @@ public:
 	void destroy() override;
 private:
 	
+	/// <summary>
+	/// Light reference
+	/// </summary>
 	Light* m_lightRef;
+
+	/// <summary>
+	/// Flashlight's angle
+	/// </summary>
 	float m_flashlightAngle;
 };
