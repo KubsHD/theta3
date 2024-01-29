@@ -15,10 +15,14 @@
 
 #include <cassert>
 
+#include <tools/pak/vfs.h>
+
 #include <core/file/atl.h>
 #include <utils/profiler.h>
 
 static const char* path_prefix;
+
+bool Asset::use_vfs;
 
 Map<String, Texture*> Asset::cache_texture;
 Map<String, Sound*> Asset::cache_sound;
@@ -28,6 +32,17 @@ Map<String, Atlas*> Asset::cache_atlas;
 void Asset::init(Renderer* ren)
 {
 	THETA_PROFILE;
+
+	if (VFS::init())
+	{
+		log_info("asset: using VFS");
+		use_vfs = true;
+	}
+	else
+	{
+		log_info("asset: not using VFS");
+		use_vfs = false;
+	}
 
 #if DEBUG
 	log_info("asset: running debug build!");
@@ -64,6 +79,27 @@ void Asset::init(Renderer* ren)
 	renderer_ref = ren;
 }
 
+Vector<char> Asset::read_all_bytes(const char* path)
+{
+	Vector<char> data_vec;
+
+	if (use_vfs)
+	{
+		data_vec = VFS::get_file(path);
+	}
+	else {
+		FILE* f = fopen(path, "rb");
+		// read file size
+		fseek(f, 0, SEEK_END);
+		long fsize = ftell(f);
+		fseek(f, 0, SEEK_SET);
+		data_vec.resize(fsize);
+		fread(data_vec.data(), fsize, 1, f);
+		fclose(f);
+	}
+
+	return data_vec;
+}
 
 Texture* Asset::load_texture(std::vector<char> data)
 {
@@ -94,8 +130,8 @@ Texture* Asset::load_texture(String path)
 	THETA_PROFILE;
 	THETA_PROFILE_TAG("Texture path", path.c_str());
 
-
-	assert(std::filesystem::exists(get_asset_path(path.c_str())));
+	if (!use_vfs)
+		assert(std::filesystem::exists(get_asset_path(path.c_str())));
 
 	for (auto [k, v] : cache_texture)
 	{
@@ -103,7 +139,7 @@ Texture* Asset::load_texture(String path)
 			return v;
 	}
 
-	auto tex = load_texture(utils::file::ReadAllBytes(get_asset_path(path.c_str())));
+	auto tex = load_texture(read_all_bytes(use_vfs ? path.c_str() : get_asset_path(path.c_str())));
 
 	cache_texture.emplace(path, tex);
 	return tex;
@@ -114,13 +150,23 @@ Sound* Asset::load_sound(String path)
 	THETA_PROFILE;
 	THETA_PROFILE_TAG("Sound path", path.c_str());
 
+	Sound* snd;
+
 	for (auto [k, v] : cache_sound)
 	{
 		if (k == path)
 			return v;
 	}
+	if (use_vfs)
+	{
+		snd = Audio::create_sound(path, VFS::get_file(path));
 
-	Sound* snd = Audio::create_sound(get_asset_path(path.c_str()));
+		
+	}
+	else
+	{
+		snd = Audio::create_sound(get_asset_path(path.c_str()));
+	}
 	cache_sound.emplace(path, snd);
 	return snd;
 }
@@ -160,8 +206,8 @@ Shader* Asset::load_shader(String shader_name)
 {
 	THETA_PROFILE;
 
-	String vertexShaderSource = Asset::read_file("shader/" + shader_name + ".vs");
-	String fragmentShaderSource = Asset::read_file("shader/" + shader_name + ".fs");
+	String vertexShaderSource = Asset::read_text_file("shader/" + shader_name + ".vs");
+	String fragmentShaderSource = Asset::read_text_file("shader/" + shader_name + ".fs");
 	const char* dataVs;
 	const char* dataPs;
 
@@ -174,7 +220,7 @@ Shader* Asset::load_shader(String shader_name)
 		});
 }
 
-std::string Asset::read_file(String filePath)
+std::string Asset::read_text_file(String filePath)
 {
 	THETA_PROFILE;
 

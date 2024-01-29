@@ -47,6 +47,11 @@ private:
 	/// Reference to the renderer
 	/// </summary>
 	Renderer* renderer_ref;
+
+	static Vector<char> read_all_bytes(const char* path);
+
+
+	static bool use_vfs;
 public:
 
 
@@ -101,5 +106,5 @@ public:
 	/// </summary>
 	/// <param name="filePath"></param>
 	/// <returns></returns>
-	static std::string read_file(String filePath);
+	static std::string read_text_file(String filePath);
 };

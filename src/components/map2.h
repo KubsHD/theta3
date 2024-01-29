@@ -23,6 +23,7 @@
 #include <LDtkLoader/Project.hpp>
 #include <LDtkLoader/World.hpp>
 #include <LDtkLoader/Level.hpp>
+#include <utils/profiler.h>
 
 struct Tile {
 	Vec2 Position;
@@ -167,6 +168,8 @@ public:
 
 	void render(Renderer* ren) override
 	{
+		THETA_PROFILE_SECTION("Map render");
+
 		int counter = 0;
 
 		for (auto& tile : tiles)
@@ -216,6 +219,7 @@ public:
 
 		if (ImGui::Begin("Map"))
 		{
+			ImGui::Checkbox("Naive", &naive);
 			ImGui::InputInt("How many tiles to render", &tile_limit);
 			ImGui::End();
 		}

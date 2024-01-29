@@ -51,6 +51,21 @@ Sound* Audio::create_sound(String path)
 	return s;
 }
 
+Sound* Audio::create_sound(String path, Vector<char> data)
+{
+	Sound* s = new Sound();
+
+	FMOD_SOUND* snd;
+
+
+	result = FMOD_System_CreateSound(sys, data.data(), FMOD_DEFAULT, nullptr, &snd);
+	fmod_check_for_error(result);
+
+	s->path = path;
+	s->ptr = snd;
+	return s;
+}
+
 void Audio::play_one_shot(Sound* snd)
 {	
 	result = FMOD_System_PlaySound(sys, snd->ptr, NULL, 0, &snd->chnl);

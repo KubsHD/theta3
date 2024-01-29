@@ -46,6 +46,8 @@ private:
 	/// <param name="path"></param>
 	/// <returns></returns>
 	static Sound* create_sound(String path);
+
+	static Sound* create_sound(String path, Vector<char> data);
 public:
 	Audio() {};
 
