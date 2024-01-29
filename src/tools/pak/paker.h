@@ -1,6 +1,8 @@
 #pragma once
 
-std::vector<std::string> blacklist = { ".mp3", ".png", ".aseprite" };
+#include <filesystem>
+
+std::vector<std::string> blacklist = { ".fnt", ".atl", ".lua", ".fs", ".vs"};
 
 void cook()
 {
@@ -51,9 +53,8 @@ void cook()
 
 		p.pak_number = current_pak_file;
 
-		if (true || std::find(blacklist.begin(), blacklist.end(), extension) != blacklist.end())
+		if (std::find(blacklist.begin(), blacklist.end(), extension) == blacklist.end())
 		{
-			// no compress
 
 			p.data_offset = bytes_written;
 			p.compressed = 0;
@@ -63,13 +64,23 @@ void cook()
 		}
 		else
 		{
-			// compress
+			std::filesystem::path target = "data/" + path_string;
 
+			auto src = path.path().string();
+			auto targetPath = target;
+			targetPath.remove_filename();
 
-			auto original_mem_chunk = (void*)file_data.data();
-			int original_size = file_data.size();
+			try {
 
+			std::filesystem::create_directories(targetPath); // Recursively create target directory if not existing.
+			std::filesystem::copy_file(src, target, std::filesystem::copy_options::overwrite_existing);
+			}
+			catch (std::filesystem::filesystem_error& ex)
+			{
+				log_error("%s", ex.what());
+			}
 			
+			continue;
 		}
 
 		toc.push(p);

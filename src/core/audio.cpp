@@ -57,8 +57,15 @@ Sound* Audio::create_sound(String path, Vector<char> data)
 
 	FMOD_SOUND* snd;
 
+	// https://github.com/KubsHD/Tortilla/blob/49f4b268899c3f188d096b2ce89d2bc3ecaeade5/Tortilla/engine/core/FmodAudio.cpp#L27
+	FMOD_CREATESOUNDEXINFO ex;
 
-	result = FMOD_System_CreateSound(sys, data.data(), FMOD_DEFAULT, nullptr, &snd);
+	memset(&ex, 0, sizeof(FMOD_CREATESOUNDEXINFO));
+
+	ex.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+	ex.length = data.size();
+
+	result = FMOD_System_CreateSound(sys, data.data(), FMOD_DEFAULT | FMOD_OPENMEMORY, &ex, &snd);
 	fmod_check_for_error(result);
 
 	s->path = path;

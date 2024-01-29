@@ -48,12 +48,12 @@ private:
 	/// </summary>
 	Renderer* renderer_ref;
 
-	static Vector<char> read_all_bytes(const char* path);
 
 
 	static bool use_vfs;
 public:
 
+	static Vector<char> read_all_bytes(const char* path);
 
 
 	/// <summary>

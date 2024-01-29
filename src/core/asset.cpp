@@ -88,7 +88,8 @@ Vector<char> Asset::read_all_bytes(const char* path)
 		data_vec = VFS::get_file(path);
 	}
 	else {
-		FILE* f = fopen(path, "rb");
+		auto real_path = get_asset_path(path);
+		FILE* f = fopen(real_path, "rb");
 		// read file size
 		fseek(f, 0, SEEK_END);
 		long fsize = ftell(f);
@@ -139,7 +140,7 @@ Texture* Asset::load_texture(String path)
 			return v;
 	}
 
-	auto tex = load_texture(read_all_bytes(use_vfs ? path.c_str() : get_asset_path(path.c_str())));
+	auto tex = load_texture(read_all_bytes(use_vfs ? path.c_str() : path.c_str()));
 
 	cache_texture.emplace(path, tex);
 	return tex;
@@ -157,11 +158,10 @@ Sound* Asset::load_sound(String path)
 		if (k == path)
 			return v;
 	}
+	
 	if (use_vfs)
 	{
 		snd = Audio::create_sound(path, VFS::get_file(path));
-
-		
 	}
 	else
 	{

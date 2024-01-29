@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <string>
+
 PakToc VFS::toc;
 FILE** VFS::data_pak_array;
 
@@ -52,7 +54,10 @@ bool VFS::init()
 
 Vector<char> VFS::get_file(String vpath)
 {
-	PakEntry ent = toc.get_entry_by_path(vpath);
+	auto p = std::filesystem::proximate(std::filesystem::path(vpath)).string();
+	std::replace(p.begin(), p.end(), '\\', '/');
+
+	PakEntry ent = toc.get_entry_by_path(p);
 	Vector<char> data;
 	data.resize(ent.data_size);
 

@@ -114,7 +114,11 @@ public:
 	{
 		ldtk::Project ldtk_project;
 		// parse map and create entites and stuff
-		ldtk_project.loadFromFile(Asset::get_asset_path("map/world/world.ldtk"));
+		Vector<char> data =Asset::read_all_bytes("map/world/world.ldtk");
+		
+		std::vector<uint8_t> v(data.begin(), data.end());
+		
+		ldtk_project.loadFromMemory(v);
 		const auto& w = ldtk_project.getWorld();
 		const auto& lvl = w.getLevel("Level_0");
 		const auto& layer = lvl.getLayer("Tiles");

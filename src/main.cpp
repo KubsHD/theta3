@@ -26,6 +26,7 @@ namespace fs = std::filesystem;
 int main(int argc, char* argv[])
 {
 	//srand(time(NULL));
+
 	if (argc > 1)
 	{
 		if (strcmp(argv[1], "--cook") == 0)
