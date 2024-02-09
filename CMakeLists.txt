@@ -37,6 +37,8 @@ endif()
 
 include_directories(deps/cereal)
 
+list(APPEND game_libs "vfs")
+
 if (ONLINE)
 list(APPEND game_libs "eos")
 endif()

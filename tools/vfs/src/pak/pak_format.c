@@ -5,7 +5,6 @@
 #include <string.h>
 
 void pakTocInit(PakToc* toc) {
-	toc = (PakToc*)calloc(1, sizeof(PakToc));
 	toc->data_entries = (PakEntry*)calloc(1, sizeof(PakEntry));
 
 	toc->magic = "TPK";

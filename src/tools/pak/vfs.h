@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pak_format.h"
+#include <pak/pak_format.h>
 
 class VFS {
 public:

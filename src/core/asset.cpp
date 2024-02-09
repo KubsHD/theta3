@@ -20,6 +20,8 @@
 #include <core/file/atl.h>
 #include <utils/profiler.h>
 
+#include <vfs.h>
+
 static const char* path_prefix;
 
 bool Asset::use_vfs;
@@ -100,6 +102,27 @@ Vector<char> Asset::read_all_bytes(const char* path)
 	}
 
 	return data_vec;
+}
+
+
+void test()
+{
+	vfsInitArgs args;
+	args.root = "data";
+	args.packed = true;
+
+	vfsSystem sys;
+
+	if (vfsInit(&sys, args) != VFS_OK)
+	{
+		log_error("[VFS] VFilesystem failed to initalize!");
+	}
+
+	vfsFile file = {};
+	vfsReadFile(&sys, "textures/test.png", &file);
+
+	// load texture
+
 }
 
 Texture* Asset::load_texture(std::vector<char> data)

@@ -14,7 +14,6 @@ extern "C" {
 }
 #endif
 
-#include <tools/pak/pak_format.h>
 #include <core/log.h>
 #include <tools/pak/paker.h>
 #include <filesystem>

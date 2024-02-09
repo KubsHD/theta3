@@ -2,18 +2,18 @@
 
 #include <string.h>
 
-VFS_RESULT VFS_API vfsInit(struct vfsInitArgs* args, struct vfsSystem* system)
+VFS_RESULT VFS_API vfsInit(struct vfsSystem* system, struct vfsInitArgs args)
 {
 	//system = (vfsSystem*)malloc(sizeof(vfsSystem));
-	system->root = args->root;
-	system->packed = args->packed;
+	system->root = args.root;
+	system->packed = args.packed;
 	
 
 	if (system->packed)
 	{
 		PakToc* toc = (PakToc*)malloc(sizeof(PakToc));
 
-		const char* tocPath = args->root;
+		const char* tocPath = system->root;
 		strcat(tocPath, "/game.thetatoc");
 
 		// 1. Load TOC file
@@ -48,13 +48,13 @@ VFS_RESULT VFS_API vfsInit(struct vfsInitArgs* args, struct vfsSystem* system)
 			system->data_paks[i] = fopen(pakPath, "rb");
 			if (!system->data_paks[i])
 			{
-				log_error("Failed to open data pak: %s", pakPath);
+				//log_error("Failed to open data pak: %s", pakPath);
 				abort();
 				return VFS_PAK_FAILED_TO_LOAD;
 			}
 		}
 
-		log_info("Loaded content toc\n");
+		//log_info("Loaded content toc\n");
 		return VFS_OK;
 	}
 }

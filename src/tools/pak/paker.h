@@ -2,11 +2,15 @@
 
 #include <filesystem>
 
+#include <vfs.h>
+
 std::vector<std::string> blacklist = { ".fnt", ".atl", ".lua", ".fs", ".vs"};
 
 void cook()
 {
 	PakToc toc;
+
+	pakTocInit(&toc);
 
 	int current_pak_file = 0;
 	int bytes_written = 0;
@@ -83,7 +87,7 @@ void cook()
 			continue;
 		}
 
-		toc.push(p);
+		pakTocEntryPush(&toc, p);
 	}
 
 	std::ofstream toc_stream("data/game.thetatoc", std::ios::binary | std::ios::out);

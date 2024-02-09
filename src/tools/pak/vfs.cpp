@@ -57,7 +57,7 @@ Vector<char> VFS::get_file(String vpath)
 	auto p = std::filesystem::proximate(std::filesystem::path(vpath)).string();
 	std::replace(p.begin(), p.end(), '\\', '/');
 
-	PakEntry ent = toc.get_entry_by_path(p);
+	PakEntry ent = pakTocGetEntry(vpath.c_str());
 	Vector<char> data;
 	data.resize(ent.data_size);
 
