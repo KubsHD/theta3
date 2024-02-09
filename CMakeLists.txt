@@ -13,6 +13,8 @@ option(BUILD_DOCS "Build doxygen documentation" OFF)
 option(ONLINE "Enable online features" OFF)
 
 add_subdirectory(deps/fmod)
+add_subdirectory(tools/vfs)
+
 if (ONLINE)
 add_compile_definitions(ONLINE)
 add_subdirectory(deps/eos)
