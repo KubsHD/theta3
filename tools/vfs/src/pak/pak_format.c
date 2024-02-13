@@ -20,13 +20,16 @@ void pakTocEntryPush(PakToc* toc, PakEntry ent)
 	memcpy(&toc->data_entries[toc->num_files - 1], &ent, sizeof(PakEntry));
 }
 
-PakEntry pakTocGetEntry(PakToc* toc, const char* path)
+VFS_BOOL pakTocGetEntry(PakToc toc, const char* path, PakEntry* ent)
 {
-	for (int i = 0; i < toc->num_files; i++)
+	for (int i = 0; i < toc.num_files; i++)
 	{
-		if (strcmp(toc->data_entries[i].path, path) == 0)
+		if (strcmp(toc.data_entries[i].path, path) == 0)
 		{
-			return toc->data_entries[i];
+			ent = &toc.data_entries[i];
+			return 1;
 		}
 	}
+	
+	return 0;
 }

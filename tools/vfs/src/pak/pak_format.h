@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "../types.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -32,7 +34,7 @@ extern "C"
 
 	void pakTocInit(PakToc* toc);
 	void pakTocEntryPush(PakToc* toc, PakEntry ent);
-	PakEntry pakTocGetEntry(const char* path);
+	VFS_BOOL pakTocGetEntry(PakToc toc, const char* path, PakEntry* ent);
 
 #ifdef __cplusplus
 }

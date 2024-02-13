@@ -2,13 +2,13 @@
 
 #include "pak/pak_format.h"
 #include <stdio.h>
+#include "types.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-	typedef uint8_t VFS_BOOL;
 
 	typedef struct vfsSystem {
 		const char* root;
@@ -23,7 +23,7 @@ extern "C"
 	typedef struct vfsFile {
 		const char* path;
 		const char* data;
-		uint8_t size;
+		uint32_t size;
 	} vfsFile;
 
 	typedef struct vfsInitArgs {
