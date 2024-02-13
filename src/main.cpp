@@ -18,8 +18,6 @@ extern "C" {
 #include <tools/pak/paker.h>
 #include <filesystem>
 
-#include <tools/pak/vfs.h>
-
 namespace fs = std::filesystem;
 
 int main(int argc, char* argv[])

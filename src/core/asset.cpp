@@ -15,8 +15,6 @@
 
 #include <cassert>
 
-#include <tools/pak/vfs.h>
-
 #include <core/file/atl.h>
 #include <utils/profiler.h>
 
@@ -24,7 +22,7 @@
 
 static const char* path_prefix;
 
-bool Asset::use_vfs;
+vfsSystem* Asset::vfs;
 
 Map<String, Texture*> Asset::cache_texture;
 Map<String, Sound*> Asset::cache_sound;
@@ -35,16 +33,6 @@ void Asset::init(Renderer* ren)
 {
 	THETA_PROFILE;
 
-	if (VFS::init())
-	{
-		log_info("asset: using VFS");
-		use_vfs = true;
-	}
-	else
-	{
-		log_info("asset: not using VFS");
-		use_vfs = false;
-	}
 
 #if DEBUG
 	log_info("asset: running debug build!");
@@ -78,6 +66,13 @@ void Asset::init(Renderer* ren)
 
 #endif
 
+	// fix later
+	vfs = new vfsSystem();
+
+
+	vfsInit(vfs, { path_prefix, true });
+
+
 	renderer_ref = ren;
 }
 
@@ -85,21 +80,11 @@ Vector<char> Asset::read_all_bytes(const char* path)
 {
 	Vector<char> data_vec;
 
-	if (use_vfs)
-	{
-		data_vec = VFS::get_file(path);
-	}
-	else {
-		auto real_path = get_asset_path(path);
-		FILE* f = fopen(real_path, "rb");
-		// read file size
-		fseek(f, 0, SEEK_END);
-		long fsize = ftell(f);
-		fseek(f, 0, SEEK_SET);
-		data_vec.resize(fsize);
-		fread(data_vec.data(), fsize, 1, f);
-		fclose(f);
-	}
+	vfsFile file;
+	vfsReadFile(vfs, path, &file);
+	
+	data_vec.resize(file.size);
+	memcpy(data_vec.data(), file.data, file.size);
 
 	return data_vec;
 }
@@ -154,7 +139,7 @@ Texture* Asset::load_texture(String path)
 	THETA_PROFILE;
 	THETA_PROFILE_TAG("Texture path", path.c_str());
 
-	if (!use_vfs)
+	if (!vfs->packed)
 		assert(std::filesystem::exists(get_asset_path(path.c_str())));
 
 	for (auto [k, v] : cache_texture)
@@ -163,7 +148,14 @@ Texture* Asset::load_texture(String path)
 			return v;
 	}
 
-	auto tex = load_texture(read_all_bytes(use_vfs ? path.c_str() : path.c_str()));
+	
+	vfsFile file;
+	vfsReadFile(vfs, path.c_str(), &file);
+	
+	Vector<char> data(file.size);
+	memcpy(data.data(), file.data, file.size);
+
+	auto tex = load_texture(data);
 
 	cache_texture.emplace(path, tex);
 	return tex;
@@ -182,14 +174,14 @@ Sound* Asset::load_sound(String path)
 			return v;
 	}
 	
-	if (use_vfs)
-	{
-		snd = Audio::create_sound(path, VFS::get_file(path));
-	}
-	else
-	{
-		snd = Audio::create_sound(get_asset_path(path.c_str()));
-	}
+	vfsFile soundFile;
+	vfsReadFile(vfs, path.c_str(), &soundFile);
+
+	Vector<char> data(soundFile.size);
+	memcpy(data.data(), soundFile.data, soundFile.size);
+
+	snd = Audio::create_sound(path, data);
+	
 	cache_sound.emplace(path, snd);
 	return snd;
 }

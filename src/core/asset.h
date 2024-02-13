@@ -17,6 +17,8 @@ class Sound;
 class Atlas;
 class Shader;
 
+struct vfsSystem;
+
 /// <summary>
 /// Class responsible for asset handling
 /// </summary>
@@ -49,8 +51,7 @@ private:
 	Renderer* renderer_ref;
 
 
-
-	static bool use_vfs;
+	static vfsSystem* vfs;
 public:
 
 	static Vector<char> read_all_bytes(const char* path);
