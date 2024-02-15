@@ -30,6 +30,7 @@
 #include <scenes/scene_menu.h>
 #include <scenes/scene_title.h>
 #include <scenes/scene_shop_test.h>
+#include <scenes/scene_3d_test.h>
 
 #include <components/player.h>
 #include <components/wave_system.h>
@@ -68,8 +69,11 @@ void APIENTRY glDebugOutput(GLenum source,
 	const char* message,
 	const void* userParam)
 {
+
 	// ignore non-significant error/warning codes
 	if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
+
+	__debugbreak();
 
 	std::cout << "---------------" << std::endl;
 	std::cout << "Debug message (" << id << "): " << message << std::endl;
@@ -209,9 +213,6 @@ void Game::init()
 	ImGui_ImplOpenGL3_Init();
 
 	glEnable(GL_BLEND);
-	//glEnable(GL_DEPTH_TEST);
-	//glEnable(GL_STENCIL_TEST);
-	//glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 #pragma endregion
@@ -391,7 +392,7 @@ void Game::loop()
 #if !DEBUG
 	change_scene<MenuScene>();
 #else
-	change_scene<ShopTestScene>();
+	change_scene<Test3DScene>();
 #endif
 
 	while (bRunning)

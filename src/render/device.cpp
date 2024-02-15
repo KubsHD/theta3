@@ -111,6 +111,7 @@ namespace gpu {
 	{
 		auto target = new Target();
 
+
 		if (desc.w == 0 && desc.h == 0)
 		{
 			target->id = 0;
@@ -146,57 +147,99 @@ namespace gpu {
 	{
 		auto buffer = new Buffer();
 
-		GLsizeiptr;
+		buffer->desc = desc;
 
-		glGenBuffers(1, &buffer->vbo);
-		glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
-		glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, desc.usageFlags == gpu::UsageFlags::STATIC_DRAW ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
-
-		// using VAOs
-		glGenVertexArrays(1, &buffer->vao);
-		glBindVertexArray(buffer->vao);
-
-		int offset = 0;
-		int stride = 0;
-		
-		for (int i = 0; i < desc.layout.size(); i++)
+		if (desc.bindFlags == BindFlags::BIND_VERTEX_BUFFER)
 		{
-			auto input = desc.layout[i];
 
-			if (input.type == GL_FLOAT)
+			// using VAOs
+			glGenVertexArrays(1, &buffer->vao);
+			glBindVertexArray(buffer->vao);
+
+			glGenBuffers(1, &buffer->vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
+			glBufferData(GL_ARRAY_BUFFER, desc.size, desc.data, desc.usageFlags == gpu::UsageFlags::STATIC_DRAW ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+
+			int offset = 0;
+			int stride = 0;
+
+			for (int i = 0; i < desc.layout.size(); i++)
 			{
-				stride += input.size * sizeof(float);
-			}
-		}
+				auto input = desc.layout[i];
 
-
-		for (int i = 0; i< desc.layout.size(); i++)
-		{
-			auto input = desc.layout[i];
-
-			glVertexAttribPointer(i, input.size, input.type, GL_FALSE, stride, (void*)offset);
-
-			if (input.type == GL_FLOAT)
-			{
-				offset += input.size * sizeof(float);
+				if (input.type == GL_FLOAT)
+				{
+					stride += input.size * sizeof(float);
+				}
 			}
 
-			glEnableVertexAttribArray(i);
+
+			for (int i = 0; i < desc.layout.size(); i++)
+			{
+				auto& input = desc.layout[i];
+
+				glVertexAttribPointer(i, input.size, input.type, GL_FALSE, stride, (void*)offset);
+
+				if (input.type == GL_FLOAT)
+				{
+					offset += input.size * sizeof(float);
+				}
+
+				glEnableVertexAttribArray(i);
+			}
+
+
+			glBindVertexArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+			return buffer;
 		}
+		else if (desc.bindFlags == BindFlags::BIND_INDEX_BUFFER) {
+			glGenBuffers(1, &buffer->ibo);
 
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->ibo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, desc.size, desc.data, desc.usageFlags == gpu::UsageFlags::STATIC_DRAW ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+			return buffer;
+		}
+		else {
+			glGenBuffers(1, &buffer->ubo);
 
+			glBindBuffer(GL_UNIFORM_BUFFER, buffer->ubo);
+			glBufferData(GL_UNIFORM_BUFFER, desc.size, desc.data, desc.usageFlags == gpu::UsageFlags::STATIC_DRAW ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-		return buffer;
+			return buffer;
+		}
 	}
 
 	void Device::update_buffer(Buffer* buffer, void* data, int size)
 	{
-		glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		GLenum target;
+		int target_id;
+
+		switch (buffer->desc.bindFlags)
+		{
+		case BindFlags::BIND_VERTEX_BUFFER:
+			target = GL_VERTEX_ARRAY;
+			target_id = buffer->vbo;
+			break;
+		case BindFlags::BIND_INDEX_BUFFER:
+			target = GL_ELEMENT_ARRAY_BUFFER;
+			target_id = buffer->ibo;
+			break;
+		case BindFlags::BIND_CONSTANT_BUFFER:
+			target = GL_UNIFORM_BUFFER;
+			target_id = buffer->ubo;
+			break;
+
+		}
+
+		glBindBuffer(target, target_id);
+		glBufferSubData(target, 0, size, data);
+		glBindBuffer(target, 0);
 	}
 
 	void Device::destroy_buffer(Buffer* buf)

@@ -36,7 +36,7 @@ namespace gpu {
 		Vector<Input> layout;
 		BindFlags bindFlags;
 		UsageFlags usageFlags;
-		unsigned long long size;
+		uint64_t size;
 		void* data;
 	};
 
@@ -44,8 +44,11 @@ namespace gpu {
 	/// GPU Buffer Handle
 	/// </summary>
 	struct Buffer {
+		String name;
 		BufferDesc desc;
-		GLuint vao;
-		GLuint vbo;
+		unsigned int vao;
+		unsigned int vbo;
+		unsigned int ibo;
+		unsigned int ubo;
 	};
 }

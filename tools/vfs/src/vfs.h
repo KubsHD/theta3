@@ -41,11 +41,9 @@ extern "C"
 #define VFS_API __stdcall
 #endif
 
-
 	// Runtime api
 	VFS_RESULT VFS_API vfsInit(struct vfsSystem* system, struct vfsInitArgs args);
 	VFS_RESULT VFS_API vfsReadFile(struct vfsSystem* system, const char* path, struct vfsFile* file);
-	VFS_RESULT VFS_API vfsReadFileText(const char* path, struct vfsFile* file);
 
 	// Offline api
 
