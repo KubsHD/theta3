@@ -29,6 +29,7 @@ public:
 
 	unsigned int id;
 	unsigned int texId;
+	unsigned int depthId;
 
 	Texture* tex;
 

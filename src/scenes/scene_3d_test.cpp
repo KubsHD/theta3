@@ -9,6 +9,7 @@
 
 #include <render/device.h>
 #include <render/Shader.h>
+#include <core/game.h>
 
 
 float cube_vertices[] = {
@@ -78,6 +79,8 @@ static SceneData sd;
 
 static float rotation;
 
+static Texture* tex;
+
 void Test3DScene::init()
 {
 	cbh = new ConstantBufferHandle();
@@ -106,6 +109,8 @@ void Test3DScene::init()
 	});
 
 	shd = Asset::load_shader("3d");
+
+	tex = Asset::load_texture("coin.png");
 }
 
 void Test3DScene::destroy()
@@ -117,10 +122,12 @@ void Test3DScene::update()
 {
 	Scene::update();
 
-	rotation += 0.05;
+
+	rotation += 0.01;
 
 	sd.mvp = glm::perspectiveFovLH<float>(45.0f, 1280.0f, 720.0f, 0.1f, 10.0f);
 	sd.mvp *= glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 2)), rotation, glm::vec3(1, 1, 0));
+	sd.model = glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 2)), rotation, glm::vec3(1, 1, 0));
 
 
 	gpu::device->update_buffer(cbh->buf, &sd, sizeof(sd));
@@ -130,27 +137,28 @@ void Test3DScene::update()
 	dc.uniform = cbh;
 	dc.vertices_count = 36;
 	dc.shader = shd;
+	dc.textures = { tex };
 
 	rs.submit_drawcall(dc);
 
-	//debug_msgs.push_back("Drawcalls: ");
+	debug_msgs.push_back("fps: " + std::to_string(1000 / Game::Instance->get_delta()));
 }
 
 void Test3DScene::render()
 {
 	ren->set_target(target);
-	ren->clear(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	ren->clear(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
 
-	//int y = 0;
-	//for (auto s : debug_msgs)
-	//{
-	//	ren->draw_text(s, Renderer::DefaultFont, Vec2(10, 10 + y));
-	//	y += 20;
-	//}
+	int y = 0;
+	for (auto s : debug_msgs)
+	{
+		ren->draw_text(s, Renderer::DefaultFont, Vec2(10, 10 + y));
+		y += 20;
+	}
 
-	//debug_msgs.clear();
+	debug_msgs.clear();
 
-	//Scene::render();
+	Scene::render();
 
 	rs.work();
 

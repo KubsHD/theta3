@@ -121,6 +121,7 @@ namespace gpu {
 		glGenFramebuffers(1, &target->id);
 		glBindFramebuffer(GL_FRAMEBUFFER, target->id);
 
+		// color texture
 		glGenTextures(1, &target->texId);
 		glBindTexture(GL_TEXTURE_2D, target->texId);
 
@@ -131,6 +132,19 @@ namespace gpu {
 
 		glBindFramebuffer(GL_FRAMEBUFFER, target->id);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, target->texId, 0);
+
+		// depth texture
+		glGenTextures(1, &target->depthId);
+		glBindTexture(GL_TEXTURE_2D, target->depthId);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, desc.w, desc.h, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, desc.type == TargetScalingType::Nearest ? GL_NEAREST : GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, desc.type == TargetScalingType::Nearest ? GL_NEAREST : GL_LINEAR);
+
+
+		glBindFramebuffer(GL_FRAMEBUFFER, target->id);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, target->depthId, 0);
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			log_error("ERROR::FRAMEBUFFER:: Framebuffer is not complete!");
@@ -223,7 +237,7 @@ namespace gpu {
 		switch (buffer->desc.bindFlags)
 		{
 		case BindFlags::BIND_VERTEX_BUFFER:
-			target = GL_VERTEX_ARRAY;
+			target = GL_ARRAY_BUFFER;
 			target_id = buffer->vbo;
 			break;
 		case BindFlags::BIND_INDEX_BUFFER:
