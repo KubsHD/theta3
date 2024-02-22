@@ -6,15 +6,20 @@
 #include <render/texture.h>
 
 #include <lib/glad/glad.h>
+#include <utils/profiler.h>
 
 
 void RenderSystem::submit_drawcall(DrawCall& dc)
 {
+	THETA_PROFILE;
+
 	m_draw_calls.push_back(dc);
 }
 
 void RenderSystem::work()
 {
+	THETA_PROFILE;
+
 	while (!m_draw_calls.empty())
 	{
 		DrawCall dc = m_draw_calls.back();
