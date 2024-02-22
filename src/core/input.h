@@ -37,6 +37,8 @@ struct Mouse
 	/// </summary>
 	glm::ivec2 pos;
 
+	glm::ivec2 rel_pos;
+
 	Uint32 buttons;
 };
 
@@ -113,6 +115,7 @@ public:
 	void update_viewport_size(ImVec2);
 	static Vec2 get_viewport_size();
 
+	static glm::vec2 get_mouse_pos_rel();
 private:
 	bool m_mousePositionOverriden = false;
 };

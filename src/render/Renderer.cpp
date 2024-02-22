@@ -314,6 +314,8 @@ void Renderer::draw_subtex(Subtexture* subTex, Vec2 pos, float opacity, float sc
 
 void Renderer::draw_subtex_s(Subtexture* subTex, Vec2 pos, Shader* shd, float opacity /*= 1.0f*/, float scale /*= 1.0f*/, bool flip /*= false*/)
 {
+	THETA_PROFILE;
+
 	glm::mat4 model = glm::mat4(1.0f);
 
 	model = glm::translate(model, Vec3(pos, 0.0f));
@@ -414,6 +416,8 @@ void Renderer::draw_quad()
 
 void Renderer::draw_text(String text, Font* font, Vec2 pos, float scale, float opacity)
 {
+	THETA_PROFILE;
+
 	int adv = 0;
 
 	for (int i = 0; text[i]; i++) {

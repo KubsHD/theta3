@@ -54,6 +54,8 @@ void Input::update(SDL_Event& evt)
 	else
 		mouse.RMB = 0;
 
+	SDL_GetRelativeMouseState(&(mouse.rel_pos.x), &(mouse.rel_pos.y));
+
 }
 
 void Input::update_mouse_wheel(SDL_MouseWheelEvent mevt)
@@ -102,6 +104,11 @@ Vec2 Input::get_viewport_size()
 	return viewport_size;
 }
 
+
+glm::vec2 Input::get_mouse_pos_rel()
+{
+	return mouse.rel_pos;
+}
 
 bool Input::key_down(SDL_Scancode scanCode)
 {

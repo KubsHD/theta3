@@ -53,4 +53,4 @@ add_custom_command(
 
 
 
-set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" "Rpcrt4" Tracy::TracyClient LDtkLoader Luau.Compiler Luau.VM)
+set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" "Rpcrt4" Tracy::TracyClient LDtkLoader Luau.Compiler Luau.VM assimp::assimp )

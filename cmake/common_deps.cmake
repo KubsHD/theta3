@@ -33,5 +33,16 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(luau)
 
+set(ASSIMP_BUILD_ASSIMP_TOOLS ON)
+
+#assimp
+FetchContent_Declare(
+    assimp
+    GIT_REPOSITORY https://github.com/assimp/assimp
+    GIT_TAG master
+)
+
+FetchContent_MakeAvailable(assimp)
+
 
 include_directories(${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/_deps/ldtk-src/include)

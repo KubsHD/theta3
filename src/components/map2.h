@@ -145,7 +145,7 @@ public:
 			NULL
 		});
 
-		vertices = (Vertex*)malloc(sizeof(Vertex) * vertex_capacity);
+		vertices = new Vertex[vertex_capacity];
 	}
 
 
