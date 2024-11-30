@@ -38,4 +38,4 @@ target_include_directories(theta3 PUBLIC "${PROJECT_SOURCE_DIR}/src")
 #     COMMAND_EXPAND_LISTS
 # )
 
-set(game_libs "glm" "fmod" "SDL2main" "SDL2-static")
+set(game_libs "glm" "fmod" "SDL2main" "SDL2-static" LDtkLoader Luau.Compiler Luau.VM assimp::assimp)

@@ -23,6 +23,7 @@ VFS_RESULT VFS_API vfsInit(struct vfsSystem* system, struct vfsInitArgs args)
 		FILE* pTocFile = fopen(tocPath, "rb");
 		if (!pTocFile)
 		{
+			printf("vfs: toc file failed to load!\n");
 			// fallback to unpacked
 			system->packed = 0;
 			return VFS_PAK_FAILED_TO_LOAD;
@@ -58,6 +59,9 @@ VFS_RESULT VFS_API vfsInit(struct vfsSystem* system, struct vfsInitArgs args)
 			}
 		}
 
+
+		system->pToc = toc;
+
 		//log_info("Loaded content toc\n");
 		return VFS_OK;
 	}
@@ -82,7 +86,7 @@ VFS_RESULT VFS_API vfsReadFile(struct vfsSystem* system, const char* path, struc
 	if (system->packed)
 	{
 		PakEntry ent;
-
+		printf("test %s\n", system->pToc->num_files);
 		if (!pakTocGetEntry(*system->pToc, p, &ent))
 		{
 			failedToLoadFromPak = 1;
@@ -100,6 +104,7 @@ VFS_RESULT VFS_API vfsReadFile(struct vfsSystem* system, const char* path, struc
 
 	if (!system->packed || failedToLoadFromPak)
 	{
+		printf("File not found in pak, reading from real fs: %s\n", path);
 		// read from real fs
 
 		char real_path[1000];

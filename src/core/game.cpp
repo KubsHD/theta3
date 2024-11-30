@@ -73,8 +73,9 @@ void APIENTRY glDebugOutput(GLenum source,
 	// ignore non-significant error/warning codes
 	if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
 
+#if defined(WIN)
 	__debugbreak();
-
+#endif
 	std::cout << "---------------" << std::endl;
 	std::cout << "Debug message (" << id << "): " << message << std::endl;
 
@@ -152,7 +153,7 @@ void Game::init()
 		// Request an OpenGL 4.5 context (should be core)
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS,SDL_GL_CONTEXT_DEBUG_FLAG);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -222,10 +223,12 @@ void Game::init()
 
 #if DEBUG
 
+#if !APPLE
 	glEnable(GL_DEBUG_OUTPUT);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(glDebugOutput, 0);
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+#endif
 
 	tools.push_back(new AnimationTool());
 	tools.push_back(new Viewport(input));
@@ -395,7 +398,7 @@ void Game::loop()
 #if !DEBUG
 	change_scene<MenuScene>();
 #else
-	change_scene<Test3DScene>();
+	change_scene<MenuScene>();
 #endif
 
 	while (bRunning)

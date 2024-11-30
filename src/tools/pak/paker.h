@@ -19,7 +19,8 @@ void cook()
 	std::stringstream compression_stream;
 
 
-	for (auto& path : std::filesystem::recursive_directory_iterator(std::filesystem::path("../../../data/")))
+
+	for (auto& path : std::filesystem::recursive_directory_iterator(std::filesystem::path("../data")))
 	{
 		if (path.is_directory())
 			continue;
@@ -28,7 +29,7 @@ void cook()
 
 		// remove ../../../data/ from path
 		auto path_string = path.path().string();
-		path_string = path_string.substr(14, path_string.size() - 14);
+		path_string = path_string.substr(8, path_string.size() - 8);
 		std::replace(path_string.begin(), path_string.end(), '\\', '/');
 
 
@@ -37,7 +38,7 @@ void cook()
 
 		log_info("Packing %s to pak: %d", path_string.c_str(), current_pak_file);
 
-		strcpy_s(p.path, path_string.c_str());
+		strcpy(p.path, path_string.c_str());
 
 		auto file_data = utils::file::ReadAllBytes(path.path().string());
 		p.data_size = file_data.size();
@@ -69,6 +70,8 @@ void cook()
 		else
 		{
 			std::filesystem::path target = "data/" + path_string;
+
+			log_info("target path: %s", target.c_str());
 
 			auto src = path.path().string();
 			auto targetPath = target;

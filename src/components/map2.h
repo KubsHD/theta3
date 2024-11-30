@@ -25,6 +25,8 @@
 #include <LDtkLoader/Level.hpp>
 #include <utils/profiler.h>
 
+#include <sstream>
+
 struct Tile {
 	Vec2 Position;
 	Subtexture* SubTex;

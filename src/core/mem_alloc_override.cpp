@@ -1,3 +1,5 @@
+#if defined(TRACY_ENABLE)
+
 #include <tracy/Tracy.hpp>
 
 #include <cstdlib>
@@ -16,3 +18,5 @@ operator delete(void* ptr) noexcept
 	TracyFree(ptr);
 	free(ptr);
 }
+
+#endif

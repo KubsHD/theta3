@@ -4,6 +4,7 @@
 
 #include <lib/glad/glad.h>
 #include <core/log.h>
+#include <core/types.h>
 
 void LightSystem::init()
 {
@@ -133,7 +134,7 @@ LightHandle LightSystem::get_available_handle(Vec4* availability_array, int max_
 			return i;
 		}
 	}
-	assert(false, "No available light handles");
+	assert(false/*, "No available light handles"*/);
 	return -1;
 }
 

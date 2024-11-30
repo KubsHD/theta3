@@ -17,6 +17,7 @@
 #include <iostream>
 #include <functional>
 #include <list>
+#include <cassert>
 
 #include <SDL.h>
 #include <glm/glm.hpp>

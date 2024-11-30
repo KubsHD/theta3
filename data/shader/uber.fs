@@ -1,4 +1,4 @@
-#version 330 core
+#version 410 core
 
 #define MAX_POINT_LIGHTS 100
 #define MAX_SPOT_LIGHTS 100
@@ -76,6 +76,8 @@ void main()
 			sum += falloff * (1.0 - smoothstep(0.0, 1.0, light_dist / light.radius)) * u_spotLightAvailability[i][0] * light.color;
 		}
 	}
+
+	sum = clamp(sum, 0,0.5);
 
 	vec3 final = (ambient + sum) * texture(u_tex, tex).xyz;
 	FragColor = vec4(final, 1.0f);

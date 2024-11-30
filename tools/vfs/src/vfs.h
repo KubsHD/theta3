@@ -39,6 +39,8 @@ extern "C"
 
 #if (defined(_WIN32) || defined(_WIN64))
 #define VFS_API __stdcall
+#else
+#define VFS_API
 #endif
 
 	// Runtime api

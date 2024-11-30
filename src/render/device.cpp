@@ -10,6 +10,8 @@
 
 #include <core/log.h>
 
+
+
 namespace gpu {
 
 	Device* device = nullptr;
